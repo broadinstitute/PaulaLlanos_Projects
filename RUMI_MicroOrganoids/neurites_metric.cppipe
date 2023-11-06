@@ -2,7 +2,7 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
 DateRevision:425
 GitHash:
-ModuleCount:32
+ModuleCount:47
 HasImagePlaneDetails:False
 
 Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -17,7 +17,7 @@ Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_win
     Extraction method count:1
     Metadata extraction method:Extract from file/folder names
     Metadata source:File name
-    Regular expression to extract from file name:(?P<Cell_line>[\S]{3})\sR(?P<Replicate>[0-9])_(?P<Well>.*)_col(?P<ColonyNumber>[0-9]{2,3})_C(?P<Channel>[0-9]).tif
+    Regular expression to extract from file name:(?P<Cell_line>[\S]{3})\sR(?P<Replicate>[0-9])_(?P<Well>.*)_col(?P<ColonyNumber>.*)_C(?P<Channel>[0-9]).tif
     Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
     Extract metadata from:All images
     Select the filtering criteria:and (file does contain "")
@@ -31,8 +31,8 @@ NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|sho
     Assign a name to:Images matching rules
     Select the image type:Grayscale image
     Name to assign these images:DNA
-    Match metadata:[]
-    Image set matching method:Order
+    Match metadata:[{'DNA': 'Cell_line', 'MAP2': 'Cell_line', 'NESTIN': 'Cell_line', 'TUJ1': 'Cell_line'}, {'DNA': 'ColonyNumber', 'MAP2': 'ColonyNumber', 'NESTIN': 'ColonyNumber', 'TUJ1': 'ColonyNumber'}, {'DNA': 'Well', 'MAP2': 'Well', 'NESTIN': 'Well', 'TUJ1': 'Well'}]
+    Image set matching method:Metadata
     Set intensity range from:Image metadata
     Assignments count:4
     Single images count:0
@@ -74,7 +74,7 @@ Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_windo
 IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:DNA
     Name the primary objects to be identified:nuclei
-    Typical diameter of objects, in pixel units (Min,Max):50,80
+    Typical diameter of objects, in pixel units (Min,Max):40,100
     Discard objects outside the diameter range?:Yes
     Discard objects touching the border of the image?:Yes
     Method to distinguish clumped objects:Intensity
@@ -89,7 +89,7 @@ IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_num
     Maximum number of objects:500
     Use advanced settings?:Yes
     Threshold setting version:12
-    Threshold strategy:Adaptive
+    Threshold strategy:Global
     Thresholding method:Otsu
     Threshold smoothing scale:1.3488
     Threshold correction factor:1.0
@@ -107,12 +107,32 @@ IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_num
     # of deviations:2.0
     Thresholding method:Otsu
 
-DilateObjects:[module_num:6|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FlagImage:[module_num:6|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Hidden:1
+    Hidden:1
+    Name the flag's category:Metadata
+    Name the flag:QCFlag
+    How should measurements be linked?:Flag if any fail
+    Skip image set if flagged?:Yes
+    Flag is based on:Classifier
+    Select the object to be used for flagging:None
+    Which measurement?:Count
+    Flag images based on low values?:Yes
+    Minimum value:0.0
+    Flag images based on high values?:Yes
+    Maximum value:1.0
+    Classifier file location:Elsewhere...|
+    Classifier file name:rules.txt
+    Class number:2
+    Allow fuzzy feature matching?:No
+    Ignore flag skips on last cycle?:No
+
+DilateObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:nuclei
     Name the output object:Dilate_nuclei
     Structuring element:disk,3
 
-ImageMath:[module_num:7|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:8|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:Add
     Raise the power of the result by:1.0
     Multiply the result by:1.0
@@ -139,7 +159,7 @@ ImageMath:[module_num:7|svn_version:'Unknown'|variable_revision_number:5|show_wi
     Multiply the fourth image by:3
     Measurement:
 
-IdentifySecondaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifySecondaryObjects:[module_num:9|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:nuclei
     Name the objects to be identified:Organoid
     Select the method to identify the secondary objects:Propagation
@@ -169,7 +189,7 @@ IdentifySecondaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_n
     # of deviations:2.0
     Thresholding method:Minimum Cross-Entropy
 
-EnhanceOrSuppressFeatures:[module_num:9|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+EnhanceOrSuppressFeatures:[module_num:10|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:TUJ1
     Name the output image:TUJ1_enhanced
     Select the operation:Enhance
@@ -183,7 +203,7 @@ EnhanceOrSuppressFeatures:[module_num:9|svn_version:'Unknown'|variable_revision_
     Speed and accuracy:Fast
     Rescale result image:No
 
-Threshold:[module_num:10|svn_version:'Unknown'|variable_revision_number:12|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+Threshold:[module_num:11|svn_version:'Unknown'|variable_revision_number:12|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:TUJ1_enhanced
     Name the output image:Threshold_tuj1e
     Threshold strategy:Adaptive
@@ -193,7 +213,7 @@ Threshold:[module_num:10|svn_version:'Unknown'|variable_revision_number:12|show_
     Lower and upper bounds on threshold:0.0,0.05
     Manual threshold:0.0
     Select the measurement to threshold with:None
-    Two-class or three-class thresholding?:Three classes
+    Two-class or three-class thresholding?:Two classes
     Log transform before thresholding?:Yes
     Assign pixels in the middle intensity class to the foreground or the background?:Background
     Size of adaptive window:20
@@ -204,7 +224,7 @@ Threshold:[module_num:10|svn_version:'Unknown'|variable_revision_number:12|show_
     # of deviations:2.0
     Thresholding method:Otsu
 
-MaskImage:[module_num:11|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MaskImage:[module_num:12|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Threshold_tuj1e
     Name the output image:Threshold_tuj1e_masked
     Use objects or an image as a mask?:Objects
@@ -212,11 +232,11 @@ MaskImage:[module_num:11|svn_version:'Unknown'|variable_revision_number:3|show_w
     Select image for mask:None
     Invert the mask?:No
 
-MorphologicalSkeleton:[module_num:12|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MorphologicalSkeleton:[module_num:13|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Threshold_tuj1e_masked
     Name the output image:MorphologicalSkeleton
 
-MeasureObjectSkeleton:[module_num:13|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSkeleton:[module_num:14|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the seed objects:nuclei
     Select the skeletonized image:MorphologicalSkeleton
     Retain the branchpoint image?:Yes
@@ -229,14 +249,14 @@ MeasureObjectSkeleton:[module_num:13|svn_version:'Unknown'|variable_revision_num
     Vertex file name:vertices.csv
     Edge file name:edges.csv
 
-ErodeObjects:[module_num:14|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:['The organoid is eroded in order to obtain the peripheral zone of the organoid']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ErodeObjects:[module_num:15|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['The organoid is eroded in order to obtain the peripheral zone of the organoid']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:Organoid
     Name the output object:organoid_eroded
     Structuring element:disk,15
     Prevent object removal:Yes
     Relabel resulting objects:No
 
-MaskObjects:[module_num:15|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['The organoid were mask for the eroded_organoid to get the peripheral zone which was called peripheralOrganoid']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MaskObjects:[module_num:16|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['The organoid were mask for the eroded_organoid to get the peripheral zone which was called peripheralOrganoid']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to be masked:Organoid
     Name the masked objects:peripheralOrganoid
     Mask using a region defined by other objects or by binary image?:Objects
@@ -247,7 +267,7 @@ MaskObjects:[module_num:15|svn_version:'Unknown'|variable_revision_number:3|show
     Numbering of resulting objects:Renumber
     Invert the mask?:Yes
 
-MaskImage:[module_num:16|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['The intensity in the peripheral zone was retained with the mask of the peripheral zone created']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+MaskImage:[module_num:17|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['The intensity in the peripheral zone was retained with the mask of the peripheral zone created']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Threshold_tuj1e
     Name the output image:tuj1e_peripheral
     Use objects or an image as a mask?:Objects
@@ -255,11 +275,11 @@ MaskImage:[module_num:16|svn_version:'Unknown'|variable_revision_number:3|show_w
     Select image for mask:None
     Invert the mask?:No
 
-MorphologicalSkeleton:[module_num:17|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:['The skeleton of the peripheral zone was obtained. The skeleton is the same that was generated previously, the only difference is that it is filtered by the zone.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MorphologicalSkeleton:[module_num:18|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['The skeleton of the peripheral zone was obtained. The skeleton is the same that was generated previously, the only difference is that it is filtered by the zone.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:tuj1e_peripheral
     Name the output image:MorphologicalSkeleton
 
-MeasureObjectSkeleton:[module_num:18|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Obtaining the branch, trunk, end and starting point.', 'The branchin can be obtained directly from the table. The thickness  of neurites could be obtained dividing the number of pixel of the segmentation by the sum og the edges from the skeleton.', '']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSkeleton:[module_num:19|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Obtaining the branch, trunk, end and starting point.', 'The branchin can be obtained directly from the table. The thickness  of neurites could be obtained dividing the number of pixel of the segmentation by the sum og the edges from the skeleton.', '']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the seed objects:organoid_eroded
     Select the skeletonized image:MorphologicalSkeleton
     Retain the branchpoint image?:Yes
@@ -272,23 +292,23 @@ MeasureObjectSkeleton:[module_num:18|svn_version:'Unknown'|variable_revision_num
     Vertex file name:vertices_peripheral.csv
     Edge file name:edges_peripheral.csv
 
-IdentifyTertiaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyTertiaryObjects:[module_num:20|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the larger identified objects:Organoid
     Select the smaller identified objects:Dilate_nuclei
     Name the tertiary objects to be identified:network
     Shrink smaller object prior to subtraction?:Yes
 
-MeasureImageAreaOccupied:[module_num:20|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['This could be used to calculate the thickness relative to the total lenght of neurites', 'The density is given by the ration between the area occupied by the neurites and the total area of the peripheral zone.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureImageAreaOccupied:[module_num:21|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['This could be used to calculate the thickness relative to the total lenght of neurites', 'The density is given by the ration between the area occupied by the neurites and the total area of the peripheral zone.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Measure the area occupied by:Binary Image
     Select binary images to measure:Threshold_tuj1e
     Select object sets to measure:
 
-MeasureImageAreaOccupied:[module_num:21|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureImageAreaOccupied:[module_num:22|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Measure the area occupied by:Binary Image
     Select binary images to measure:tuj1e_peripheral
     Select object sets to measure:
 
-MeasureObjectIntensityDistribution:[module_num:22|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensityDistribution:[module_num:23|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:MAP2, TUJ1
     Hidden:1
     Hidden:1
@@ -316,16 +336,16 @@ MeasureObjectIntensityDistribution:[module_num:22|svn_version:'Unknown'|variable
     Save display as image?:Yes
     Output image name:Heatmap_TUJ1
 
-MeasureObjectIntensity:[module_num:23|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+MeasureObjectIntensity:[module_num:24|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DNA, MAP2, NESTIN, TUJ1
     Select objects to measure:network, nuclei, peripheralOrganoid
 
-MeasureObjectSizeShape:[module_num:24|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSizeShape:[module_num:25|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select object sets to measure:Organoid, network, nuclei, peripheralOrganoid
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:No
 
-MeasureTexture:[module_num:25|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureTexture:[module_num:26|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DNA, MAP2, NESTIN, TUJ1
     Select objects to measure:network, nuclei, peripheralOrganoid
     Enter how many gray levels to measure the texture at:256
@@ -333,7 +353,7 @@ MeasureTexture:[module_num:25|svn_version:'Unknown'|variable_revision_number:7|s
     Measure whole images or objects?:Objects
     Texture scale to measure:3
 
-CalculateMath:[module_num:26|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:27|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Average_network_neurites_width
     Operation:Divide
     Select the numerator measurement type:Image
@@ -357,7 +377,7 @@ CalculateMath:[module_num:26|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-CalculateMath:[module_num:27|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:28|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:Average_neurites_width
     Operation:Divide
     Select the numerator measurement type:Image
@@ -381,25 +401,287 @@ CalculateMath:[module_num:27|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-ExportToSpreadsheet:[module_num:28|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MaskImage:[module_num:29|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:TUJ1_enhanced
+    Name the output image:TUJ1_masked
+    Use objects or an image as a mask?:Objects
+    Select object for mask:network
+    Select image for mask:None
+    Invert the mask?:No
+
+MaskImage:[module_num:30|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:MAP2
+    Name the output image:MAP2_masked
+    Use objects or an image as a mask?:Objects
+    Select object for mask:network
+    Select image for mask:None
+    Invert the mask?:No
+
+MaskImage:[module_num:31|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:NESTIN
+    Name the output image:NESTIN_masked
+    Use objects or an image as a mask?:Objects
+    Select object for mask:network
+    Select image for mask:None
+    Invert the mask?:No
+
+RescaleIntensity:[module_num:32|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:NESTIN_masked
+    Name the output image:NESTIN_Rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+RescaleIntensity:[module_num:33|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:MAP2_masked
+    Name the output image:MAP2_Rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+RescaleIntensity:[module_num:34|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:TUJ1_masked
+    Name the output image:TUJ1_Rescaled
+    Rescaling method:Stretch each image to use the full intensity range
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:1.0
+    Divisor measurement:None
+
+OverlayOutlines:[module_num:35|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:DNA
+    Name the output image:OverlayDNA
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:#21FFFF
+    Select objects to display:peripheralOrganoid
+    Select outline color:#0000FF
+    Select objects to display:nuclei
+    Select outline color:#21FF06
+    Select objects to display:Organoid
+
+OverlayOutlines:[module_num:36|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:TUJ1_enhanced
+    Name the output image:OverlayTUJ1
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:#21FFFF
+    Select objects to display:peripheralOrganoid
+    Select outline color:#0000FF
+    Select objects to display:nuclei
+    Select outline color:#21FF06
+    Select objects to display:Organoid
+
+OverlayOutlines:[module_num:37|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:NESTIN
+    Name the output image:OverlayNESTIN
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:#21FFFF
+    Select objects to display:peripheralOrganoid
+    Select outline color:#0000FF
+    Select objects to display:nuclei
+    Select outline color:#21FF06
+    Select objects to display:Organoid
+
+OverlayOutlines:[module_num:38|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:MAP2
+    Name the output image:OverlayMAP2
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:#21FFFF
+    Select objects to display:peripheralOrganoid
+    Select outline color:#0000FF
+    Select objects to display:nuclei
+    Select outline color:#21FF06
+    Select objects to display:Organoid
+
+SaveImages:[module_num:39|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OverlayNESTIN
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:NESTIN
+    Enter single file name:OverlayDNA
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:Overlay
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:40|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OverlayTUJ1
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:TUJ1
+    Enter single file name:OverlayDNA
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:Overlay
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:41|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OverlayMAP2
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:MAP2
+    Enter single file name:OverlayDNA
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:Overlay
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:42|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OverlayDNA
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DNA
+    Enter single file name:OverlayDNA
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:Overlay
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:43|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:TUJ1_Rescaled
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:TUJ1
+    Enter single file name:OverlayDNA
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:Rescaled
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:44|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:NESTIN_Rescaled
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:NESTIN
+    Enter single file name:OverlayDNA
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:Rescaled
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:45|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:MAP2_Rescaled
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:MAP2
+    Enter single file name:OverlayDNA
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:Rescaled
+    Saved file format:tiff
+    Output file location:Default Output Folder|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+ExportToSpreadsheet:[module_num:46|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the column delimiter:Comma (",")
-    Add image metadata columns to your object data file?:No
-    Add image file and folder names to your object data file?:No
-    Select the measurements to export:Yes
+    Add image metadata columns to your object data file?:Yes
+    Add image file and folder names to your object data file?:Yes
+    Select the measurements to export:No
     Calculate the per-image mean values for object measurements?:No
     Calculate the per-image median values for object measurements?:No
     Calculate the per-image standard deviation values for object measurements?:No
     Output file location:Default Input Folder sub-folder|RUMI_microOrganoid
-    Create a GenePattern GCT file?:No
+    Create a GenePattern GCT file?:Yes
     Select source of sample row name:Metadata
     Select the image to use as the identifier:None
     Select the metadata to use as the identifier:FileName_DNA
     Export all measurement types?:No
-    Press button to select measurements:peripheralOrganoid|Texture_Contrast_MAP2_3_02_256,peripheralOrganoid|Texture_Contrast_MAP2_3_00_256,peripheralOrganoid|Texture_Contrast_MAP2_3_03_256,peripheralOrganoid|Texture_Contrast_MAP2_3_01_256,peripheralOrganoid|Texture_Contrast_NESTIN_3_00_256,peripheralOrganoid|Texture_Contrast_NESTIN_3_02_256,peripheralOrganoid|Texture_Contrast_NESTIN_3_03_256,peripheralOrganoid|Texture_Contrast_NESTIN_3_01_256,peripheralOrganoid|Texture_Contrast_TUJ1_3_03_256,peripheralOrganoid|Texture_Contrast_TUJ1_3_02_256,peripheralOrganoid|Texture_Contrast_TUJ1_3_01_256,peripheralOrganoid|Texture_Contrast_TUJ1_3_00_256,peripheralOrganoid|Texture_Contrast_DNA_3_02_256,peripheralOrganoid|Texture_Contrast_DNA_3_01_256,peripheralOrganoid|Texture_Contrast_DNA_3_03_256,peripheralOrganoid|Texture_Contrast_DNA_3_00_256,peripheralOrganoid|Texture_Entropy_DNA_3_01_256,peripheralOrganoid|Texture_Entropy_DNA_3_00_256,peripheralOrganoid|Texture_Entropy_DNA_3_02_256,peripheralOrganoid|Texture_Entropy_DNA_3_03_256,peripheralOrganoid|Texture_Entropy_TUJ1_3_01_256,peripheralOrganoid|Texture_Entropy_TUJ1_3_02_256,peripheralOrganoid|Texture_Entropy_TUJ1_3_03_256,peripheralOrganoid|Texture_Entropy_TUJ1_3_00_256,peripheralOrganoid|Texture_Entropy_NESTIN_3_01_256,peripheralOrganoid|Texture_Entropy_NESTIN_3_00_256,peripheralOrganoid|Texture_Entropy_NESTIN_3_02_256,peripheralOrganoid|Texture_Entropy_NESTIN_3_03_256,peripheralOrganoid|Texture_Entropy_MAP2_3_02_256,peripheralOrganoid|Texture_Entropy_MAP2_3_01_256,peripheralOrganoid|Texture_Entropy_MAP2_3_00_256,peripheralOrganoid|Texture_Entropy_MAP2_3_03_256,peripheralOrganoid|Texture_AngularSecondMoment_NESTIN_3_03_256,peripheralOrganoid|Texture_AngularSecondMoment_NESTIN_3_02_256,peripheralOrganoid|Texture_AngularSecondMoment_NESTIN_3_01_256,peripheralOrganoid|Texture_AngularSecondMoment_NESTIN_3_00_256,peripheralOrganoid|Texture_AngularSecondMoment_DNA_3_01_256,peripheralOrganoid|Texture_AngularSecondMoment_DNA_3_00_256,peripheralOrganoid|Texture_AngularSecondMoment_DNA_3_02_256,peripheralOrganoid|Texture_AngularSecondMoment_DNA_3_03_256,peripheralOrganoid|Texture_AngularSecondMoment_TUJ1_3_03_256,peripheralOrganoid|Texture_AngularSecondMoment_TUJ1_3_00_256,peripheralOrganoid|Texture_AngularSecondMoment_TUJ1_3_02_256,peripheralOrganoid|Texture_AngularSecondMoment_TUJ1_3_01_256,peripheralOrganoid|Texture_AngularSecondMoment_MAP2_3_02_256,peripheralOrganoid|Texture_AngularSecondMoment_MAP2_3_03_256,peripheralOrganoid|Texture_AngularSecondMoment_MAP2_3_00_256,peripheralOrganoid|Texture_AngularSecondMoment_MAP2_3_01_256,peripheralOrganoid|Texture_SumVariance_DNA_3_01_256,peripheralOrganoid|Texture_SumVariance_DNA_3_02_256,peripheralOrganoid|Texture_SumVariance_DNA_3_03_256,peripheralOrganoid|Texture_SumVariance_DNA_3_00_256,peripheralOrganoid|Texture_SumVariance_MAP2_3_03_256,peripheralOrganoid|Texture_SumVariance_MAP2_3_01_256,peripheralOrganoid|Texture_SumVariance_MAP2_3_02_256,peripheralOrganoid|Texture_SumVariance_MAP2_3_00_256,peripheralOrganoid|Texture_SumVariance_NESTIN_3_01_256,peripheralOrganoid|Texture_SumVariance_NESTIN_3_02_256,peripheralOrganoid|Texture_SumVariance_NESTIN_3_00_256,peripheralOrganoid|Texture_SumVariance_NESTIN_3_03_256,peripheralOrganoid|Texture_SumVariance_TUJ1_3_00_256,peripheralOrganoid|Texture_SumVariance_TUJ1_3_03_256,peripheralOrganoid|Texture_SumVariance_TUJ1_3_01_256,peripheralOrganoid|Texture_SumVariance_TUJ1_3_02_256,peripheralOrganoid|Texture_InfoMeas2_TUJ1_3_01_256,peripheralOrganoid|Texture_InfoMeas2_TUJ1_3_00_256,peripheralOrganoid|Texture_InfoMeas2_TUJ1_3_02_256,peripheralOrganoid|Texture_InfoMeas2_TUJ1_3_03_256,peripheralOrganoid|Texture_InfoMeas2_DNA_3_03_256,peripheralOrganoid|Texture_InfoMeas2_DNA_3_00_256,peripheralOrganoid|Texture_InfoMeas2_DNA_3_01_256,peripheralOrganoid|Texture_InfoMeas2_DNA_3_02_256,peripheralOrganoid|Texture_InfoMeas2_NESTIN_3_03_256,peripheralOrganoid|Texture_InfoMeas2_NESTIN_3_02_256,peripheralOrganoid|Texture_InfoMeas2_NESTIN_3_00_256,peripheralOrganoid|Texture_InfoMeas2_NESTIN_3_01_256,peripheralOrganoid|Texture_InfoMeas2_MAP2_3_03_256,peripheralOrganoid|Texture_InfoMeas2_MAP2_3_01_256,peripheralOrganoid|Texture_InfoMeas2_MAP2_3_00_256,peripheralOrganoid|Texture_InfoMeas2_MAP2_3_02_256,peripheralOrganoid|Texture_Variance_DNA_3_02_256,peripheralOrganoid|Texture_Variance_DNA_3_03_256,peripheralOrganoid|Texture_Variance_DNA_3_01_256,peripheralOrganoid|Texture_Variance_DNA_3_00_256,peripheralOrganoid|Texture_Variance_MAP2_3_03_256,peripheralOrganoid|Texture_Variance_MAP2_3_02_256,peripheralOrganoid|Texture_Variance_MAP2_3_01_256,peripheralOrganoid|Texture_Variance_MAP2_3_00_256,peripheralOrganoid|Texture_Variance_NESTIN_3_01_256,peripheralOrganoid|Texture_Variance_NESTIN_3_00_256,peripheralOrganoid|Texture_Variance_NESTIN_3_02_256,peripheralOrganoid|Texture_Variance_NESTIN_3_03_256,peripheralOrganoid|Texture_Variance_TUJ1_3_00_256,peripheralOrganoid|Texture_Variance_TUJ1_3_02_256,peripheralOrganoid|Texture_Variance_TUJ1_3_01_256,peripheralOrganoid|Texture_Variance_TUJ1_3_03_256,peripheralOrganoid|Texture_InverseDifferenceMoment_TUJ1_3_02_256,peripheralOrganoid|Texture_InverseDifferenceMoment_TUJ1_3_00_256,peripheralOrganoid|Texture_InverseDifferenceMoment_TUJ1_3_01_256,peripheralOrganoid|Texture_InverseDifferenceMoment_TUJ1_3_03_256,peripheralOrganoid|Texture_InverseDifferenceMoment_MAP2_3_00_256,peripheralOrganoid|Texture_InverseDifferenceMoment_MAP2_3_01_256,peripheralOrganoid|Texture_InverseDifferenceMoment_MAP2_3_02_256,peripheralOrganoid|Texture_InverseDifferenceMoment_MAP2_3_03_256,peripheralOrganoid|Texture_InverseDifferenceMoment_DNA_3_00_256,peripheralOrganoid|Texture_InverseDifferenceMoment_DNA_3_03_256,peripheralOrganoid|Texture_InverseDifferenceMoment_DNA_3_01_256,peripheralOrganoid|Texture_InverseDifferenceMoment_DNA_3_02_256,peripheralOrganoid|Texture_InverseDifferenceMoment_NESTIN_3_00_256,peripheralOrganoid|Texture_InverseDifferenceMoment_NESTIN_3_01_256,peripheralOrganoid|Texture_InverseDifferenceMoment_NESTIN_3_03_256,peripheralOrganoid|Texture_InverseDifferenceMoment_NESTIN_3_02_256,peripheralOrganoid|Texture_SumEntropy_NESTIN_3_02_256,peripheralOrganoid|Texture_SumEntropy_NESTIN_3_03_256,peripheralOrganoid|Texture_SumEntropy_NESTIN_3_01_256,peripheralOrganoid|Texture_SumEntropy_NESTIN_3_00_256,peripheralOrganoid|Texture_SumEntropy_MAP2_3_00_256,peripheralOrganoid|Texture_SumEntropy_MAP2_3_03_256,peripheralOrganoid|Texture_SumEntropy_MAP2_3_02_256,peripheralOrganoid|Texture_SumEntropy_MAP2_3_01_256,peripheralOrganoid|Texture_SumEntropy_DNA_3_02_256,peripheralOrganoid|Texture_SumEntropy_DNA_3_01_256,peripheralOrganoid|Texture_SumEntropy_DNA_3_00_256,peripheralOrganoid|Texture_SumEntropy_DNA_3_03_256,peripheralOrganoid|Texture_SumEntropy_TUJ1_3_00_256,peripheralOrganoid|Texture_SumEntropy_TUJ1_3_03_256,peripheralOrganoid|Texture_SumEntropy_TUJ1_3_01_256,peripheralOrganoid|Texture_SumEntropy_TUJ1_3_02_256,peripheralOrganoid|Texture_DifferenceEntropy_TUJ1_3_02_256,peripheralOrganoid|Texture_DifferenceEntropy_TUJ1_3_03_256,peripheralOrganoid|Texture_DifferenceEntropy_TUJ1_3_00_256,peripheralOrganoid|Texture_DifferenceEntropy_TUJ1_3_01_256,peripheralOrganoid|Texture_DifferenceEntropy_NESTIN_3_00_256,peripheralOrganoid|Texture_DifferenceEntropy_NESTIN_3_01_256,peripheralOrganoid|Texture_DifferenceEntropy_NESTIN_3_02_256,peripheralOrganoid|Texture_DifferenceEntropy_NESTIN_3_03_256,peripheralOrganoid|Texture_DifferenceEntropy_MAP2_3_02_256,peripheralOrganoid|Texture_DifferenceEntropy_MAP2_3_01_256,peripheralOrganoid|Texture_DifferenceEntropy_MAP2_3_03_256,peripheralOrganoid|Texture_DifferenceEntropy_MAP2_3_00_256,peripheralOrganoid|Texture_DifferenceEntropy_DNA_3_03_256,peripheralOrganoid|Texture_DifferenceEntropy_DNA_3_00_256,peripheralOrganoid|Texture_DifferenceEntropy_DNA_3_02_256,peripheralOrganoid|Texture_DifferenceEntropy_DNA_3_01_256,peripheralOrganoid|Texture_InfoMeas1_DNA_3_03_256,peripheralOrganoid|Texture_InfoMeas1_DNA_3_02_256,peripheralOrganoid|Texture_InfoMeas1_DNA_3_00_256,peripheralOrganoid|Texture_InfoMeas1_DNA_3_01_256,peripheralOrganoid|Texture_InfoMeas1_NESTIN_3_00_256,peripheralOrganoid|Texture_InfoMeas1_NESTIN_3_01_256,peripheralOrganoid|Texture_InfoMeas1_NESTIN_3_03_256,peripheralOrganoid|Texture_InfoMeas1_NESTIN_3_02_256,peripheralOrganoid|Texture_InfoMeas1_MAP2_3_00_256,peripheralOrganoid|Texture_InfoMeas1_MAP2_3_02_256,peripheralOrganoid|Texture_InfoMeas1_MAP2_3_01_256,peripheralOrganoid|Texture_InfoMeas1_MAP2_3_03_256,peripheralOrganoid|Texture_InfoMeas1_TUJ1_3_01_256,peripheralOrganoid|Texture_InfoMeas1_TUJ1_3_03_256,peripheralOrganoid|Texture_InfoMeas1_TUJ1_3_00_256,peripheralOrganoid|Texture_InfoMeas1_TUJ1_3_02_256,peripheralOrganoid|Texture_SumAverage_NESTIN_3_03_256,peripheralOrganoid|Texture_SumAverage_NESTIN_3_01_256,peripheralOrganoid|Texture_SumAverage_NESTIN_3_02_256,peripheralOrganoid|Texture_SumAverage_NESTIN_3_00_256,peripheralOrganoid|Texture_SumAverage_DNA_3_00_256,peripheralOrganoid|Texture_SumAverage_DNA_3_02_256,peripheralOrganoid|Texture_SumAverage_DNA_3_03_256,peripheralOrganoid|Texture_SumAverage_DNA_3_01_256,peripheralOrganoid|Texture_SumAverage_MAP2_3_01_256,peripheralOrganoid|Texture_SumAverage_MAP2_3_02_256,peripheralOrganoid|Texture_SumAverage_MAP2_3_00_256,peripheralOrganoid|Texture_SumAverage_MAP2_3_03_256,peripheralOrganoid|Texture_SumAverage_TUJ1_3_01_256,peripheralOrganoid|Texture_SumAverage_TUJ1_3_00_256,peripheralOrganoid|Texture_SumAverage_TUJ1_3_03_256,peripheralOrganoid|Texture_SumAverage_TUJ1_3_02_256,peripheralOrganoid|Texture_Correlation_TUJ1_3_00_256,peripheralOrganoid|Texture_Correlation_TUJ1_3_03_256,peripheralOrganoid|Texture_Correlation_TUJ1_3_02_256,peripheralOrganoid|Texture_Correlation_TUJ1_3_01_256,peripheralOrganoid|Texture_Correlation_DNA_3_02_256,peripheralOrganoid|Texture_Correlation_DNA_3_00_256,peripheralOrganoid|Texture_Correlation_DNA_3_03_256,peripheralOrganoid|Texture_Correlation_DNA_3_01_256,peripheralOrganoid|Texture_Correlation_NESTIN_3_00_256,peripheralOrganoid|Texture_Correlation_NESTIN_3_01_256,peripheralOrganoid|Texture_Correlation_NESTIN_3_03_256,peripheralOrganoid|Texture_Correlation_NESTIN_3_02_256,peripheralOrganoid|Texture_Correlation_MAP2_3_02_256,peripheralOrganoid|Texture_Correlation_MAP2_3_01_256,peripheralOrganoid|Texture_Correlation_MAP2_3_03_256,peripheralOrganoid|Texture_Correlation_MAP2_3_00_256,peripheralOrganoid|Texture_DifferenceVariance_NESTIN_3_00_256,peripheralOrganoid|Texture_DifferenceVariance_NESTIN_3_02_256,peripheralOrganoid|Texture_DifferenceVariance_NESTIN_3_01_256,peripheralOrganoid|Texture_DifferenceVariance_NESTIN_3_03_256,peripheralOrganoid|Texture_DifferenceVariance_TUJ1_3_00_256,peripheralOrganoid|Texture_DifferenceVariance_TUJ1_3_03_256,peripheralOrganoid|Texture_DifferenceVariance_TUJ1_3_02_256,peripheralOrganoid|Texture_DifferenceVariance_TUJ1_3_01_256,peripheralOrganoid|Texture_DifferenceVariance_DNA_3_01_256,peripheralOrganoid|Texture_DifferenceVariance_DNA_3_00_256,peripheralOrganoid|Texture_DifferenceVariance_DNA_3_02_256,peripheralOrganoid|Texture_DifferenceVariance_DNA_3_03_256,peripheralOrganoid|Texture_DifferenceVariance_MAP2_3_01_256,peripheralOrganoid|Texture_DifferenceVariance_MAP2_3_02_256,peripheralOrganoid|Texture_DifferenceVariance_MAP2_3_00_256,peripheralOrganoid|Texture_DifferenceVariance_MAP2_3_03_256,peripheralOrganoid|Intensity_LowerQuartileIntensity_NESTIN,peripheralOrganoid|Intensity_LowerQuartileIntensity_TUJ1,peripheralOrganoid|Intensity_LowerQuartileIntensity_MAP2,peripheralOrganoid|Intensity_LowerQuartileIntensity_DNA,peripheralOrganoid|Intensity_UpperQuartileIntensity_MAP2,peripheralOrganoid|Intensity_UpperQuartileIntensity_DNA,peripheralOrganoid|Intensity_UpperQuartileIntensity_TUJ1,peripheralOrganoid|Intensity_UpperQuartileIntensity_NESTIN,peripheralOrganoid|Intensity_MedianIntensity_TUJ1,peripheralOrganoid|Intensity_MedianIntensity_NESTIN,peripheralOrganoid|Intensity_MedianIntensity_MAP2,peripheralOrganoid|Intensity_MedianIntensity_DNA,peripheralOrganoid|Intensity_MaxIntensity_MAP2,peripheralOrganoid|Intensity_MaxIntensity_DNA,peripheralOrganoid|Intensity_MaxIntensity_NESTIN,peripheralOrganoid|Intensity_MaxIntensity_TUJ1,peripheralOrganoid|Intensity_MADIntensity_MAP2,peripheralOrganoid|Intensity_MADIntensity_NESTIN,peripheralOrganoid|Intensity_MADIntensity_TUJ1,peripheralOrganoid|Intensity_MADIntensity_DNA,peripheralOrganoid|Intensity_MaxIntensityEdge_MAP2,peripheralOrganoid|Intensity_MaxIntensityEdge_TUJ1,peripheralOrganoid|Intensity_MaxIntensityEdge_NESTIN,peripheralOrganoid|Intensity_MaxIntensityEdge_DNA,peripheralOrganoid|Intensity_IntegratedIntensity_NESTIN,peripheralOrganoid|Intensity_IntegratedIntensity_TUJ1,peripheralOrganoid|Intensity_IntegratedIntensity_DNA,peripheralOrganoid|Intensity_IntegratedIntensity_MAP2,peripheralOrganoid|Intensity_MeanIntensity_NESTIN,peripheralOrganoid|Intensity_MeanIntensity_MAP2,peripheralOrganoid|Intensity_MeanIntensity_TUJ1,peripheralOrganoid|Intensity_MeanIntensity_DNA,peripheralOrganoid|Intensity_MeanIntensityEdge_TUJ1,peripheralOrganoid|Intensity_MeanIntensityEdge_NESTIN,peripheralOrganoid|Intensity_MeanIntensityEdge_MAP2,peripheralOrganoid|Intensity_MeanIntensityEdge_DNA,peripheralOrganoid|Intensity_MinIntensityEdge_TUJ1,peripheralOrganoid|Intensity_MinIntensityEdge_MAP2,peripheralOrganoid|Intensity_MinIntensityEdge_NESTIN,peripheralOrganoid|Intensity_MinIntensityEdge_DNA,peripheralOrganoid|Intensity_MassDisplacement_DNA,peripheralOrganoid|Intensity_MassDisplacement_NESTIN,peripheralOrganoid|Intensity_MassDisplacement_MAP2,peripheralOrganoid|Intensity_MassDisplacement_TUJ1,peripheralOrganoid|Intensity_StdIntensityEdge_TUJ1,peripheralOrganoid|Intensity_StdIntensityEdge_DNA,peripheralOrganoid|Intensity_StdIntensityEdge_MAP2,peripheralOrganoid|Intensity_StdIntensityEdge_NESTIN,peripheralOrganoid|Intensity_StdIntensity_MAP2,peripheralOrganoid|Intensity_StdIntensity_DNA,peripheralOrganoid|Intensity_StdIntensity_NESTIN,peripheralOrganoid|Intensity_StdIntensity_TUJ1,peripheralOrganoid|Intensity_MinIntensity_MAP2,peripheralOrganoid|Intensity_MinIntensity_DNA,peripheralOrganoid|Intensity_MinIntensity_NESTIN,peripheralOrganoid|Intensity_MinIntensity_TUJ1,peripheralOrganoid|Intensity_IntegratedIntensityEdge_MAP2,peripheralOrganoid|Intensity_IntegratedIntensityEdge_TUJ1,peripheralOrganoid|Intensity_IntegratedIntensityEdge_NESTIN,peripheralOrganoid|Intensity_IntegratedIntensityEdge_DNA,peripheralOrganoid|AreaShape_Zernike_0_0,peripheralOrganoid|AreaShape_Zernike_6_4,peripheralOrganoid|AreaShape_Zernike_6_6,peripheralOrganoid|AreaShape_Zernike_6_2,peripheralOrganoid|AreaShape_Zernike_6_0,peripheralOrganoid|AreaShape_Zernike_5_1,peripheralOrganoid|AreaShape_Zernike_5_3,peripheralOrganoid|AreaShape_Zernike_5_5,peripheralOrganoid|AreaShape_Zernike_9_7,peripheralOrganoid|AreaShape_Zernike_9_1,peripheralOrganoid|AreaShape_Zernike_9_5,peripheralOrganoid|AreaShape_Zernike_9_3,peripheralOrganoid|AreaShape_Zernike_9_9,peripheralOrganoid|AreaShape_Zernike_1_1,peripheralOrganoid|AreaShape_Zernike_7_5,peripheralOrganoid|AreaShape_Zernike_7_7,peripheralOrganoid|AreaShape_Zernike_7_1,peripheralOrganoid|AreaShape_Zernike_7_3,peripheralOrganoid|AreaShape_Zernike_8_4,peripheralOrganoid|AreaShape_Zernike_8_8,peripheralOrganoid|AreaShape_Zernike_8_0,peripheralOrganoid|AreaShape_Zernike_8_2,peripheralOrganoid|AreaShape_Zernike_8_6,peripheralOrganoid|AreaShape_Zernike_2_0,peripheralOrganoid|AreaShape_Zernike_2_2,peripheralOrganoid|AreaShape_Zernike_3_1,peripheralOrganoid|AreaShape_Zernike_3_3,peripheralOrganoid|AreaShape_Zernike_4_4,peripheralOrganoid|AreaShape_Zernike_4_0,peripheralOrganoid|AreaShape_Zernike_4_2,peripheralOrganoid|AreaShape_MeanRadius,peripheralOrganoid|AreaShape_Center_Y,peripheralOrganoid|AreaShape_Center_X,peripheralOrganoid|AreaShape_BoundingBoxMaximum_Y,peripheralOrganoid|AreaShape_BoundingBoxMaximum_X,peripheralOrganoid|AreaShape_Extent,peripheralOrganoid|AreaShape_FormFactor,peripheralOrganoid|AreaShape_Perimeter,peripheralOrganoid|AreaShape_Orientation,peripheralOrganoid|AreaShape_Solidity,peripheralOrganoid|AreaShape_BoundingBoxMinimum_X,peripheralOrganoid|AreaShape_BoundingBoxMinimum_Y,peripheralOrganoid|AreaShape_EulerNumber,peripheralOrganoid|AreaShape_MaxFeretDiameter,peripheralOrganoid|AreaShape_MaximumRadius,peripheralOrganoid|AreaShape_Compactness,peripheralOrganoid|AreaShape_MinorAxisLength,peripheralOrganoid|AreaShape_MajorAxisLength,peripheralOrganoid|AreaShape_Area,peripheralOrganoid|AreaShape_Eccentricity,peripheralOrganoid|AreaShape_EquivalentDiameter,peripheralOrganoid|AreaShape_ConvexArea,peripheralOrganoid|AreaShape_BoundingBoxArea,peripheralOrganoid|AreaShape_MedianRadius,peripheralOrganoid|AreaShape_MinFeretDiameter,peripheralOrganoid|Location_Center_Y,peripheralOrganoid|Location_Center_X,peripheralOrganoid|Location_CenterMassIntensity_X_NESTIN,peripheralOrganoid|Location_CenterMassIntensity_X_TUJ1,peripheralOrganoid|Location_CenterMassIntensity_X_MAP2,peripheralOrganoid|Location_CenterMassIntensity_X_DNA,peripheralOrganoid|Location_CenterMassIntensity_Z_DNA,peripheralOrganoid|Location_CenterMassIntensity_Z_MAP2,peripheralOrganoid|Location_CenterMassIntensity_Z_NESTIN,peripheralOrganoid|Location_CenterMassIntensity_Z_TUJ1,peripheralOrganoid|Location_CenterMassIntensity_Y_DNA,peripheralOrganoid|Location_CenterMassIntensity_Y_MAP2,peripheralOrganoid|Location_CenterMassIntensity_Y_TUJ1,peripheralOrganoid|Location_CenterMassIntensity_Y_NESTIN,peripheralOrganoid|Location_MaxIntensity_Y_NESTIN,peripheralOrganoid|Location_MaxIntensity_Y_DNA,peripheralOrganoid|Location_MaxIntensity_Y_TUJ1,peripheralOrganoid|Location_MaxIntensity_Y_MAP2,peripheralOrganoid|Location_MaxIntensity_X_NESTIN,peripheralOrganoid|Location_MaxIntensity_X_MAP2,peripheralOrganoid|Location_MaxIntensity_X_DNA,peripheralOrganoid|Location_MaxIntensity_X_TUJ1,peripheralOrganoid|Location_MaxIntensity_Z_MAP2,peripheralOrganoid|Location_MaxIntensity_Z_NESTIN,peripheralOrganoid|Location_MaxIntensity_Z_TUJ1,peripheralOrganoid|Location_MaxIntensity_Z_DNA,peripheralOrganoid|Parent_Organoid,peripheralOrganoid|Number_Object_Number,network|Location_Center_Y,network|Location_Center_X,network|Number_Object_Number,network|Parent_Organoid,network|Parent_Dilate_nuclei,Image|MD5Digest_NESTIN,Image|MD5Digest_TUJ1,Image|MD5Digest_MAP2,Image|MD5Digest_DNA,Image|Series_DNA,Image|Series_MAP2,Image|Series_NESTIN,Image|Series_TUJ1,Image|ModuleError_01Images,Image|ModuleError_03NamesAndTypes,Image|ModuleError_08IdentifySecondaryObjects,Image|ModuleError_12MorphologicalSkeleton,Image|ModuleError_23MeasureObjectIntensity,Image|ModuleError_13MeasureObjectSkeleton,Image|ModuleError_09EnhanceOrSuppressFeatures,Image|ModuleError_04Groups,Image|ModuleError_19IdentifyTertiaryObjects,Image|ModuleError_24MeasureObjectSizeShape,Image|ModuleError_25MeasureTexture,Image|ModuleError_07ImageMath,Image|ModuleError_26CalculateMath,Image|ModuleError_11MaskImage,Image|ModuleError_21MeasureImageAreaOccupied,Image|ModuleError_18MeasureObjectSkeleton,Image|ModuleError_17MorphologicalSkeleton,Image|ModuleError_05IdentifyPrimaryObjects,Image|ModuleError_20MeasureImageAreaOccupied,Image|ModuleError_02Metadata,Image|ModuleError_22MeasureObjectIntensityDistribution,Image|ModuleError_06DilateObjects,Image|ModuleError_27CalculateMath,Image|ModuleError_14ErodeObjects,Image|ModuleError_15MaskObjects,Image|ModuleError_10Threshold,Image|ModuleError_16MaskImage,Image|Count_network,Image|Count_Dilate_nuclei,Image|Count_Organoid,Image|Count_nuclei,Image|Count_peripheralOrganoid,Image|Count_organoid_eroded,Image|Height_TUJ1,Image|Height_MAP2,Image|Height_NESTIN,Image|Height_DNA,Image|ExecutionTime_02Metadata,Image|ExecutionTime_16MaskImage,Image|ExecutionTime_25MeasureTexture,Image|ExecutionTime_20MeasureImageAreaOccupied,Image|ExecutionTime_09EnhanceOrSuppressFeatures,Image|ExecutionTime_06DilateObjects,Image|ExecutionTime_21MeasureImageAreaOccupied,Image|ExecutionTime_07ImageMath,Image|ExecutionTime_17MorphologicalSkeleton,Image|ExecutionTime_10Threshold,Image|ExecutionTime_18MeasureObjectSkeleton,Image|ExecutionTime_08IdentifySecondaryObjects,Image|ExecutionTime_27CalculateMath,Image|ExecutionTime_22MeasureObjectIntensityDistribution,Image|ExecutionTime_05IdentifyPrimaryObjects,Image|ExecutionTime_23MeasureObjectIntensity,Image|ExecutionTime_24MeasureObjectSizeShape,Image|ExecutionTime_15MaskObjects,Image|ExecutionTime_03NamesAndTypes,Image|ExecutionTime_19IdentifyTertiaryObjects,Image|ExecutionTime_13MeasureObjectSkeleton,Image|ExecutionTime_11MaskImage,Image|ExecutionTime_12MorphologicalSkeleton,Image|ExecutionTime_01Images,Image|ExecutionTime_04Groups,Image|ExecutionTime_26CalculateMath,Image|ExecutionTime_14ErodeObjects,Image|Threshold_OrigThreshold_Threshold_tuj1e,Image|Threshold_OrigThreshold_nuclei,Image|Threshold_OrigThreshold_Organoid,Image|Threshold_GuideThreshold_nuclei,Image|Threshold_GuideThreshold_Threshold_tuj1e,Image|Threshold_WeightedVariance_nuclei,Image|Threshold_WeightedVariance_Organoid,Image|Threshold_WeightedVariance_Threshold_tuj1e,Image|Threshold_FinalThreshold_nuclei,Image|Threshold_FinalThreshold_Organoid,Image|Threshold_FinalThreshold_Threshold_tuj1e,Image|Threshold_SumOfEntropies_Organoid,Image|Threshold_SumOfEntropies_Threshold_tuj1e,Image|Threshold_SumOfEntropies_nuclei,Image|AreaOccupied_AreaOccupied_tuj1e_peripheral,Image|AreaOccupied_AreaOccupied_Threshold_tuj1e,Image|AreaOccupied_TotalArea_Threshold_tuj1e,Image|AreaOccupied_TotalArea_tuj1e_peripheral,Image|AreaOccupied_Perimeter_Threshold_tuj1e,Image|AreaOccupied_Perimeter_tuj1e_peripheral,Image|Metadata_Frame,Image|Metadata_Replicate,Image|Metadata_ColonyNumber,Image|Metadata_Cell_line,Image|Metadata_Channel,Image|Metadata_FileLocation,Image|Metadata_Series,Image|Metadata_Well,Image|Scaling_TUJ1,Image|Scaling_MAP2,Image|Scaling_NESTIN,Image|Scaling_DNA,Image|Group_Index,Image|Group_Number,Image|Group_Length,Image|Width_DNA,Image|Width_MAP2,Image|Width_NESTIN,Image|Width_TUJ1,Image|URL_NESTIN,Image|URL_MAP2,Image|URL_TUJ1,Image|URL_DNA,Image|Frame_NESTIN,Image|Frame_TUJ1,Image|Frame_DNA,Image|Frame_MAP2,Image|PathName_MAP2,Image|PathName_NESTIN,Image|PathName_TUJ1,Image|PathName_DNA,Image|FileName_DNA,Image|FileName_TUJ1,Image|FileName_MAP2,Image|FileName_NESTIN,nuclei|Texture_DifferenceEntropy_TUJ1_3_00_256,nuclei|Texture_DifferenceEntropy_TUJ1_3_03_256,nuclei|Texture_DifferenceEntropy_TUJ1_3_01_256,nuclei|Texture_DifferenceEntropy_TUJ1_3_02_256,nuclei|Texture_DifferenceEntropy_MAP2_3_02_256,nuclei|Texture_DifferenceEntropy_MAP2_3_00_256,nuclei|Texture_DifferenceEntropy_MAP2_3_03_256,nuclei|Texture_DifferenceEntropy_MAP2_3_01_256,nuclei|Texture_DifferenceEntropy_DNA_3_03_256,nuclei|Texture_DifferenceEntropy_DNA_3_02_256,nuclei|Texture_DifferenceEntropy_DNA_3_00_256,nuclei|Texture_DifferenceEntropy_DNA_3_01_256,nuclei|Texture_DifferenceEntropy_NESTIN_3_03_256,nuclei|Texture_DifferenceEntropy_NESTIN_3_02_256,nuclei|Texture_DifferenceEntropy_NESTIN_3_01_256,nuclei|Texture_DifferenceEntropy_NESTIN_3_00_256,nuclei|Texture_InfoMeas1_DNA_3_01_256,nuclei|Texture_InfoMeas1_DNA_3_03_256,nuclei|Texture_InfoMeas1_DNA_3_00_256,nuclei|Texture_InfoMeas1_DNA_3_02_256,nuclei|Texture_InfoMeas1_MAP2_3_03_256,nuclei|Texture_InfoMeas1_MAP2_3_02_256,nuclei|Texture_InfoMeas1_MAP2_3_00_256,nuclei|Texture_InfoMeas1_MAP2_3_01_256,nuclei|Texture_InfoMeas1_NESTIN_3_01_256,nuclei|Texture_InfoMeas1_NESTIN_3_00_256,nuclei|Texture_InfoMeas1_NESTIN_3_03_256,nuclei|Texture_InfoMeas1_NESTIN_3_02_256,nuclei|Texture_InfoMeas1_TUJ1_3_00_256,nuclei|Texture_InfoMeas1_TUJ1_3_01_256,nuclei|Texture_InfoMeas1_TUJ1_3_02_256,nuclei|Texture_InfoMeas1_TUJ1_3_03_256,nuclei|Texture_DifferenceVariance_NESTIN_3_01_256,nuclei|Texture_DifferenceVariance_NESTIN_3_02_256,nuclei|Texture_DifferenceVariance_NESTIN_3_00_256,nuclei|Texture_DifferenceVariance_NESTIN_3_03_256,nuclei|Texture_DifferenceVariance_MAP2_3_02_256,nuclei|Texture_DifferenceVariance_MAP2_3_00_256,nuclei|Texture_DifferenceVariance_MAP2_3_03_256,nuclei|Texture_DifferenceVariance_MAP2_3_01_256,nuclei|Texture_DifferenceVariance_DNA_3_03_256,nuclei|Texture_DifferenceVariance_DNA_3_02_256,nuclei|Texture_DifferenceVariance_DNA_3_00_256,nuclei|Texture_DifferenceVariance_DNA_3_01_256,nuclei|Texture_DifferenceVariance_TUJ1_3_02_256,nuclei|Texture_DifferenceVariance_TUJ1_3_01_256,nuclei|Texture_DifferenceVariance_TUJ1_3_03_256,nuclei|Texture_DifferenceVariance_TUJ1_3_00_256,nuclei|Texture_InverseDifferenceMoment_DNA_3_03_256,nuclei|Texture_InverseDifferenceMoment_DNA_3_02_256,nuclei|Texture_InverseDifferenceMoment_DNA_3_01_256,nuclei|Texture_InverseDifferenceMoment_DNA_3_00_256,nuclei|Texture_InverseDifferenceMoment_NESTIN_3_00_256,nuclei|Texture_InverseDifferenceMoment_NESTIN_3_01_256,nuclei|Texture_InverseDifferenceMoment_NESTIN_3_02_256,nuclei|Texture_InverseDifferenceMoment_NESTIN_3_03_256,nuclei|Texture_InverseDifferenceMoment_MAP2_3_02_256,nuclei|Texture_InverseDifferenceMoment_MAP2_3_01_256,nuclei|Texture_InverseDifferenceMoment_MAP2_3_00_256,nuclei|Texture_InverseDifferenceMoment_MAP2_3_03_256,nuclei|Texture_InverseDifferenceMoment_TUJ1_3_01_256,nuclei|Texture_InverseDifferenceMoment_TUJ1_3_00_256,nuclei|Texture_InverseDifferenceMoment_TUJ1_3_03_256,nuclei|Texture_InverseDifferenceMoment_TUJ1_3_02_256,nuclei|Texture_Variance_TUJ1_3_01_256,nuclei|Texture_Variance_TUJ1_3_02_256,nuclei|Texture_Variance_TUJ1_3_00_256,nuclei|Texture_Variance_TUJ1_3_03_256,nuclei|Texture_Variance_MAP2_3_02_256,nuclei|Texture_Variance_MAP2_3_00_256,nuclei|Texture_Variance_MAP2_3_01_256,nuclei|Texture_Variance_MAP2_3_03_256,nuclei|Texture_Variance_NESTIN_3_03_256,nuclei|Texture_Variance_NESTIN_3_02_256,nuclei|Texture_Variance_NESTIN_3_00_256,nuclei|Texture_Variance_NESTIN_3_01_256,nuclei|Texture_Variance_DNA_3_00_256,nuclei|Texture_Variance_DNA_3_01_256,nuclei|Texture_Variance_DNA_3_02_256,nuclei|Texture_Variance_DNA_3_03_256,nuclei|Texture_SumEntropy_TUJ1_3_02_256,nuclei|Texture_SumEntropy_TUJ1_3_01_256,nuclei|Texture_SumEntropy_TUJ1_3_00_256,nuclei|Texture_SumEntropy_TUJ1_3_03_256,nuclei|Texture_SumEntropy_DNA_3_01_256,nuclei|Texture_SumEntropy_DNA_3_00_256,nuclei|Texture_SumEntropy_DNA_3_02_256,nuclei|Texture_SumEntropy_DNA_3_03_256,nuclei|Texture_SumEntropy_NESTIN_3_00_256,nuclei|Texture_SumEntropy_NESTIN_3_01_256,nuclei|Texture_SumEntropy_NESTIN_3_03_256,nuclei|Texture_SumEntropy_NESTIN_3_02_256,nuclei|Texture_SumEntropy_MAP2_3_00_256,nuclei|Texture_SumEntropy_MAP2_3_02_256,nuclei|Texture_SumEntropy_MAP2_3_03_256,nuclei|Texture_SumEntropy_MAP2_3_01_256,nuclei|Texture_Entropy_DNA_3_03_256,nuclei|Texture_Entropy_DNA_3_00_256,nuclei|Texture_Entropy_DNA_3_02_256,nuclei|Texture_Entropy_DNA_3_01_256,nuclei|Texture_Entropy_MAP2_3_03_256,nuclei|Texture_Entropy_MAP2_3_01_256,nuclei|Texture_Entropy_MAP2_3_00_256,nuclei|Texture_Entropy_MAP2_3_02_256,nuclei|Texture_Entropy_TUJ1_3_00_256,nuclei|Texture_Entropy_TUJ1_3_02_256,nuclei|Texture_Entropy_TUJ1_3_01_256,nuclei|Texture_Entropy_TUJ1_3_03_256,nuclei|Texture_Entropy_NESTIN_3_00_256,nuclei|Texture_Entropy_NESTIN_3_03_256,nuclei|Texture_Entropy_NESTIN_3_01_256,nuclei|Texture_Entropy_NESTIN_3_02_256,nuclei|Texture_Correlation_TUJ1_3_00_256,nuclei|Texture_Correlation_TUJ1_3_02_256,nuclei|Texture_Correlation_TUJ1_3_01_256,nuclei|Texture_Correlation_TUJ1_3_03_256,nuclei|Texture_Correlation_NESTIN_3_03_256,nuclei|Texture_Correlation_NESTIN_3_00_256,nuclei|Texture_Correlation_NESTIN_3_02_256,nuclei|Texture_Correlation_NESTIN_3_01_256,nuclei|Texture_Correlation_DNA_3_02_256,nuclei|Texture_Correlation_DNA_3_00_256,nuclei|Texture_Correlation_DNA_3_03_256,nuclei|Texture_Correlation_DNA_3_01_256,nuclei|Texture_Correlation_MAP2_3_01_256,nuclei|Texture_Correlation_MAP2_3_03_256,nuclei|Texture_Correlation_MAP2_3_00_256,nuclei|Texture_Correlation_MAP2_3_02_256,nuclei|Texture_SumVariance_MAP2_3_03_256,nuclei|Texture_SumVariance_MAP2_3_01_256,nuclei|Texture_SumVariance_MAP2_3_00_256,nuclei|Texture_SumVariance_MAP2_3_02_256,nuclei|Texture_SumVariance_NESTIN_3_01_256,nuclei|Texture_SumVariance_NESTIN_3_02_256,nuclei|Texture_SumVariance_NESTIN_3_00_256,nuclei|Texture_SumVariance_NESTIN_3_03_256,nuclei|Texture_SumVariance_DNA_3_00_256,nuclei|Texture_SumVariance_DNA_3_01_256,nuclei|Texture_SumVariance_DNA_3_03_256,nuclei|Texture_SumVariance_DNA_3_02_256,nuclei|Texture_SumVariance_TUJ1_3_03_256,nuclei|Texture_SumVariance_TUJ1_3_02_256,nuclei|Texture_SumVariance_TUJ1_3_01_256,nuclei|Texture_SumVariance_TUJ1_3_00_256,nuclei|Texture_SumAverage_DNA_3_01_256,nuclei|Texture_SumAverage_DNA_3_02_256,nuclei|Texture_SumAverage_DNA_3_00_256,nuclei|Texture_SumAverage_DNA_3_03_256,nuclei|Texture_SumAverage_NESTIN_3_01_256,nuclei|Texture_SumAverage_NESTIN_3_02_256,nuclei|Texture_SumAverage_NESTIN_3_03_256,nuclei|Texture_SumAverage_NESTIN_3_00_256,nuclei|Texture_SumAverage_MAP2_3_02_256,nuclei|Texture_SumAverage_MAP2_3_03_256,nuclei|Texture_SumAverage_MAP2_3_01_256,nuclei|Texture_SumAverage_MAP2_3_00_256,nuclei|Texture_SumAverage_TUJ1_3_00_256,nuclei|Texture_SumAverage_TUJ1_3_03_256,nuclei|Texture_SumAverage_TUJ1_3_02_256,nuclei|Texture_SumAverage_TUJ1_3_01_256,nuclei|Texture_InfoMeas2_TUJ1_3_01_256,nuclei|Texture_InfoMeas2_TUJ1_3_00_256,nuclei|Texture_InfoMeas2_TUJ1_3_03_256,nuclei|Texture_InfoMeas2_TUJ1_3_02_256,nuclei|Texture_InfoMeas2_NESTIN_3_02_256,nuclei|Texture_InfoMeas2_NESTIN_3_00_256,nuclei|Texture_InfoMeas2_NESTIN_3_03_256,nuclei|Texture_InfoMeas2_NESTIN_3_01_256,nuclei|Texture_InfoMeas2_DNA_3_03_256,nuclei|Texture_InfoMeas2_DNA_3_00_256,nuclei|Texture_InfoMeas2_DNA_3_02_256,nuclei|Texture_InfoMeas2_DNA_3_01_256,nuclei|Texture_InfoMeas2_MAP2_3_00_256,nuclei|Texture_InfoMeas2_MAP2_3_03_256,nuclei|Texture_InfoMeas2_MAP2_3_01_256,nuclei|Texture_InfoMeas2_MAP2_3_02_256,nuclei|Texture_AngularSecondMoment_NESTIN_3_03_256,nuclei|Texture_AngularSecondMoment_NESTIN_3_00_256,nuclei|Texture_AngularSecondMoment_NESTIN_3_01_256,nuclei|Texture_AngularSecondMoment_NESTIN_3_02_256,nuclei|Texture_AngularSecondMoment_DNA_3_03_256,nuclei|Texture_AngularSecondMoment_DNA_3_02_256,nuclei|Texture_AngularSecondMoment_DNA_3_00_256,nuclei|Texture_AngularSecondMoment_DNA_3_01_256,nuclei|Texture_AngularSecondMoment_MAP2_3_02_256,nuclei|Texture_AngularSecondMoment_MAP2_3_00_256,nuclei|Texture_AngularSecondMoment_MAP2_3_01_256,nuclei|Texture_AngularSecondMoment_MAP2_3_03_256,nuclei|Texture_AngularSecondMoment_TUJ1_3_00_256,nuclei|Texture_AngularSecondMoment_TUJ1_3_03_256,nuclei|Texture_AngularSecondMoment_TUJ1_3_01_256,nuclei|Texture_AngularSecondMoment_TUJ1_3_02_256,nuclei|Texture_Contrast_DNA_3_03_256,nuclei|Texture_Contrast_DNA_3_01_256,nuclei|Texture_Contrast_DNA_3_02_256,nuclei|Texture_Contrast_DNA_3_00_256,nuclei|Texture_Contrast_NESTIN_3_00_256,nuclei|Texture_Contrast_NESTIN_3_01_256,nuclei|Texture_Contrast_NESTIN_3_03_256,nuclei|Texture_Contrast_NESTIN_3_02_256,nuclei|Texture_Contrast_TUJ1_3_01_256,nuclei|Texture_Contrast_TUJ1_3_03_256,nuclei|Texture_Contrast_TUJ1_3_00_256,nuclei|Texture_Contrast_TUJ1_3_02_256,nuclei|Texture_Contrast_MAP2_3_02_256,nuclei|Texture_Contrast_MAP2_3_01_256,nuclei|Texture_Contrast_MAP2_3_03_256,nuclei|Texture_Contrast_MAP2_3_00_256,nuclei|AreaShape_Zernike_7_1,nuclei|AreaShape_Zernike_7_7,nuclei|AreaShape_Zernike_7_5,nuclei|AreaShape_Zernike_7_3,nuclei|AreaShape_Zernike_5_1,nuclei|AreaShape_Zernike_5_5,nuclei|AreaShape_Zernike_5_3,nuclei|AreaShape_Zernike_9_5,nuclei|AreaShape_Zernike_9_3,nuclei|AreaShape_Zernike_9_7,nuclei|AreaShape_Zernike_9_9,nuclei|AreaShape_Zernike_9_1,nuclei|AreaShape_Zernike_0_0,nuclei|AreaShape_Zernike_2_0,nuclei|AreaShape_Zernike_2_2,nuclei|AreaShape_Zernike_8_6,nuclei|AreaShape_Zernike_8_4,nuclei|AreaShape_Zernike_8_2,nuclei|AreaShape_Zernike_8_0,nuclei|AreaShape_Zernike_8_8,nuclei|AreaShape_Zernike_4_2,nuclei|AreaShape_Zernike_4_4,nuclei|AreaShape_Zernike_4_0,nuclei|AreaShape_Zernike_3_3,nuclei|AreaShape_Zernike_3_1,nuclei|AreaShape_Zernike_6_0,nuclei|AreaShape_Zernike_6_6,nuclei|AreaShape_Zernike_6_4,nuclei|AreaShape_Zernike_6_2,nuclei|AreaShape_Zernike_1_1,nuclei|AreaShape_BoundingBoxMaximum_Y,nuclei|AreaShape_BoundingBoxMaximum_X,nuclei|AreaShape_Center_Y,nuclei|AreaShape_Center_X,nuclei|AreaShape_Compactness,nuclei|AreaShape_Perimeter,nuclei|AreaShape_MeanRadius,nuclei|AreaShape_MaximumRadius,nuclei|AreaShape_Solidity,nuclei|AreaShape_MedianRadius,nuclei|AreaShape_EquivalentDiameter,nuclei|AreaShape_EulerNumber,nuclei|AreaShape_FormFactor,nuclei|AreaShape_MaxFeretDiameter,nuclei|AreaShape_BoundingBoxMinimum_X,nuclei|AreaShape_BoundingBoxMinimum_Y,nuclei|AreaShape_Extent,nuclei|AreaShape_MajorAxisLength,nuclei|AreaShape_Eccentricity,nuclei|AreaShape_MinorAxisLength,nuclei|AreaShape_Area,nuclei|AreaShape_ConvexArea,nuclei|AreaShape_BoundingBoxArea,nuclei|AreaShape_MinFeretDiameter,nuclei|AreaShape_Orientation,nuclei|Location_CenterMassIntensity_Z_DNA,nuclei|Location_CenterMassIntensity_Z_MAP2,nuclei|Location_CenterMassIntensity_Z_TUJ1,nuclei|Location_CenterMassIntensity_Z_NESTIN,nuclei|Location_CenterMassIntensity_X_TUJ1,nuclei|Location_CenterMassIntensity_X_MAP2,nuclei|Location_CenterMassIntensity_X_NESTIN,nuclei|Location_CenterMassIntensity_X_DNA,nuclei|Location_CenterMassIntensity_Y_TUJ1,nuclei|Location_CenterMassIntensity_Y_NESTIN,nuclei|Location_CenterMassIntensity_Y_DNA,nuclei|Location_CenterMassIntensity_Y_MAP2,nuclei|Location_MaxIntensity_Z_NESTIN,nuclei|Location_MaxIntensity_Z_MAP2,nuclei|Location_MaxIntensity_Z_TUJ1,nuclei|Location_MaxIntensity_Z_DNA,nuclei|Location_MaxIntensity_Y_TUJ1,nuclei|Location_MaxIntensity_Y_MAP2,nuclei|Location_MaxIntensity_Y_NESTIN,nuclei|Location_MaxIntensity_Y_DNA,nuclei|Location_MaxIntensity_X_MAP2,nuclei|Location_MaxIntensity_X_DNA,nuclei|Location_MaxIntensity_X_NESTIN,nuclei|Location_MaxIntensity_X_TUJ1,nuclei|Location_Center_Y,nuclei|Location_Center_X,nuclei|Location_Center_Z,nuclei|Intensity_MinIntensityEdge_DNA,nuclei|Intensity_MinIntensityEdge_NESTIN,nuclei|Intensity_MinIntensityEdge_MAP2,nuclei|Intensity_MinIntensityEdge_TUJ1,nuclei|Intensity_MeanIntensityEdge_TUJ1,nuclei|Intensity_MeanIntensityEdge_MAP2,nuclei|Intensity_MeanIntensityEdge_NESTIN,nuclei|Intensity_MeanIntensityEdge_DNA,nuclei|Intensity_MaxIntensity_TUJ1,nuclei|Intensity_MaxIntensity_DNA,nuclei|Intensity_MaxIntensity_NESTIN,nuclei|Intensity_MaxIntensity_MAP2,nuclei|Intensity_MeanIntensity_NESTIN,nuclei|Intensity_MeanIntensity_MAP2,nuclei|Intensity_MeanIntensity_DNA,nuclei|Intensity_MeanIntensity_TUJ1,nuclei|Intensity_IntegratedIntensity_NESTIN,nuclei|Intensity_IntegratedIntensity_TUJ1,nuclei|Intensity_IntegratedIntensity_MAP2,nuclei|Intensity_IntegratedIntensity_DNA,nuclei|Intensity_StdIntensityEdge_MAP2,nuclei|Intensity_StdIntensityEdge_DNA,nuclei|Intensity_StdIntensityEdge_TUJ1,nuclei|Intensity_StdIntensityEdge_NESTIN,nuclei|Intensity_MedianIntensity_NESTIN,nuclei|Intensity_MedianIntensity_DNA,nuclei|Intensity_MedianIntensity_TUJ1,nuclei|Intensity_MedianIntensity_MAP2,nuclei|Intensity_LowerQuartileIntensity_TUJ1,nuclei|Intensity_LowerQuartileIntensity_NESTIN,nuclei|Intensity_LowerQuartileIntensity_DNA,nuclei|Intensity_LowerQuartileIntensity_MAP2,nuclei|Intensity_MinIntensity_TUJ1,nuclei|Intensity_MinIntensity_MAP2,nuclei|Intensity_MinIntensity_NESTIN,nuclei|Intensity_MinIntensity_DNA,nuclei|Intensity_StdIntensity_TUJ1,nuclei|Intensity_StdIntensity_DNA,nuclei|Intensity_StdIntensity_NESTIN,nuclei|Intensity_StdIntensity_MAP2,nuclei|Intensity_MaxIntensityEdge_NESTIN,nuclei|Intensity_MaxIntensityEdge_TUJ1,nuclei|Intensity_MaxIntensityEdge_MAP2,nuclei|Intensity_MaxIntensityEdge_DNA,nuclei|Intensity_MADIntensity_NESTIN,nuclei|Intensity_MADIntensity_TUJ1,nuclei|Intensity_MADIntensity_DNA,nuclei|Intensity_MADIntensity_MAP2,nuclei|Intensity_IntegratedIntensityEdge_TUJ1,nuclei|Intensity_IntegratedIntensityEdge_DNA,nuclei|Intensity_IntegratedIntensityEdge_MAP2,nuclei|Intensity_IntegratedIntensityEdge_NESTIN,nuclei|Intensity_UpperQuartileIntensity_MAP2,nuclei|Intensity_UpperQuartileIntensity_TUJ1,nuclei|Intensity_UpperQuartileIntensity_NESTIN,nuclei|Intensity_UpperQuartileIntensity_DNA,nuclei|Intensity_MassDisplacement_DNA,nuclei|Intensity_MassDisplacement_MAP2,nuclei|Intensity_MassDisplacement_NESTIN,nuclei|Intensity_MassDisplacement_TUJ1,nuclei|Math_Average_network_neurites_width,nuclei|Children_Dilate_nuclei_Count,nuclei|Children_Organoid_Count,nuclei|ObjectSkeleton_NumberBranchEnds_MorphologicalSkeleton,nuclei|ObjectSkeleton_TotalObjectSkeletonLength_MorphologicalSkeleton,nuclei|ObjectSkeleton_NumberTrunks_MorphologicalSkeleton,nuclei|ObjectSkeleton_NumberNonTrunkBranches_MorphologicalSkeleton,nuclei|Number_Object_Number,Organoid|AreaShape_Zernike_4_0,Organoid|AreaShape_Zernike_4_2,Organoid|AreaShape_Zernike_4_4,Organoid|AreaShape_Zernike_5_3,Organoid|AreaShape_Zernike_5_1,Organoid|AreaShape_Zernike_5_5,Organoid|AreaShape_Zernike_9_1,Organoid|AreaShape_Zernike_9_7,Organoid|AreaShape_Zernike_9_9,Organoid|AreaShape_Zernike_9_3,Organoid|AreaShape_Zernike_9_5,Organoid|AreaShape_Zernike_7_1,Organoid|AreaShape_Zernike_7_7,Organoid|AreaShape_Zernike_7_5,Organoid|AreaShape_Zernike_7_3,Organoid|AreaShape_Zernike_6_2,Organoid|AreaShape_Zernike_6_0,Organoid|AreaShape_Zernike_6_4,Organoid|AreaShape_Zernike_6_6,Organoid|AreaShape_Zernike_3_3,Organoid|AreaShape_Zernike_3_1,Organoid|AreaShape_Zernike_8_2,Organoid|AreaShape_Zernike_8_4,Organoid|AreaShape_Zernike_8_8,Organoid|AreaShape_Zernike_8_0,Organoid|AreaShape_Zernike_8_6,Organoid|AreaShape_Zernike_0_0,Organoid|AreaShape_Zernike_1_1,Organoid|AreaShape_Zernike_2_0,Organoid|AreaShape_Zernike_2_2,Organoid|AreaShape_MedianRadius,Organoid|AreaShape_BoundingBoxMinimum_X,Organoid|AreaShape_BoundingBoxMinimum_Y,Organoid|AreaShape_Extent,Organoid|AreaShape_MajorAxisLength,Organoid|AreaShape_BoundingBoxMaximum_X,Organoid|AreaShape_BoundingBoxMaximum_Y,Organoid|AreaShape_Solidity,Organoid|AreaShape_MinFeretDiameter,Organoid|AreaShape_MinorAxisLength,Organoid|AreaShape_MaxFeretDiameter,Organoid|AreaShape_Perimeter,Organoid|AreaShape_Eccentricity,Organoid|AreaShape_MaximumRadius,Organoid|AreaShape_Area,Organoid|AreaShape_BoundingBoxArea,Organoid|AreaShape_EquivalentDiameter,Organoid|AreaShape_MeanRadius,Organoid|AreaShape_Center_X,Organoid|AreaShape_Center_Y,Organoid|AreaShape_EulerNumber,Organoid|AreaShape_ConvexArea,Organoid|AreaShape_Compactness,Organoid|AreaShape_FormFactor,Organoid|AreaShape_Orientation,Organoid|RadialDistribution_MeanFrac_TUJ1_3of4,Organoid|RadialDistribution_MeanFrac_TUJ1_2of4,Organoid|RadialDistribution_MeanFrac_TUJ1_1of4,Organoid|RadialDistribution_MeanFrac_TUJ1_4of4,Organoid|RadialDistribution_MeanFrac_MAP2_4of4,Organoid|RadialDistribution_MeanFrac_MAP2_2of4,Organoid|RadialDistribution_MeanFrac_MAP2_1of4,Organoid|RadialDistribution_MeanFrac_MAP2_3of4,Organoid|RadialDistribution_FracAtD_MAP2_4of4,Organoid|RadialDistribution_FracAtD_MAP2_3of4,Organoid|RadialDistribution_FracAtD_MAP2_1of4,Organoid|RadialDistribution_FracAtD_MAP2_2of4,Organoid|RadialDistribution_FracAtD_TUJ1_2of4,Organoid|RadialDistribution_FracAtD_TUJ1_3of4,Organoid|RadialDistribution_FracAtD_TUJ1_4of4,Organoid|RadialDistribution_FracAtD_TUJ1_1of4,Organoid|RadialDistribution_RadialCV_MAP2_4of4,Organoid|RadialDistribution_RadialCV_MAP2_3of4,Organoid|RadialDistribution_RadialCV_MAP2_1of4,Organoid|RadialDistribution_RadialCV_MAP2_2of4,Organoid|RadialDistribution_RadialCV_TUJ1_2of4,Organoid|RadialDistribution_RadialCV_TUJ1_4of4,Organoid|RadialDistribution_RadialCV_TUJ1_1of4,Organoid|RadialDistribution_RadialCV_TUJ1_3of4,Organoid|Children_organoid_eroded_Count,Organoid|Children_network_Count,Organoid|Children_peripheralOrganoid_Count,Organoid|Location_Center_X,Organoid|Location_Center_Z,Organoid|Location_Center_Y,Organoid|Parent_nuclei,Organoid|Number_Object_Number,Dilate_nuclei|Location_Center_X,Dilate_nuclei|Location_Center_Z,Dilate_nuclei|Location_Center_Y,Dilate_nuclei|Children_network_Count,Dilate_nuclei|Parent_nuclei,Dilate_nuclei|Number_Object_Number,organoid_eroded|Number_Object_Number,organoid_eroded|Location_Center_Y,organoid_eroded|Location_Center_X,organoid_eroded|Location_Center_Z,organoid_eroded|ObjectSkeleton_TotalObjectSkeletonLength_MorphologicalSkeleton,organoid_eroded|ObjectSkeleton_NumberBranchEnds_MorphologicalSkeleton,organoid_eroded|ObjectSkeleton_NumberTrunks_MorphologicalSkeleton,organoid_eroded|ObjectSkeleton_NumberNonTrunkBranches_MorphologicalSkeleton,organoid_eroded|Parent_Organoid,organoid_eroded|Math_Average_neurites_width,Experiment|Modification_Timestamp,Experiment|Run_Timestamp,Experiment|Pipeline_Pipeline,Experiment|CellProfiler_Version
+    Press button to select measurements:Image|Series_DNA,Image|Series_NESTIN,Image|Series_MAP2,Image|Series_TUJ1,Image|ExecutionTime_15MaskObjects,Image|ExecutionTime_16MaskImage,Image|ExecutionTime_01Images,Image|ExecutionTime_12MorphologicalSkeleton,Image|ExecutionTime_18MeasureObjectSkeleton,Image|ExecutionTime_10Threshold,Image|ExecutionTime_24MeasureObjectSizeShape,Image|ExecutionTime_09EnhanceOrSuppressFeatures,Image|ExecutionTime_02Metadata,Image|ExecutionTime_08IdentifySecondaryObjects,Image|ExecutionTime_27CalculateMath,Image|ExecutionTime_13MeasureObjectSkeleton,Image|ExecutionTime_06DilateObjects,Image|ExecutionTime_17MorphologicalSkeleton,Image|ExecutionTime_22MeasureObjectIntensityDistribution,Image|ExecutionTime_25MeasureTexture,Image|ExecutionTime_19IdentifyTertiaryObjects,Image|ExecutionTime_03NamesAndTypes,Image|ExecutionTime_14ErodeObjects,Image|ExecutionTime_05IdentifyPrimaryObjects,Image|ExecutionTime_21MeasureImageAreaOccupied,Image|ExecutionTime_23MeasureObjectIntensity,Image|ExecutionTime_11MaskImage,Image|ExecutionTime_20MeasureImageAreaOccupied,Image|ExecutionTime_26CalculateMath,Image|ExecutionTime_04Groups,Image|ExecutionTime_07ImageMath,Image|Scaling_MAP2,Image|Scaling_NESTIN,Image|Scaling_DNA,Image|Scaling_TUJ1,Image|Metadata_Channel,Image|Metadata_FileLocation,Image|Metadata_Series,Image|Metadata_Cell_line,Image|Metadata_ColonyNumber,Image|Metadata_Frame,Image|Metadata_Replicate,Image|Metadata_Well,Image|Width_MAP2,Image|Width_NESTIN,Image|Width_DNA,Image|Width_TUJ1,Image|PathName_TUJ1,Image|PathName_DNA,Image|PathName_NESTIN,Image|PathName_MAP2,Image|ModuleError_10Threshold,Image|ModuleError_08IdentifySecondaryObjects,Image|ModuleError_12MorphologicalSkeleton,Image|ModuleError_11MaskImage,Image|ModuleError_21MeasureImageAreaOccupied,Image|ModuleError_13MeasureObjectSkeleton,Image|ModuleError_03NamesAndTypes,Image|ModuleError_18MeasureObjectSkeleton,Image|ModuleError_16MaskImage,Image|ModuleError_15MaskObjects,Image|ModuleError_26CalculateMath,Image|ModuleError_05IdentifyPrimaryObjects,Image|ModuleError_23MeasureObjectIntensity,Image|ModuleError_06DilateObjects,Image|ModuleError_04Groups,Image|ModuleError_07ImageMath,Image|ModuleError_24MeasureObjectSizeShape,Image|ModuleError_19IdentifyTertiaryObjects,Image|ModuleError_01Images,Image|ModuleError_20MeasureImageAreaOccupied,Image|ModuleError_17MorphologicalSkeleton,Image|ModuleError_14ErodeObjects,Image|ModuleError_09EnhanceOrSuppressFeatures,Image|ModuleError_25MeasureTexture,Image|ModuleError_22MeasureObjectIntensityDistribution,Image|ModuleError_02Metadata,Image|ModuleError_27CalculateMath,Image|MD5Digest_DNA,Image|MD5Digest_MAP2,Image|MD5Digest_TUJ1,Image|MD5Digest_NESTIN,Image|Frame_TUJ1,Image|Frame_MAP2,Image|Frame_NESTIN,Image|Frame_DNA,Image|Threshold_WeightedVariance_nuclei,Image|Threshold_WeightedVariance_Threshold_tuj1e,Image|Threshold_WeightedVariance_Organoid,Image|Threshold_OrigThreshold_Threshold_tuj1e,Image|Threshold_OrigThreshold_Organoid,Image|Threshold_OrigThreshold_nuclei,Image|Threshold_FinalThreshold_Threshold_tuj1e,Image|Threshold_FinalThreshold_nuclei,Image|Threshold_FinalThreshold_Organoid,Image|Threshold_GuideThreshold_nuclei,Image|Threshold_GuideThreshold_Threshold_tuj1e,Image|Threshold_SumOfEntropies_Threshold_tuj1e,Image|Threshold_SumOfEntropies_nuclei,Image|Threshold_SumOfEntropies_Organoid,Image|Count_Dilate_nuclei,Image|Count_Organoid,Image|Count_peripheralOrganoid,Image|Count_nuclei,Image|Count_organoid_eroded,Image|Count_network,Image|Height_MAP2,Image|Height_TUJ1,Image|Height_DNA,Image|Height_NESTIN,Image|AreaOccupied_TotalArea_tuj1e_peripheral,Image|AreaOccupied_TotalArea_Threshold_tuj1e,Image|AreaOccupied_AreaOccupied_tuj1e_peripheral,Image|AreaOccupied_AreaOccupied_Threshold_tuj1e,Image|AreaOccupied_Perimeter_tuj1e_peripheral,Image|AreaOccupied_Perimeter_Threshold_tuj1e,Image|URL_TUJ1,Image|URL_DNA,Image|URL_NESTIN,Image|URL_MAP2,Image|FileName_NESTIN,Image|FileName_DNA,Image|FileName_MAP2,Image|FileName_TUJ1,Image|Group_Number,Image|Group_Length,Image|Group_Index,nuclei|Texture_SumAverage_TUJ1_3_03_256,nuclei|Texture_SumAverage_TUJ1_3_00_256,nuclei|Texture_SumAverage_TUJ1_3_01_256,nuclei|Texture_SumAverage_TUJ1_3_02_256,nuclei|Texture_SumAverage_DNA_3_02_256,nuclei|Texture_SumAverage_DNA_3_03_256,nuclei|Texture_SumAverage_DNA_3_00_256,nuclei|Texture_SumAverage_DNA_3_01_256,nuclei|Texture_SumAverage_NESTIN_3_01_256,nuclei|Texture_SumAverage_NESTIN_3_03_256,nuclei|Texture_SumAverage_NESTIN_3_02_256,nuclei|Texture_SumAverage_NESTIN_3_00_256,nuclei|Texture_SumAverage_MAP2_3_03_256,nuclei|Texture_SumAverage_MAP2_3_01_256,nuclei|Texture_SumAverage_MAP2_3_02_256,nuclei|Texture_SumAverage_MAP2_3_00_256,nuclei|Texture_Contrast_NESTIN_3_00_256,nuclei|Texture_Contrast_NESTIN_3_03_256,nuclei|Texture_Contrast_NESTIN_3_01_256,nuclei|Texture_Contrast_NESTIN_3_02_256,nuclei|Texture_Contrast_MAP2_3_00_256,nuclei|Texture_Contrast_MAP2_3_01_256,nuclei|Texture_Contrast_MAP2_3_03_256,nuclei|Texture_Contrast_MAP2_3_02_256,nuclei|Texture_Contrast_TUJ1_3_00_256,nuclei|Texture_Contrast_TUJ1_3_03_256,nuclei|Texture_Contrast_TUJ1_3_02_256,nuclei|Texture_Contrast_TUJ1_3_01_256,nuclei|Texture_Contrast_DNA_3_01_256,nuclei|Texture_Contrast_DNA_3_00_256,nuclei|Texture_Contrast_DNA_3_02_256,nuclei|Texture_Contrast_DNA_3_03_256,nuclei|Texture_InverseDifferenceMoment_TUJ1_3_02_256,nuclei|Texture_InverseDifferenceMoment_TUJ1_3_00_256,nuclei|Texture_InverseDifferenceMoment_TUJ1_3_03_256,nuclei|Texture_InverseDifferenceMoment_TUJ1_3_01_256,nuclei|Texture_InverseDifferenceMoment_DNA_3_02_256,nuclei|Texture_InverseDifferenceMoment_DNA_3_00_256,nuclei|Texture_InverseDifferenceMoment_DNA_3_03_256,nuclei|Texture_InverseDifferenceMoment_DNA_3_01_256,nuclei|Texture_InverseDifferenceMoment_MAP2_3_02_256,nuclei|Texture_InverseDifferenceMoment_MAP2_3_01_256,nuclei|Texture_InverseDifferenceMoment_MAP2_3_03_256,nuclei|Texture_InverseDifferenceMoment_MAP2_3_00_256,nuclei|Texture_InverseDifferenceMoment_NESTIN_3_02_256,nuclei|Texture_InverseDifferenceMoment_NESTIN_3_00_256,nuclei|Texture_InverseDifferenceMoment_NESTIN_3_01_256,nuclei|Texture_InverseDifferenceMoment_NESTIN_3_03_256,nuclei|Texture_Correlation_DNA_3_02_256,nuclei|Texture_Correlation_DNA_3_03_256,nuclei|Texture_Correlation_DNA_3_00_256,nuclei|Texture_Correlation_DNA_3_01_256,nuclei|Texture_Correlation_TUJ1_3_01_256,nuclei|Texture_Correlation_TUJ1_3_00_256,nuclei|Texture_Correlation_TUJ1_3_02_256,nuclei|Texture_Correlation_TUJ1_3_03_256,nuclei|Texture_Correlation_NESTIN_3_01_256,nuclei|Texture_Correlation_NESTIN_3_02_256,nuclei|Texture_Correlation_NESTIN_3_00_256,nuclei|Texture_Correlation_NESTIN_3_03_256,nuclei|Texture_Correlation_MAP2_3_00_256,nuclei|Texture_Correlation_MAP2_3_02_256,nuclei|Texture_Correlation_MAP2_3_03_256,nuclei|Texture_Correlation_MAP2_3_01_256,nuclei|Texture_SumEntropy_TUJ1_3_01_256,nuclei|Texture_SumEntropy_TUJ1_3_03_256,nuclei|Texture_SumEntropy_TUJ1_3_00_256,nuclei|Texture_SumEntropy_TUJ1_3_02_256,nuclei|Texture_SumEntropy_MAP2_3_02_256,nuclei|Texture_SumEntropy_MAP2_3_00_256,nuclei|Texture_SumEntropy_MAP2_3_01_256,nuclei|Texture_SumEntropy_MAP2_3_03_256,nuclei|Texture_SumEntropy_DNA_3_01_256,nuclei|Texture_SumEntropy_DNA_3_00_256,nuclei|Texture_SumEntropy_DNA_3_03_256,nuclei|Texture_SumEntropy_DNA_3_02_256,nuclei|Texture_SumEntropy_NESTIN_3_00_256,nuclei|Texture_SumEntropy_NESTIN_3_01_256,nuclei|Texture_SumEntropy_NESTIN_3_02_256,nuclei|Texture_SumEntropy_NESTIN_3_03_256,nuclei|Texture_InfoMeas2_TUJ1_3_03_256,nuclei|Texture_InfoMeas2_TUJ1_3_00_256,nuclei|Texture_InfoMeas2_TUJ1_3_02_256,nuclei|Texture_InfoMeas2_TUJ1_3_01_256,nuclei|Texture_InfoMeas2_DNA_3_02_256,nuclei|Texture_InfoMeas2_DNA_3_00_256,nuclei|Texture_InfoMeas2_DNA_3_03_256,nuclei|Texture_InfoMeas2_DNA_3_01_256,nuclei|Texture_InfoMeas2_MAP2_3_00_256,nuclei|Texture_InfoMeas2_MAP2_3_01_256,nuclei|Texture_InfoMeas2_MAP2_3_02_256,nuclei|Texture_InfoMeas2_MAP2_3_03_256,nuclei|Texture_InfoMeas2_NESTIN_3_03_256,nuclei|Texture_InfoMeas2_NESTIN_3_01_256,nuclei|Texture_InfoMeas2_NESTIN_3_00_256,nuclei|Texture_InfoMeas2_NESTIN_3_02_256,nuclei|Texture_DifferenceEntropy_TUJ1_3_01_256,nuclei|Texture_DifferenceEntropy_TUJ1_3_03_256,nuclei|Texture_DifferenceEntropy_TUJ1_3_02_256,nuclei|Texture_DifferenceEntropy_TUJ1_3_00_256,nuclei|Texture_DifferenceEntropy_DNA_3_00_256,nuclei|Texture_DifferenceEntropy_DNA_3_02_256,nuclei|Texture_DifferenceEntropy_DNA_3_03_256,nuclei|Texture_DifferenceEntropy_DNA_3_01_256,nuclei|Texture_DifferenceEntropy_NESTIN_3_03_256,nuclei|Texture_DifferenceEntropy_NESTIN_3_01_256,nuclei|Texture_DifferenceEntropy_NESTIN_3_00_256,nuclei|Texture_DifferenceEntropy_NESTIN_3_02_256,nuclei|Texture_DifferenceEntropy_MAP2_3_01_256,nuclei|Texture_DifferenceEntropy_MAP2_3_00_256,nuclei|Texture_DifferenceEntropy_MAP2_3_02_256,nuclei|Texture_DifferenceEntropy_MAP2_3_03_256,nuclei|Texture_Entropy_NESTIN_3_01_256,nuclei|Texture_Entropy_NESTIN_3_02_256,nuclei|Texture_Entropy_NESTIN_3_03_256,nuclei|Texture_Entropy_NESTIN_3_00_256,nuclei|Texture_Entropy_MAP2_3_01_256,nuclei|Texture_Entropy_MAP2_3_00_256,nuclei|Texture_Entropy_MAP2_3_03_256,nuclei|Texture_Entropy_MAP2_3_02_256,nuclei|Texture_Entropy_TUJ1_3_02_256,nuclei|Texture_Entropy_TUJ1_3_03_256,nuclei|Texture_Entropy_TUJ1_3_01_256,nuclei|Texture_Entropy_TUJ1_3_00_256,nuclei|Texture_Entropy_DNA_3_00_256,nuclei|Texture_Entropy_DNA_3_01_256,nuclei|Texture_Entropy_DNA_3_02_256,nuclei|Texture_Entropy_DNA_3_03_256,nuclei|Texture_Variance_TUJ1_3_01_256,nuclei|Texture_Variance_TUJ1_3_03_256,nuclei|Texture_Variance_TUJ1_3_02_256,nuclei|Texture_Variance_TUJ1_3_00_256,nuclei|Texture_Variance_DNA_3_01_256,nuclei|Texture_Variance_DNA_3_03_256,nuclei|Texture_Variance_DNA_3_00_256,nuclei|Texture_Variance_DNA_3_02_256,nuclei|Texture_Variance_MAP2_3_03_256,nuclei|Texture_Variance_MAP2_3_02_256,nuclei|Texture_Variance_MAP2_3_01_256,nuclei|Texture_Variance_MAP2_3_00_256,nuclei|Texture_Variance_NESTIN_3_02_256,nuclei|Texture_Variance_NESTIN_3_03_256,nuclei|Texture_Variance_NESTIN_3_00_256,nuclei|Texture_Variance_NESTIN_3_01_256,nuclei|Texture_InfoMeas1_NESTIN_3_01_256,nuclei|Texture_InfoMeas1_NESTIN_3_03_256,nuclei|Texture_InfoMeas1_NESTIN_3_02_256,nuclei|Texture_InfoMeas1_NESTIN_3_00_256,nuclei|Texture_InfoMeas1_TUJ1_3_03_256,nuclei|Texture_InfoMeas1_TUJ1_3_01_256,nuclei|Texture_InfoMeas1_TUJ1_3_02_256,nuclei|Texture_InfoMeas1_TUJ1_3_00_256,nuclei|Texture_InfoMeas1_MAP2_3_03_256,nuclei|Texture_InfoMeas1_MAP2_3_01_256,nuclei|Texture_InfoMeas1_MAP2_3_02_256,nuclei|Texture_InfoMeas1_MAP2_3_00_256,nuclei|Texture_InfoMeas1_DNA_3_00_256,nuclei|Texture_InfoMeas1_DNA_3_01_256,nuclei|Texture_InfoMeas1_DNA_3_03_256,nuclei|Texture_InfoMeas1_DNA_3_02_256,nuclei|Texture_AngularSecondMoment_MAP2_3_01_256,nuclei|Texture_AngularSecondMoment_MAP2_3_00_256,nuclei|Texture_AngularSecondMoment_MAP2_3_03_256,nuclei|Texture_AngularSecondMoment_MAP2_3_02_256,nuclei|Texture_AngularSecondMoment_TUJ1_3_02_256,nuclei|Texture_AngularSecondMoment_TUJ1_3_03_256,nuclei|Texture_AngularSecondMoment_TUJ1_3_00_256,nuclei|Texture_AngularSecondMoment_TUJ1_3_01_256,nuclei|Texture_AngularSecondMoment_NESTIN_3_02_256,nuclei|Texture_AngularSecondMoment_NESTIN_3_01_256,nuclei|Texture_AngularSecondMoment_NESTIN_3_00_256,nuclei|Texture_AngularSecondMoment_NESTIN_3_03_256,nuclei|Texture_AngularSecondMoment_DNA_3_01_256,nuclei|Texture_AngularSecondMoment_DNA_3_03_256,nuclei|Texture_AngularSecondMoment_DNA_3_00_256,nuclei|Texture_AngularSecondMoment_DNA_3_02_256,nuclei|Texture_SumVariance_NESTIN_3_01_256,nuclei|Texture_SumVariance_NESTIN_3_00_256,nuclei|Texture_SumVariance_NESTIN_3_03_256,nuclei|Texture_SumVariance_NESTIN_3_02_256,nuclei|Texture_SumVariance_MAP2_3_00_256,nuclei|Texture_SumVariance_MAP2_3_02_256,nuclei|Texture_SumVariance_MAP2_3_03_256,nuclei|Texture_SumVariance_MAP2_3_01_256,nuclei|Texture_SumVariance_TUJ1_3_01_256,nuclei|Texture_SumVariance_TUJ1_3_00_256,nuclei|Texture_SumVariance_TUJ1_3_02_256,nuclei|Texture_SumVariance_TUJ1_3_03_256,nuclei|Texture_SumVariance_DNA_3_02_256,nuclei|Texture_SumVariance_DNA_3_03_256,nuclei|Texture_SumVariance_DNA_3_01_256,nuclei|Texture_SumVariance_DNA_3_00_256,nuclei|Texture_DifferenceVariance_NESTIN_3_02_256,nuclei|Texture_DifferenceVariance_NESTIN_3_01_256,nuclei|Texture_DifferenceVariance_NESTIN_3_00_256,nuclei|Texture_DifferenceVariance_NESTIN_3_03_256,nuclei|Texture_DifferenceVariance_MAP2_3_01_256,nuclei|Texture_DifferenceVariance_MAP2_3_02_256,nuclei|Texture_DifferenceVariance_MAP2_3_03_256,nuclei|Texture_DifferenceVariance_MAP2_3_00_256,nuclei|Texture_DifferenceVariance_TUJ1_3_02_256,nuclei|Texture_DifferenceVariance_TUJ1_3_03_256,nuclei|Texture_DifferenceVariance_TUJ1_3_01_256,nuclei|Texture_DifferenceVariance_TUJ1_3_00_256,nuclei|Texture_DifferenceVariance_DNA_3_02_256,nuclei|Texture_DifferenceVariance_DNA_3_03_256,nuclei|Texture_DifferenceVariance_DNA_3_01_256,nuclei|Texture_DifferenceVariance_DNA_3_00_256,nuclei|Intensity_MinIntensity_TUJ1,nuclei|Intensity_MinIntensity_DNA,nuclei|Intensity_MinIntensity_NESTIN,nuclei|Intensity_MinIntensity_MAP2,nuclei|Intensity_MaxIntensity_NESTIN,nuclei|Intensity_MaxIntensity_DNA,nuclei|Intensity_MaxIntensity_MAP2,nuclei|Intensity_MaxIntensity_TUJ1,nuclei|Intensity_StdIntensity_TUJ1,nuclei|Intensity_StdIntensity_MAP2,nuclei|Intensity_StdIntensity_DNA,nuclei|Intensity_StdIntensity_NESTIN,nuclei|Intensity_MedianIntensity_DNA,nuclei|Intensity_MedianIntensity_NESTIN,nuclei|Intensity_MedianIntensity_MAP2,nuclei|Intensity_MedianIntensity_TUJ1,nuclei|Intensity_MaxIntensityEdge_TUJ1,nuclei|Intensity_MaxIntensityEdge_NESTIN,nuclei|Intensity_MaxIntensityEdge_MAP2,nuclei|Intensity_MaxIntensityEdge_DNA,nuclei|Intensity_MADIntensity_TUJ1,nuclei|Intensity_MADIntensity_NESTIN,nuclei|Intensity_MADIntensity_MAP2,nuclei|Intensity_MADIntensity_DNA,nuclei|Intensity_MeanIntensity_MAP2,nuclei|Intensity_MeanIntensity_DNA,nuclei|Intensity_MeanIntensity_TUJ1,nuclei|Intensity_MeanIntensity_NESTIN,nuclei|Intensity_StdIntensityEdge_NESTIN,nuclei|Intensity_StdIntensityEdge_MAP2,nuclei|Intensity_StdIntensityEdge_TUJ1,nuclei|Intensity_StdIntensityEdge_DNA,nuclei|Intensity_MassDisplacement_TUJ1,nuclei|Intensity_MassDisplacement_NESTIN,nuclei|Intensity_MassDisplacement_MAP2,nuclei|Intensity_MassDisplacement_DNA,nuclei|Intensity_MeanIntensityEdge_TUJ1,nuclei|Intensity_MeanIntensityEdge_DNA,nuclei|Intensity_MeanIntensityEdge_MAP2,nuclei|Intensity_MeanIntensityEdge_NESTIN,nuclei|Intensity_LowerQuartileIntensity_DNA,nuclei|Intensity_LowerQuartileIntensity_TUJ1,nuclei|Intensity_LowerQuartileIntensity_NESTIN,nuclei|Intensity_LowerQuartileIntensity_MAP2,nuclei|Intensity_IntegratedIntensity_NESTIN,nuclei|Intensity_IntegratedIntensity_MAP2,nuclei|Intensity_IntegratedIntensity_TUJ1,nuclei|Intensity_IntegratedIntensity_DNA,nuclei|Intensity_IntegratedIntensityEdge_MAP2,nuclei|Intensity_IntegratedIntensityEdge_DNA,nuclei|Intensity_IntegratedIntensityEdge_NESTIN,nuclei|Intensity_IntegratedIntensityEdge_TUJ1,nuclei|Intensity_MinIntensityEdge_TUJ1,nuclei|Intensity_MinIntensityEdge_MAP2,nuclei|Intensity_MinIntensityEdge_DNA,nuclei|Intensity_MinIntensityEdge_NESTIN,nuclei|Intensity_UpperQuartileIntensity_MAP2,nuclei|Intensity_UpperQuartileIntensity_TUJ1,nuclei|Intensity_UpperQuartileIntensity_DNA,nuclei|Intensity_UpperQuartileIntensity_NESTIN,nuclei|Location_MaxIntensity_Y_TUJ1,nuclei|Location_MaxIntensity_Y_MAP2,nuclei|Location_MaxIntensity_Y_DNA,nuclei|Location_MaxIntensity_Y_NESTIN,nuclei|Location_MaxIntensity_X_DNA,nuclei|Location_MaxIntensity_X_NESTIN,nuclei|Location_MaxIntensity_X_MAP2,nuclei|Location_MaxIntensity_X_TUJ1,nuclei|Location_MaxIntensity_Z_MAP2,nuclei|Location_MaxIntensity_Z_TUJ1,nuclei|Location_MaxIntensity_Z_DNA,nuclei|Location_MaxIntensity_Z_NESTIN,nuclei|Location_CenterMassIntensity_Z_TUJ1,nuclei|Location_CenterMassIntensity_Z_NESTIN,nuclei|Location_CenterMassIntensity_Z_MAP2,nuclei|Location_CenterMassIntensity_Z_DNA,nuclei|Location_CenterMassIntensity_X_NESTIN,nuclei|Location_CenterMassIntensity_X_MAP2,nuclei|Location_CenterMassIntensity_X_DNA,nuclei|Location_CenterMassIntensity_X_TUJ1,nuclei|Location_CenterMassIntensity_Y_TUJ1,nuclei|Location_CenterMassIntensity_Y_DNA,nuclei|Location_CenterMassIntensity_Y_NESTIN,nuclei|Location_CenterMassIntensity_Y_MAP2,nuclei|Location_Center_Y,nuclei|Location_Center_Z,nuclei|Location_Center_X,nuclei|AreaShape_BoundingBoxMinimum_Y,nuclei|AreaShape_BoundingBoxMinimum_X,nuclei|AreaShape_Zernike_9_5,nuclei|AreaShape_Zernike_9_3,nuclei|AreaShape_Zernike_9_7,nuclei|AreaShape_Zernike_9_1,nuclei|AreaShape_Zernike_9_9,nuclei|AreaShape_Zernike_4_2,nuclei|AreaShape_Zernike_4_0,nuclei|AreaShape_Zernike_4_4,nuclei|AreaShape_Zernike_8_8,nuclei|AreaShape_Zernike_8_6,nuclei|AreaShape_Zernike_8_2,nuclei|AreaShape_Zernike_8_4,nuclei|AreaShape_Zernike_8_0,nuclei|AreaShape_Zernike_6_4,nuclei|AreaShape_Zernike_6_6,nuclei|AreaShape_Zernike_6_2,nuclei|AreaShape_Zernike_6_0,nuclei|AreaShape_Zernike_5_3,nuclei|AreaShape_Zernike_5_1,nuclei|AreaShape_Zernike_5_5,nuclei|AreaShape_Zernike_1_1,nuclei|AreaShape_Zernike_0_0,nuclei|AreaShape_Zernike_7_5,nuclei|AreaShape_Zernike_7_1,nuclei|AreaShape_Zernike_7_3,nuclei|AreaShape_Zernike_7_7,nuclei|AreaShape_Zernike_3_3,nuclei|AreaShape_Zernike_3_1,nuclei|AreaShape_Zernike_2_2,nuclei|AreaShape_Zernike_2_0,nuclei|AreaShape_MeanRadius,nuclei|AreaShape_FormFactor,nuclei|AreaShape_Orientation,nuclei|AreaShape_EquivalentDiameter,nuclei|AreaShape_MajorAxisLength,nuclei|AreaShape_Perimeter,nuclei|AreaShape_BoundingBoxMaximum_Y,nuclei|AreaShape_BoundingBoxMaximum_X,nuclei|AreaShape_BoundingBoxArea,nuclei|AreaShape_Center_Y,nuclei|AreaShape_Center_X,nuclei|AreaShape_MaxFeretDiameter,nuclei|AreaShape_Solidity,nuclei|AreaShape_MaximumRadius,nuclei|AreaShape_ConvexArea,nuclei|AreaShape_MinorAxisLength,nuclei|AreaShape_Area,nuclei|AreaShape_Eccentricity,nuclei|AreaShape_MinFeretDiameter,nuclei|AreaShape_MedianRadius,nuclei|AreaShape_Compactness,nuclei|AreaShape_EulerNumber,nuclei|AreaShape_Extent,nuclei|ObjectSkeleton_NumberBranchEnds_MorphologicalSkeleton,nuclei|ObjectSkeleton_NumberNonTrunkBranches_MorphologicalSkeleton,nuclei|ObjectSkeleton_TotalObjectSkeletonLength_MorphologicalSkeleton,nuclei|ObjectSkeleton_NumberTrunks_MorphologicalSkeleton,nuclei|Children_Dilate_nuclei_Count,nuclei|Children_Organoid_Count,nuclei|Number_Object_Number,nuclei|Math_Average_network_neurites_width,peripheralOrganoid|Texture_Correlation_DNA_3_02_256,peripheralOrganoid|Texture_Correlation_DNA_3_00_256,peripheralOrganoid|Texture_Correlation_DNA_3_01_256,peripheralOrganoid|Texture_Correlation_DNA_3_03_256,peripheralOrganoid|Texture_Correlation_TUJ1_3_02_256,peripheralOrganoid|Texture_Correlation_TUJ1_3_03_256,peripheralOrganoid|Texture_Correlation_TUJ1_3_01_256,peripheralOrganoid|Texture_Correlation_TUJ1_3_00_256,peripheralOrganoid|Texture_Correlation_NESTIN_3_01_256,peripheralOrganoid|Texture_Correlation_NESTIN_3_00_256,peripheralOrganoid|Texture_Correlation_NESTIN_3_03_256,peripheralOrganoid|Texture_Correlation_NESTIN_3_02_256,peripheralOrganoid|Texture_Correlation_MAP2_3_01_256,peripheralOrganoid|Texture_Correlation_MAP2_3_03_256,peripheralOrganoid|Texture_Correlation_MAP2_3_00_256,peripheralOrganoid|Texture_Correlation_MAP2_3_02_256,peripheralOrganoid|Texture_Contrast_TUJ1_3_01_256,peripheralOrganoid|Texture_Contrast_TUJ1_3_02_256,peripheralOrganoid|Texture_Contrast_TUJ1_3_03_256,peripheralOrganoid|Texture_Contrast_TUJ1_3_00_256,peripheralOrganoid|Texture_Contrast_MAP2_3_02_256,peripheralOrganoid|Texture_Contrast_MAP2_3_01_256,peripheralOrganoid|Texture_Contrast_MAP2_3_00_256,peripheralOrganoid|Texture_Contrast_MAP2_3_03_256,peripheralOrganoid|Texture_Contrast_DNA_3_01_256,peripheralOrganoid|Texture_Contrast_DNA_3_02_256,peripheralOrganoid|Texture_Contrast_DNA_3_00_256,peripheralOrganoid|Texture_Contrast_DNA_3_03_256,peripheralOrganoid|Texture_Contrast_NESTIN_3_00_256,peripheralOrganoid|Texture_Contrast_NESTIN_3_02_256,peripheralOrganoid|Texture_Contrast_NESTIN_3_01_256,peripheralOrganoid|Texture_Contrast_NESTIN_3_03_256,peripheralOrganoid|Texture_Entropy_TUJ1_3_01_256,peripheralOrganoid|Texture_Entropy_TUJ1_3_02_256,peripheralOrganoid|Texture_Entropy_TUJ1_3_03_256,peripheralOrganoid|Texture_Entropy_TUJ1_3_00_256,peripheralOrganoid|Texture_Entropy_MAP2_3_03_256,peripheralOrganoid|Texture_Entropy_MAP2_3_01_256,peripheralOrganoid|Texture_Entropy_MAP2_3_02_256,peripheralOrganoid|Texture_Entropy_MAP2_3_00_256,peripheralOrganoid|Texture_Entropy_DNA_3_03_256,peripheralOrganoid|Texture_Entropy_DNA_3_00_256,peripheralOrganoid|Texture_Entropy_DNA_3_02_256,peripheralOrganoid|Texture_Entropy_DNA_3_01_256,peripheralOrganoid|Texture_Entropy_NESTIN_3_01_256,peripheralOrganoid|Texture_Entropy_NESTIN_3_03_256,peripheralOrganoid|Texture_Entropy_NESTIN_3_02_256,peripheralOrganoid|Texture_Entropy_NESTIN_3_00_256,peripheralOrganoid|Texture_SumVariance_DNA_3_03_256,peripheralOrganoid|Texture_SumVariance_DNA_3_00_256,peripheralOrganoid|Texture_SumVariance_DNA_3_02_256,peripheralOrganoid|Texture_SumVariance_DNA_3_01_256,peripheralOrganoid|Texture_SumVariance_MAP2_3_03_256,peripheralOrganoid|Texture_SumVariance_MAP2_3_02_256,peripheralOrganoid|Texture_SumVariance_MAP2_3_01_256,peripheralOrganoid|Texture_SumVariance_MAP2_3_00_256,peripheralOrganoid|Texture_SumVariance_TUJ1_3_00_256,peripheralOrganoid|Texture_SumVariance_TUJ1_3_03_256,peripheralOrganoid|Texture_SumVariance_TUJ1_3_01_256,peripheralOrganoid|Texture_SumVariance_TUJ1_3_02_256,peripheralOrganoid|Texture_SumVariance_NESTIN_3_03_256,peripheralOrganoid|Texture_SumVariance_NESTIN_3_02_256,peripheralOrganoid|Texture_SumVariance_NESTIN_3_01_256,peripheralOrganoid|Texture_SumVariance_NESTIN_3_00_256,peripheralOrganoid|Texture_Variance_TUJ1_3_01_256,peripheralOrganoid|Texture_Variance_TUJ1_3_00_256,peripheralOrganoid|Texture_Variance_TUJ1_3_02_256,peripheralOrganoid|Texture_Variance_TUJ1_3_03_256,peripheralOrganoid|Texture_Variance_MAP2_3_02_256,peripheralOrganoid|Texture_Variance_MAP2_3_03_256,peripheralOrganoid|Texture_Variance_MAP2_3_01_256,peripheralOrganoid|Texture_Variance_MAP2_3_00_256,peripheralOrganoid|Texture_Variance_DNA_3_02_256,peripheralOrganoid|Texture_Variance_DNA_3_01_256,peripheralOrganoid|Texture_Variance_DNA_3_00_256,peripheralOrganoid|Texture_Variance_DNA_3_03_256,peripheralOrganoid|Texture_Variance_NESTIN_3_02_256,peripheralOrganoid|Texture_Variance_NESTIN_3_00_256,peripheralOrganoid|Texture_Variance_NESTIN_3_01_256,peripheralOrganoid|Texture_Variance_NESTIN_3_03_256,peripheralOrganoid|Texture_SumEntropy_MAP2_3_03_256,peripheralOrganoid|Texture_SumEntropy_MAP2_3_01_256,peripheralOrganoid|Texture_SumEntropy_MAP2_3_00_256,peripheralOrganoid|Texture_SumEntropy_MAP2_3_02_256,peripheralOrganoid|Texture_SumEntropy_NESTIN_3_03_256,peripheralOrganoid|Texture_SumEntropy_NESTIN_3_00_256,peripheralOrganoid|Texture_SumEntropy_NESTIN_3_02_256,peripheralOrganoid|Texture_SumEntropy_NESTIN_3_01_256,peripheralOrganoid|Texture_SumEntropy_DNA_3_02_256,peripheralOrganoid|Texture_SumEntropy_DNA_3_00_256,peripheralOrganoid|Texture_SumEntropy_DNA_3_03_256,peripheralOrganoid|Texture_SumEntropy_DNA_3_01_256,peripheralOrganoid|Texture_SumEntropy_TUJ1_3_03_256,peripheralOrganoid|Texture_SumEntropy_TUJ1_3_02_256,peripheralOrganoid|Texture_SumEntropy_TUJ1_3_01_256,peripheralOrganoid|Texture_SumEntropy_TUJ1_3_00_256,peripheralOrganoid|Texture_AngularSecondMoment_MAP2_3_03_256,peripheralOrganoid|Texture_AngularSecondMoment_MAP2_3_02_256,peripheralOrganoid|Texture_AngularSecondMoment_MAP2_3_00_256,peripheralOrganoid|Texture_AngularSecondMoment_MAP2_3_01_256,peripheralOrganoid|Texture_AngularSecondMoment_NESTIN_3_01_256,peripheralOrganoid|Texture_AngularSecondMoment_NESTIN_3_03_256,peripheralOrganoid|Texture_AngularSecondMoment_NESTIN_3_00_256,peripheralOrganoid|Texture_AngularSecondMoment_NESTIN_3_02_256,peripheralOrganoid|Texture_AngularSecondMoment_TUJ1_3_03_256,peripheralOrganoid|Texture_AngularSecondMoment_TUJ1_3_02_256,peripheralOrganoid|Texture_AngularSecondMoment_TUJ1_3_01_256,peripheralOrganoid|Texture_AngularSecondMoment_TUJ1_3_00_256,peripheralOrganoid|Texture_AngularSecondMoment_DNA_3_02_256,peripheralOrganoid|Texture_AngularSecondMoment_DNA_3_00_256,peripheralOrganoid|Texture_AngularSecondMoment_DNA_3_01_256,peripheralOrganoid|Texture_AngularSecondMoment_DNA_3_03_256,peripheralOrganoid|Texture_InfoMeas2_TUJ1_3_02_256,peripheralOrganoid|Texture_InfoMeas2_TUJ1_3_00_256,peripheralOrganoid|Texture_InfoMeas2_TUJ1_3_03_256,peripheralOrganoid|Texture_InfoMeas2_TUJ1_3_01_256,peripheralOrganoid|Texture_InfoMeas2_DNA_3_02_256,peripheralOrganoid|Texture_InfoMeas2_DNA_3_01_256,peripheralOrganoid|Texture_InfoMeas2_DNA_3_00_256,peripheralOrganoid|Texture_InfoMeas2_DNA_3_03_256,peripheralOrganoid|Texture_InfoMeas2_NESTIN_3_02_256,peripheralOrganoid|Texture_InfoMeas2_NESTIN_3_01_256,peripheralOrganoid|Texture_InfoMeas2_NESTIN_3_03_256,peripheralOrganoid|Texture_InfoMeas2_NESTIN_3_00_256,peripheralOrganoid|Texture_InfoMeas2_MAP2_3_00_256,peripheralOrganoid|Texture_InfoMeas2_MAP2_3_01_256,peripheralOrganoid|Texture_InfoMeas2_MAP2_3_03_256,peripheralOrganoid|Texture_InfoMeas2_MAP2_3_02_256,peripheralOrganoid|Texture_InfoMeas1_MAP2_3_03_256,peripheralOrganoid|Texture_InfoMeas1_MAP2_3_01_256,peripheralOrganoid|Texture_InfoMeas1_MAP2_3_02_256,peripheralOrganoid|Texture_InfoMeas1_MAP2_3_00_256,peripheralOrganoid|Texture_InfoMeas1_TUJ1_3_01_256,peripheralOrganoid|Texture_InfoMeas1_TUJ1_3_02_256,peripheralOrganoid|Texture_InfoMeas1_TUJ1_3_03_256,peripheralOrganoid|Texture_InfoMeas1_TUJ1_3_00_256,peripheralOrganoid|Texture_InfoMeas1_DNA_3_02_256,peripheralOrganoid|Texture_InfoMeas1_DNA_3_01_256,peripheralOrganoid|Texture_InfoMeas1_DNA_3_03_256,peripheralOrganoid|Texture_InfoMeas1_DNA_3_00_256,peripheralOrganoid|Texture_InfoMeas1_NESTIN_3_02_256,peripheralOrganoid|Texture_InfoMeas1_NESTIN_3_01_256,peripheralOrganoid|Texture_InfoMeas1_NESTIN_3_03_256,peripheralOrganoid|Texture_InfoMeas1_NESTIN_3_00_256,peripheralOrganoid|Texture_InverseDifferenceMoment_MAP2_3_01_256,peripheralOrganoid|Texture_InverseDifferenceMoment_MAP2_3_03_256,peripheralOrganoid|Texture_InverseDifferenceMoment_MAP2_3_00_256,peripheralOrganoid|Texture_InverseDifferenceMoment_MAP2_3_02_256,peripheralOrganoid|Texture_InverseDifferenceMoment_DNA_3_00_256,peripheralOrganoid|Texture_InverseDifferenceMoment_DNA_3_01_256,peripheralOrganoid|Texture_InverseDifferenceMoment_DNA_3_03_256,peripheralOrganoid|Texture_InverseDifferenceMoment_DNA_3_02_256,peripheralOrganoid|Texture_InverseDifferenceMoment_TUJ1_3_02_256,peripheralOrganoid|Texture_InverseDifferenceMoment_TUJ1_3_00_256,peripheralOrganoid|Texture_InverseDifferenceMoment_TUJ1_3_01_256,peripheralOrganoid|Texture_InverseDifferenceMoment_TUJ1_3_03_256,peripheralOrganoid|Texture_InverseDifferenceMoment_NESTIN_3_03_256,peripheralOrganoid|Texture_InverseDifferenceMoment_NESTIN_3_01_256,peripheralOrganoid|Texture_InverseDifferenceMoment_NESTIN_3_00_256,peripheralOrganoid|Texture_InverseDifferenceMoment_NESTIN_3_02_256,peripheralOrganoid|Texture_DifferenceEntropy_TUJ1_3_01_256,peripheralOrganoid|Texture_DifferenceEntropy_TUJ1_3_03_256,peripheralOrganoid|Texture_DifferenceEntropy_TUJ1_3_02_256,peripheralOrganoid|Texture_DifferenceEntropy_TUJ1_3_00_256,peripheralOrganoid|Texture_DifferenceEntropy_MAP2_3_01_256,peripheralOrganoid|Texture_DifferenceEntropy_MAP2_3_00_256,peripheralOrganoid|Texture_DifferenceEntropy_MAP2_3_02_256,peripheralOrganoid|Texture_DifferenceEntropy_MAP2_3_03_256,peripheralOrganoid|Texture_DifferenceEntropy_NESTIN_3_02_256,peripheralOrganoid|Texture_DifferenceEntropy_NESTIN_3_01_256,peripheralOrganoid|Texture_DifferenceEntropy_NESTIN_3_03_256,peripheralOrganoid|Texture_DifferenceEntropy_NESTIN_3_00_256,peripheralOrganoid|Texture_DifferenceEntropy_DNA_3_02_256,peripheralOrganoid|Texture_DifferenceEntropy_DNA_3_03_256,peripheralOrganoid|Texture_DifferenceEntropy_DNA_3_01_256,peripheralOrganoid|Texture_DifferenceEntropy_DNA_3_00_256,peripheralOrganoid|Texture_DifferenceVariance_MAP2_3_01_256,peripheralOrganoid|Texture_DifferenceVariance_MAP2_3_03_256,peripheralOrganoid|Texture_DifferenceVariance_MAP2_3_00_256,peripheralOrganoid|Texture_DifferenceVariance_MAP2_3_02_256,peripheralOrganoid|Texture_DifferenceVariance_NESTIN_3_02_256,peripheralOrganoid|Texture_DifferenceVariance_NESTIN_3_01_256,peripheralOrganoid|Texture_DifferenceVariance_NESTIN_3_03_256,peripheralOrganoid|Texture_DifferenceVariance_NESTIN_3_00_256,peripheralOrganoid|Texture_DifferenceVariance_TUJ1_3_02_256,peripheralOrganoid|Texture_DifferenceVariance_TUJ1_3_03_256,peripheralOrganoid|Texture_DifferenceVariance_TUJ1_3_01_256,peripheralOrganoid|Texture_DifferenceVariance_TUJ1_3_00_256,peripheralOrganoid|Texture_DifferenceVariance_DNA_3_02_256,peripheralOrganoid|Texture_DifferenceVariance_DNA_3_01_256,peripheralOrganoid|Texture_DifferenceVariance_DNA_3_03_256,peripheralOrganoid|Texture_DifferenceVariance_DNA_3_00_256,peripheralOrganoid|Texture_SumAverage_TUJ1_3_03_256,peripheralOrganoid|Texture_SumAverage_TUJ1_3_00_256,peripheralOrganoid|Texture_SumAverage_TUJ1_3_02_256,peripheralOrganoid|Texture_SumAverage_TUJ1_3_01_256,peripheralOrganoid|Texture_SumAverage_DNA_3_01_256,peripheralOrganoid|Texture_SumAverage_DNA_3_03_256,peripheralOrganoid|Texture_SumAverage_DNA_3_02_256,peripheralOrganoid|Texture_SumAverage_DNA_3_00_256,peripheralOrganoid|Texture_SumAverage_MAP2_3_00_256,peripheralOrganoid|Texture_SumAverage_MAP2_3_01_256,peripheralOrganoid|Texture_SumAverage_MAP2_3_03_256,peripheralOrganoid|Texture_SumAverage_MAP2_3_02_256,peripheralOrganoid|Texture_SumAverage_NESTIN_3_00_256,peripheralOrganoid|Texture_SumAverage_NESTIN_3_02_256,peripheralOrganoid|Texture_SumAverage_NESTIN_3_03_256,peripheralOrganoid|Texture_SumAverage_NESTIN_3_01_256,peripheralOrganoid|Location_CenterMassIntensity_Z_DNA,peripheralOrganoid|Location_CenterMassIntensity_Z_NESTIN,peripheralOrganoid|Location_CenterMassIntensity_Z_MAP2,peripheralOrganoid|Location_CenterMassIntensity_Z_TUJ1,peripheralOrganoid|Location_CenterMassIntensity_X_DNA,peripheralOrganoid|Location_CenterMassIntensity_X_MAP2,peripheralOrganoid|Location_CenterMassIntensity_X_TUJ1,peripheralOrganoid|Location_CenterMassIntensity_X_NESTIN,peripheralOrganoid|Location_CenterMassIntensity_Y_TUJ1,peripheralOrganoid|Location_CenterMassIntensity_Y_NESTIN,peripheralOrganoid|Location_CenterMassIntensity_Y_DNA,peripheralOrganoid|Location_CenterMassIntensity_Y_MAP2,peripheralOrganoid|Location_MaxIntensity_Z_TUJ1,peripheralOrganoid|Location_MaxIntensity_Z_NESTIN,peripheralOrganoid|Location_MaxIntensity_Z_MAP2,peripheralOrganoid|Location_MaxIntensity_Z_DNA,peripheralOrganoid|Location_MaxIntensity_X_NESTIN,peripheralOrganoid|Location_MaxIntensity_X_DNA,peripheralOrganoid|Location_MaxIntensity_X_TUJ1,peripheralOrganoid|Location_MaxIntensity_X_MAP2,peripheralOrganoid|Location_MaxIntensity_Y_MAP2,peripheralOrganoid|Location_MaxIntensity_Y_NESTIN,peripheralOrganoid|Location_MaxIntensity_Y_DNA,peripheralOrganoid|Location_MaxIntensity_Y_TUJ1,peripheralOrganoid|Location_Center_Y,peripheralOrganoid|Location_Center_X,peripheralOrganoid|AreaShape_Zernike_4_4,peripheralOrganoid|AreaShape_Zernike_4_0,peripheralOrganoid|AreaShape_Zernike_4_2,peripheralOrganoid|AreaShape_Zernike_5_5,peripheralOrganoid|AreaShape_Zernike_5_1,peripheralOrganoid|AreaShape_Zernike_5_3,peripheralOrganoid|AreaShape_Zernike_7_7,peripheralOrganoid|AreaShape_Zernike_7_5,peripheralOrganoid|AreaShape_Zernike_7_1,peripheralOrganoid|AreaShape_Zernike_7_3,peripheralOrganoid|AreaShape_Zernike_6_0,peripheralOrganoid|AreaShape_Zernike_6_6,peripheralOrganoid|AreaShape_Zernike_6_4,peripheralOrganoid|AreaShape_Zernike_6_2,peripheralOrganoid|AreaShape_Zernike_8_4,peripheralOrganoid|AreaShape_Zernike_8_8,peripheralOrganoid|AreaShape_Zernike_8_0,peripheralOrganoid|AreaShape_Zernike_8_6,peripheralOrganoid|AreaShape_Zernike_8_2,peripheralOrganoid|AreaShape_Zernike_2_0,peripheralOrganoid|AreaShape_Zernike_2_2,peripheralOrganoid|AreaShape_Zernike_1_1,peripheralOrganoid|AreaShape_Zernike_3_3,peripheralOrganoid|AreaShape_Zernike_3_1,peripheralOrganoid|AreaShape_Zernike_9_3,peripheralOrganoid|AreaShape_Zernike_9_1,peripheralOrganoid|AreaShape_Zernike_9_9,peripheralOrganoid|AreaShape_Zernike_9_5,peripheralOrganoid|AreaShape_Zernike_9_7,peripheralOrganoid|AreaShape_Zernike_0_0,peripheralOrganoid|AreaShape_Center_Y,peripheralOrganoid|AreaShape_Center_X,peripheralOrganoid|AreaShape_BoundingBoxMinimum_Y,peripheralOrganoid|AreaShape_BoundingBoxMinimum_X,peripheralOrganoid|AreaShape_BoundingBoxMaximum_X,peripheralOrganoid|AreaShape_BoundingBoxMaximum_Y,peripheralOrganoid|AreaShape_Compactness,peripheralOrganoid|AreaShape_Eccentricity,peripheralOrganoid|AreaShape_MaxFeretDiameter,peripheralOrganoid|AreaShape_MinFeretDiameter,peripheralOrganoid|AreaShape_Orientation,peripheralOrganoid|AreaShape_Perimeter,peripheralOrganoid|AreaShape_MajorAxisLength,peripheralOrganoid|AreaShape_EulerNumber,peripheralOrganoid|AreaShape_Solidity,peripheralOrganoid|AreaShape_BoundingBoxArea,peripheralOrganoid|AreaShape_ConvexArea,peripheralOrganoid|AreaShape_MeanRadius,peripheralOrganoid|AreaShape_Extent,peripheralOrganoid|AreaShape_MinorAxisLength,peripheralOrganoid|AreaShape_MedianRadius,peripheralOrganoid|AreaShape_EquivalentDiameter,peripheralOrganoid|AreaShape_Area,peripheralOrganoid|AreaShape_MaximumRadius,peripheralOrganoid|AreaShape_FormFactor,peripheralOrganoid|Intensity_IntegratedIntensity_TUJ1,peripheralOrganoid|Intensity_IntegratedIntensity_NESTIN,peripheralOrganoid|Intensity_IntegratedIntensity_MAP2,peripheralOrganoid|Intensity_IntegratedIntensity_DNA,peripheralOrganoid|Intensity_MaxIntensity_TUJ1,peripheralOrganoid|Intensity_MaxIntensity_NESTIN,peripheralOrganoid|Intensity_MaxIntensity_DNA,peripheralOrganoid|Intensity_MaxIntensity_MAP2,peripheralOrganoid|Intensity_MaxIntensityEdge_MAP2,peripheralOrganoid|Intensity_MaxIntensityEdge_TUJ1,peripheralOrganoid|Intensity_MaxIntensityEdge_DNA,peripheralOrganoid|Intensity_MaxIntensityEdge_NESTIN,peripheralOrganoid|Intensity_MADIntensity_NESTIN,peripheralOrganoid|Intensity_MADIntensity_MAP2,peripheralOrganoid|Intensity_MADIntensity_DNA,peripheralOrganoid|Intensity_MADIntensity_TUJ1,peripheralOrganoid|Intensity_MeanIntensityEdge_DNA,peripheralOrganoid|Intensity_MeanIntensityEdge_TUJ1,peripheralOrganoid|Intensity_MeanIntensityEdge_NESTIN,peripheralOrganoid|Intensity_MeanIntensityEdge_MAP2,peripheralOrganoid|Intensity_MassDisplacement_MAP2,peripheralOrganoid|Intensity_MassDisplacement_NESTIN,peripheralOrganoid|Intensity_MassDisplacement_TUJ1,peripheralOrganoid|Intensity_MassDisplacement_DNA,peripheralOrganoid|Intensity_LowerQuartileIntensity_TUJ1,peripheralOrganoid|Intensity_LowerQuartileIntensity_NESTIN,peripheralOrganoid|Intensity_LowerQuartileIntensity_DNA,peripheralOrganoid|Intensity_LowerQuartileIntensity_MAP2,peripheralOrganoid|Intensity_MedianIntensity_TUJ1,peripheralOrganoid|Intensity_MedianIntensity_DNA,peripheralOrganoid|Intensity_MedianIntensity_MAP2,peripheralOrganoid|Intensity_MedianIntensity_NESTIN,peripheralOrganoid|Intensity_MinIntensity_DNA,peripheralOrganoid|Intensity_MinIntensity_MAP2,peripheralOrganoid|Intensity_MinIntensity_NESTIN,peripheralOrganoid|Intensity_MinIntensity_TUJ1,peripheralOrganoid|Intensity_StdIntensityEdge_NESTIN,peripheralOrganoid|Intensity_StdIntensityEdge_TUJ1,peripheralOrganoid|Intensity_StdIntensityEdge_MAP2,peripheralOrganoid|Intensity_StdIntensityEdge_DNA,peripheralOrganoid|Intensity_MinIntensityEdge_TUJ1,peripheralOrganoid|Intensity_MinIntensityEdge_DNA,peripheralOrganoid|Intensity_MinIntensityEdge_NESTIN,peripheralOrganoid|Intensity_MinIntensityEdge_MAP2,peripheralOrganoid|Intensity_IntegratedIntensityEdge_MAP2,peripheralOrganoid|Intensity_IntegratedIntensityEdge_TUJ1,peripheralOrganoid|Intensity_IntegratedIntensityEdge_DNA,peripheralOrganoid|Intensity_IntegratedIntensityEdge_NESTIN,peripheralOrganoid|Intensity_StdIntensity_TUJ1,peripheralOrganoid|Intensity_StdIntensity_MAP2,peripheralOrganoid|Intensity_StdIntensity_DNA,peripheralOrganoid|Intensity_StdIntensity_NESTIN,peripheralOrganoid|Intensity_MeanIntensity_MAP2,peripheralOrganoid|Intensity_MeanIntensity_TUJ1,peripheralOrganoid|Intensity_MeanIntensity_DNA,peripheralOrganoid|Intensity_MeanIntensity_NESTIN,peripheralOrganoid|Intensity_UpperQuartileIntensity_NESTIN,peripheralOrganoid|Intensity_UpperQuartileIntensity_DNA,peripheralOrganoid|Intensity_UpperQuartileIntensity_MAP2,peripheralOrganoid|Intensity_UpperQuartileIntensity_TUJ1,peripheralOrganoid|Parent_Organoid,peripheralOrganoid|Number_Object_Number,network|Location_Center_X,network|Location_Center_Y,network|Parent_Organoid,network|Parent_Dilate_nuclei,network|Number_Object_Number,Organoid|Parent_nuclei,Organoid|AreaShape_Compactness,Organoid|AreaShape_ConvexArea,Organoid|AreaShape_Center_Y,Organoid|AreaShape_Center_X,Organoid|AreaShape_Zernike_7_5,Organoid|AreaShape_Zernike_7_7,Organoid|AreaShape_Zernike_7_3,Organoid|AreaShape_Zernike_7_1,Organoid|AreaShape_Zernike_8_8,Organoid|AreaShape_Zernike_8_4,Organoid|AreaShape_Zernike_8_6,Organoid|AreaShape_Zernike_8_2,Organoid|AreaShape_Zernike_8_0,Organoid|AreaShape_Zernike_6_0,Organoid|AreaShape_Zernike_6_2,Organoid|AreaShape_Zernike_6_6,Organoid|AreaShape_Zernike_6_4,Organoid|AreaShape_Zernike_9_1,Organoid|AreaShape_Zernike_9_7,Organoid|AreaShape_Zernike_9_5,Organoid|AreaShape_Zernike_9_3,Organoid|AreaShape_Zernike_9_9,Organoid|AreaShape_Zernike_5_1,Organoid|AreaShape_Zernike_5_3,Organoid|AreaShape_Zernike_5_5,Organoid|AreaShape_Zernike_0_0,Organoid|AreaShape_Zernike_3_1,Organoid|AreaShape_Zernike_3_3,Organoid|AreaShape_Zernike_4_4,Organoid|AreaShape_Zernike_4_0,Organoid|AreaShape_Zernike_4_2,Organoid|AreaShape_Zernike_1_1,Organoid|AreaShape_Zernike_2_0,Organoid|AreaShape_Zernike_2_2,Organoid|AreaShape_Extent,Organoid|AreaShape_EulerNumber,Organoid|AreaShape_Perimeter,Organoid|AreaShape_BoundingBoxMaximum_X,Organoid|AreaShape_BoundingBoxMaximum_Y,Organoid|AreaShape_BoundingBoxMinimum_Y,Organoid|AreaShape_BoundingBoxMinimum_X,Organoid|AreaShape_EquivalentDiameter,Organoid|AreaShape_Orientation,Organoid|AreaShape_MaxFeretDiameter,Organoid|AreaShape_MedianRadius,Organoid|AreaShape_MinorAxisLength,Organoid|AreaShape_BoundingBoxArea,Organoid|AreaShape_MinFeretDiameter,Organoid|AreaShape_MeanRadius,Organoid|AreaShape_FormFactor,Organoid|AreaShape_Area,Organoid|AreaShape_Solidity,Organoid|AreaShape_MajorAxisLength,Organoid|AreaShape_MaximumRadius,Organoid|AreaShape_Eccentricity,Organoid|Children_peripheralOrganoid_Count,Organoid|Children_network_Count,Organoid|Children_organoid_eroded_Count,Organoid|RadialDistribution_FracAtD_TUJ1_3of4,Organoid|RadialDistribution_FracAtD_TUJ1_2of4,Organoid|RadialDistribution_FracAtD_TUJ1_4of4,Organoid|RadialDistribution_FracAtD_TUJ1_1of4,Organoid|RadialDistribution_FracAtD_MAP2_4of4,Organoid|RadialDistribution_FracAtD_MAP2_1of4,Organoid|RadialDistribution_FracAtD_MAP2_3of4,Organoid|RadialDistribution_FracAtD_MAP2_2of4,Organoid|RadialDistribution_RadialCV_TUJ1_2of4,Organoid|RadialDistribution_RadialCV_TUJ1_3of4,Organoid|RadialDistribution_RadialCV_TUJ1_1of4,Organoid|RadialDistribution_RadialCV_TUJ1_4of4,Organoid|RadialDistribution_RadialCV_MAP2_4of4,Organoid|RadialDistribution_RadialCV_MAP2_2of4,Organoid|RadialDistribution_RadialCV_MAP2_3of4,Organoid|RadialDistribution_RadialCV_MAP2_1of4,Organoid|RadialDistribution_MeanFrac_TUJ1_1of4,Organoid|RadialDistribution_MeanFrac_TUJ1_2of4,Organoid|RadialDistribution_MeanFrac_TUJ1_4of4,Organoid|RadialDistribution_MeanFrac_TUJ1_3of4,Organoid|RadialDistribution_MeanFrac_MAP2_3of4,Organoid|RadialDistribution_MeanFrac_MAP2_2of4,Organoid|RadialDistribution_MeanFrac_MAP2_4of4,Organoid|RadialDistribution_MeanFrac_MAP2_1of4,Organoid|Location_Center_Y,Organoid|Location_Center_X,Organoid|Location_Center_Z,Organoid|Number_Object_Number,Experiment|Run_Timestamp,Experiment|CellProfiler_Version,Experiment|Modification_Timestamp,Experiment|Pipeline_Pipeline
     Representation of Nan/Inf:NaN
     Add a prefix to file names?:Yes
-    Filename prefix:MyExpt_
-    Overwrite existing files without warning?:No
+    Filename prefix:SpliteData_
+    Overwrite existing files without warning?:Yes
     Data to export:Image
     Combine these object measurements with those of the previous object?:No
     File name:DATA.csv
@@ -425,97 +707,7 @@ ExportToSpreadsheet:[module_num:28|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-ExportToDatabase:[module_num:29|svn_version:'Unknown'|variable_revision_number:28|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Database type:SQLite
-    Database name:DefaultDB
-    Add a prefix to table names?:Yes
-    Table prefix:MyExpt_
-    Output file location:Default Input Folder sub-folder|RUMI_microOrganoid
-    Create a CellProfiler Analyst properties file?:No
-    Database host:
-    Username:
-    Password:
-    Name the SQLite database file:DefaultDB.db
-    Calculate the per-image mean values of object measurements?:Yes
-    Calculate the per-image median values of object measurements?:Yes
-    Calculate the per-image standard deviation values of object measurements?:Yes
-    Calculate the per-well mean values of object measurements?:No
-    Calculate the per-well median values of object measurements?:No
-    Calculate the per-well standard deviation values of object measurements?:No
-    Export measurements for all objects to the database?:Select...
-    Select the objects:network
-    Maximum # of characters in a column name:64
-    Create one table per object, a single object table or a single object view?:Single object table
-    Enter an image url prepend if you plan to access your files via http:http://imageweb/images/CPALinks
-    Write image thumbnails directly to the database?:No
-    Select the images for which you want to save thumbnails:
-    Auto-scale thumbnail pixel intensities?:Yes
-    Select the plate type:None
-    Select the plate metadata:None
-    Select the well metadata:None
-    Include information for all images, using default values?:Yes
-    Properties image group count:1
-    Properties group field count:1
-    Properties filter field count:0
-    Workspace measurement count:1
-    Experiment name:MyExpt
-    Which objects should be used for locations?:None
-    Enter a phenotype class table name if using the Classifier tool in CellProfiler Analyst:
-    Export object relationships?:Yes
-    Overwrite without warning?:Never
-    Access CellProfiler Analyst images via URL?:No
-    Select the classification type:Object
-    Select an image to include:None
-    Use the image name for the display?:Yes
-    Image name:Channel1
-    Channel color:red
-    Do you want to add group fields?:No
-    Enter the name of the group:
-    Enter the per-image columns which define the group, separated by commas:ImageNumber, Image_Metadata_Plate, Image_Metadata_Well
-    Do you want to add filter fields?:No
-    Automatically create a filter for each plate?:No
-    Create a CellProfiler Analyst workspace file?:No
-    Select the measurement display tool:ScatterPlot
-    Type of measurement to plot on the X-axis:Image
-    Enter the object name:None
-    Select the X-axis measurement:None
-    Select the X-axis index:ImageNumber
-    Type of measurement to plot on the Y-axis:Image
-    Enter the object name:None
-    Select the Y-axis measurement:None
-    Select the Y-axis index:ImageNumber
-
-SaveImages:[module_num:30|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the type of image to save:Image
-    Select the image to save:DNA
-    Select method for constructing file names:Single name
-    Select image name for file prefix:DNA
-    Enter single file name:OrigBlue
-    Number of digits:4
-    Append a suffix to the image file name?:No
-    Text to append to the image name:
-    Saved file format:tiff
-    Output file location:Default Output Folder|
-    Image bit depth:8-bit integer
-    Overwrite existing files without warning?:No
-    When to save:Every cycle
-    Record the file and path information to the saved image?:No
-    Create subfolders in the output folder?:No
-    Base image folder:Elsewhere...|
-    How to save the series:T (Time)
-    Save with lossless compression?:Yes
-
-OverlayOutlines:[module_num:31|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Display outlines on a blank image?:No
-    Select image on which to display outlines:TUJ1_enhanced
-    Name the output image:OrigOverlay
-    Outline display mode:Color
-    Select method to determine brightness of outlines:Max of image
-    How to outline:Outer
-    Select outline color:Red
-    Select objects to display:nuclei
-
-OverlayOutlines:[module_num:32|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+OverlayOutlines:[module_num:47|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Display outlines on a blank image?:No
     Select image on which to display outlines:TUJ1_enhanced
     Name the output image:OrigOverlay_dilated
