@@ -391,7 +391,7 @@ RelateObjects:[module_num:31|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:RelateObjects
     Parent name:None
 
-MeasureObjectIntensity:[module_num:32|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+MeasureObjectIntensity:[module_num:32|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DistanceTransform
     Select objects to measure:Nuclei, Watershed
 
@@ -460,7 +460,7 @@ DistanceTransform:[module_num:37|svn_version:'Unknown'|variable_revision_number:
     Rescale values from 0 to 1?:Yes
 
 MeasureObjectIntensity:[module_num:38|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select images to measure:DistanceTransform
+    Select images to measure:DistanceTransform, DistanceTransform2
     Select objects to measure:Nuclei, Watershed
 
 FilterObjects:[module_num:39|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -472,19 +472,24 @@ FilterObjects:[module_num:39|svn_version:'Unknown'|variable_revision_number:10|s
     Select the location of the rules or classifier file:Elsewhere...|
     Rules or classifier file name:rules.txt
     Class number:1
-    Measurement count:1
+    Measurement count:2
     Additional object count:0
     Assign overlapping child to:Both parents
     Keep removed objects as a separate set?:No
     Name the objects removed by the filter:RemovedObjects
     Select the measurement to filter by:Intensity_MinIntensity_DistanceTransform
     Filter using a minimum measurement value?:Yes
-    Minimum value:0.15
+    Minimum value:0.02
     Filter using a maximum measurement value?:No
     Maximum value:
+    Select the measurement to filter by:Intensity_MinIntensity_DistanceTransform2
+    Filter using a minimum measurement value?:No
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:0.2
     Allow fuzzy feature matching?:No
 
-ConvertObjectsToImage:[module_num:40|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+ConvertObjectsToImage:[module_num:40|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:InnerCells_filter1
     Name the output image:im_innercells_filter1
     Select the color format:uint16
@@ -517,7 +522,7 @@ RelateObjects:[module_num:43|svn_version:'Unknown'|variable_revision_number:5|sh
     Parent name:None
 
 MeasureObjectIntensity:[module_num:44|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select images to measure:DistanceTransform2
+    Select images to measure:DistanceTransform, DistanceTransform2
     Select objects to measure:obj_innernuclei_filter1
 
 FilterObjects:[module_num:45|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -529,7 +534,7 @@ FilterObjects:[module_num:45|svn_version:'Unknown'|variable_revision_number:10|s
     Select the location of the rules or classifier file:Elsewhere...|
     Rules or classifier file name:rules.txt
     Class number:1
-    Measurement count:1
+    Measurement count:2
     Additional object count:0
     Assign overlapping child to:Both parents
     Keep removed objects as a separate set?:No
@@ -539,6 +544,11 @@ FilterObjects:[module_num:45|svn_version:'Unknown'|variable_revision_number:10|s
     Minimum value:
     Filter using a maximum measurement value?:Yes
     Maximum value:0.2
+    Select the measurement to filter by:Intensity_MinIntensity_DistanceTransform
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.15
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
     Allow fuzzy feature matching?:No
 
 MeasureObjectIntensity:[module_num:46|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -576,7 +586,7 @@ FilterObjects:[module_num:48|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.1
     Allow fuzzy feature matching?:No
 
-MeasureObjectNeighbors:[module_num:49|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+MeasureObjectNeighbors:[module_num:49|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:OutterCells
     Select neighboring objects to measure:InnerCells
     Method to determine neighbors:Expand until adjacent
@@ -670,7 +680,7 @@ FilterObjects:[module_num:54|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-FilterObjects:[module_num:55|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+FilterObjects:[module_num:55|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:OutterCells
     Name the output objects:MuralNoRegion
     Select the filtering mode:Measurements
@@ -1216,7 +1226,7 @@ SaveImages:[module_num:96|svn_version:'Unknown'|variable_revision_number:16|show
     Select the image to save:OrigOverlay_DNA_ICM
     Select method for constructing file names:Single name
     Select image name for file prefix:None
-    Enter single file name:Overlay_\g<Site>_DNA_ICM_test10E
+    Enter single file name:Overlay_\g<Site>_DNA_ICM_test10F
     Number of digits:4
     Append a suffix to the image file name?:No
     Text to append to the image name:
@@ -1236,7 +1246,7 @@ SaveImages:[module_num:97|svn_version:'Unknown'|variable_revision_number:16|show
     Select the image to save:OrigOverlay_DNA_MuralFiltered
     Select method for constructing file names:Single name
     Select image name for file prefix:None
-    Enter single file name:Overlay_\g<Site>_DNA_MuralFiltered_test10E
+    Enter single file name:Overlay_\g<Site>_DNA_MuralFiltered_test10F
     Number of digits:4
     Append a suffix to the image file name?:No
     Text to append to the image name:
@@ -1256,7 +1266,7 @@ SaveImages:[module_num:98|svn_version:'Unknown'|variable_revision_number:16|show
     Select the image to save:OrigOverlay_DNA_PolarFiltered
     Select method for constructing file names:Single name
     Select image name for file prefix:None
-    Enter single file name:Overlay_\g<Site>_DNA_PolarFiltered_test10E
+    Enter single file name:Overlay_\g<Site>_DNA_PolarFiltered_test10F
     Number of digits:4
     Append a suffix to the image file name?:No
     Text to append to the image name:
@@ -1276,7 +1286,7 @@ SaveImages:[module_num:99|svn_version:'Unknown'|variable_revision_number:16|show
     Select the image to save:OrigOverlay_DNA_Transition
     Select method for constructing file names:Single name
     Select image name for file prefix:None
-    Enter single file name:Overlay_\g<Site>_DNA_Transition_test10E
+    Enter single file name:Overlay_\g<Site>_DNA_Transition_test10F
     Number of digits:4
     Append a suffix to the image file name?:No
     Text to append to the image name:
