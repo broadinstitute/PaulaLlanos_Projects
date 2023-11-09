@@ -2,7 +2,7 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
 DateRevision:500
 GitHash:
-ModuleCount:115
+ModuleCount:111
 HasImagePlaneDetails:False
 
 Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -92,7 +92,7 @@ Resize:[module_num:6|svn_version:'Unknown'|variable_revision_number:5|show_windo
     Resizing method:Resize by a fraction or multiple of the original size
     X Resizing factor:0.25
     Y Resizing factor:0.25
-    Z Resizing factor:1
+    Z Resizing factor:0.5
     Width (x) of the final image:100
     Height (y) of the final image:100
     # of planes (z) in the final image:10
@@ -119,7 +119,7 @@ Resize:[module_num:8|svn_version:'Unknown'|variable_revision_number:5|show_windo
     Resizing method:Resize by a fraction or multiple of the original size
     X Resizing factor:0.25
     Y Resizing factor:0.25
-    Z Resizing factor:1
+    Z Resizing factor:0.5
     Width (x) of the final image:100
     Height (y) of the final image:100
     # of planes (z) in the final image:10
@@ -146,7 +146,7 @@ Resize:[module_num:10|svn_version:'Unknown'|variable_revision_number:5|show_wind
     Resizing method:Resize by a fraction or multiple of the original size
     X Resizing factor:0.25
     Y Resizing factor:0.25
-    Z Resizing factor:1
+    Z Resizing factor:0.5
     Width (x) of the final image:100
     Height (y) of the final image:100
     # of planes (z) in the final image:10
@@ -173,7 +173,7 @@ Resize:[module_num:12|svn_version:'Unknown'|variable_revision_number:5|show_wind
     Resizing method:Resize by a fraction or multiple of the original size
     X Resizing factor:0.25
     Y Resizing factor:0.25
-    Z Resizing factor:1
+    Z Resizing factor:0.5
     Width (x) of the final image:100
     Height (y) of the final image:100
     # of planes (z) in the final image:10
@@ -246,7 +246,7 @@ ImageMath:[module_num:18|svn_version:'Unknown'|variable_revision_number:5|show_w
 
 Threshold:[module_num:19|svn_version:'Unknown'|variable_revision_number:12|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:ImageAfterMath
-    Name the output image:Threshold_nuclei
+    Name the output image:Threshold
     Threshold strategy:Global
     Thresholding method:Otsu
     Threshold smoothing scale:0.0
@@ -265,36 +265,10 @@ Threshold:[module_num:19|svn_version:'Unknown'|variable_revision_number:12|show_
     # of deviations:2.0
     Thresholding method:Minimum Cross-Entropy
 
-Closing:[module_num:20|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:Threshold_nuclei
-    Name the output image:Closing_nuclei
-    Structuring element:ball,10
-
-Threshold:[module_num:21|svn_version:'Unknown'|variable_revision_number:12|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input image:Smooth_DNA
-    Name the output image:Threshold_nuclei
-    Threshold strategy:Global
-    Thresholding method:Otsu
-    Threshold smoothing scale:0.0
-    Threshold correction factor:1
-    Lower and upper bounds on threshold:0.001,1.0
-    Manual threshold:0.0
-    Select the measurement to threshold with:None
-    Two-class or three-class thresholding?:Two classes
-    Log transform before thresholding?:Yes
-    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
-    Size of adaptive window:50
-    Lower outlier fraction:0.05
-    Upper outlier fraction:0.05
-    Averaging method:Mean
-    Variance method:Standard deviation
-    # of deviations:2.0
-    Thresholding method:Minimum Cross-Entropy
-
-Watershed:[module_num:22|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:Threshold_nuclei
+Watershed:[module_num:20|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Threshold
     Name the output object:Blastoid
-    Use advanced settings?:Yes
+    Use advanced settings?:No
     Generate from:Distance
     Markers:None
     Mask:DNA_HE
@@ -312,74 +286,33 @@ Watershed:[module_num:22|svn_version:'Unknown'|variable_revision_number:3|show_w
     Maximum number of seeds:-1
     Structuring element for seed dilation:ball,20
 
-FillObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input object:Blastoid
-    Name the output object:FillObjects
-    Minimum hole size:100
-    Planewise fill:Yes
-    Filling method:Holes
-
-ConvertObjectsToImage:[module_num:24|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+ConvertObjectsToImage:[module_num:21|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Blastoid
     Name the output image:BlastoidImg
     Select the color format:Binary (black & white)
     Select the colormap:Default
 
-ConvertImageToObjects:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input image:Closing_nuclei
+ConvertImageToObjects:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:BlastoidImg
     Name the output object:Blastoid2
     Convert to boolean image:Yes
     Preserve original labels:No
     Background label:0
     Connectivity:0
 
-ConvertImageToObjects:[module_num:26|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input image:Threshold_nuclei
-    Name the output object:Blastoid_nuclei
-    Convert to boolean image:Yes
-    Preserve original labels:No
-    Background label:0
-    Connectivity:0
-
-ConvertImageToObjects:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input image:Closing_nuclei
-    Name the output object:Blastoid_nuclei
-    Convert to boolean image:Yes
-    Preserve original labels:No
-    Background label:0
-    Connectivity:0
-
-FillObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+FillObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:Blastoid2
     Name the output object:FillObjects
-    Minimum hole size:10
-    Planewise fill:No
-    Filling method:Convex hull
-
-FillObjects:[module_num:29|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input object:Blastoid2
-    Name the output object:FillObjects_cavity
-    Minimum hole size:10
-    Planewise fill:No
+    Minimum hole size:100
+    Planewise fill:Yes
     Filling method:Holes
 
-ConvertObjectsToImage:[module_num:30|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input objects:FillObjects_cavity
-    Name the output image:Blastoid_cavity
-    Select the color format:Binary (black & white)
-    Select the colormap:Default
-
-DistanceTransform:[module_num:31|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input image:Blastoid_cavity
-    Name the output image:DistanceTransform_cavity
-    Rescale values from 0 to 1?:Yes
-
-MeasureObjectSizeShape:[module_num:32|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSizeShape:[module_num:24|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select object sets to measure:FillObjects
-    Calculate the Zernike features?:No
+    Calculate the Zernike features?:Yes
     Calculate the advanced features?:No
 
-FilterObjects:[module_num:33|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:25|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['/Users/llanos/Documents/3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/rescale/241148_007_Krt8.tiff', '/Users/llanos/Documents/3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/rescale/241148_007_EcadCM.tiff', '/Users/llanos/Documents/3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/rescale/241148_007_DNA.tiff', '/Users/llanos/Documents/3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/rescale/241148_007_Cdx2.tiff']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:FillObjects
     Name the output objects:FillObject
     Select the filtering mode:Measurements
@@ -400,7 +333,7 @@ FilterObjects:[module_num:33|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-RelateObjects:[module_num:34|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:26|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:FillObject
     Child objects:RunStarDist
     Calculate child-parent distances?:None
@@ -410,18 +343,18 @@ RelateObjects:[module_num:34|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:Nuclei
     Parent name:None
 
-ConvertObjectsToImage:[module_num:35|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertObjectsToImage:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:FillObject
     Name the output image:Blastoid2
     Select the color format:Binary (black & white)
     Select the colormap:Default
 
-DistanceTransform:[module_num:36|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+DistanceTransform:[module_num:28|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Blastoid2
     Name the output image:DistanceTransform
     Rescale values from 0 to 1?:Yes
 
-OverlayOutlines:[module_num:37|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:29|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:No
     Select image on which to display outlines:DistanceTransform
     Name the output image:blastoid_distance
@@ -431,19 +364,19 @@ OverlayOutlines:[module_num:37|svn_version:'Unknown'|variable_revision_number:4|
     Select outline color:Red
     Select objects to display:FillObjects
 
-ConvertObjectsToImage:[module_num:38|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertObjectsToImage:[module_num:30|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Nuclei
     Name the output image:Markers
     Select the color format:uint16
     Select the colormap:Default
 
-Watershed:[module_num:39|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+Watershed:[module_num:31|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:ResizeEcadCM
     Name the output object:Watershed
     Use advanced settings?:No
     Generate from:Markers
     Markers:Markers
-    Mask:Threshold_nuclei
+    Mask:Threshold
     Connectivity:3
     Compactness:0.1
     Footprint:8
@@ -458,7 +391,7 @@ Watershed:[module_num:39|svn_version:'Unknown'|variable_revision_number:3|show_w
     Maximum number of seeds:-1
     Structuring element for seed dilation:Disk,1
 
-RelateObjects:[module_num:40|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:32|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Nuclei
     Child objects:Watershed
     Calculate child-parent distances?:None
@@ -468,11 +401,11 @@ RelateObjects:[module_num:40|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:RelateObjects
     Parent name:None
 
-MeasureObjectIntensity:[module_num:41|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:33|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DistanceTransform
     Select objects to measure:Nuclei, Watershed
 
-MeasureObjectNeighbors:[module_num:42|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectNeighbors:[module_num:34|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:Nuclei
     Select neighboring objects to measure:Nuclei
     Method to determine neighbors:Adjacent
@@ -485,7 +418,7 @@ MeasureObjectNeighbors:[module_num:42|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-FilterObjects:[module_num:43|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:35|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:Nuclei
     Name the output objects:PolarCell
     Select the filtering mode:Measurements
@@ -506,13 +439,13 @@ FilterObjects:[module_num:43|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-ConvertObjectsToImage:[module_num:44|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertObjectsToImage:[module_num:36|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Select the input objects:PolarCell
     Name the output image:PolarCell
     Select the color format:Binary (black & white)
     Select the colormap:Default
 
-ImageMath:[module_num:45|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:37|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:Invert
     Raise the power of the result by:1.0
     Multiply the result by:1.0
@@ -531,16 +464,16 @@ ImageMath:[module_num:45|svn_version:'Unknown'|variable_revision_number:5|show_w
     Multiply the second image by:1.0
     Measurement:
 
-DistanceTransform:[module_num:46|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+DistanceTransform:[module_num:38|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:NotPolarCell
     Name the output image:DistanceTransform2
     Rescale values from 0 to 1?:Yes
 
-MeasureObjectIntensity:[module_num:47|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:39|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DistanceTransform, DistanceTransform2
     Select objects to measure:Nuclei, Watershed
 
-FilterObjects:[module_num:48|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:40|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:Watershed
     Name the output objects:InnerCells_filter1
     Select the filtering mode:Measurements
@@ -566,13 +499,13 @@ FilterObjects:[module_num:48|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.2
     Allow fuzzy feature matching?:No
 
-ConvertObjectsToImage:[module_num:49|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertObjectsToImage:[module_num:41|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:InnerCells_filter1
     Name the output image:im_innercells_filter1
     Select the color format:uint16
     Select the colormap:Default
 
-MaskImage:[module_num:50|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MaskImage:[module_num:42|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:im_innercells_filter1
     Name the output image:im_innernuclei_filter1
     Use objects or an image as a mask?:Objects
@@ -580,7 +513,7 @@ MaskImage:[module_num:50|svn_version:'Unknown'|variable_revision_number:3|show_w
     Select image for mask:None
     Invert the mask?:No
 
-ConvertImageToObjects:[module_num:51|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertImageToObjects:[module_num:43|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:im_innernuclei_filter1
     Name the output object:obj_innernuclei_filter1
     Convert to boolean image:No
@@ -588,7 +521,7 @@ ConvertImageToObjects:[module_num:51|svn_version:'Unknown'|variable_revision_num
     Background label:0
     Connectivity:0
 
-ConvertImageToObjects:[module_num:52|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+ConvertImageToObjects:[module_num:44|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select the input image:im_innernuclei_filter1
     Name the output object:InnerCells
     Convert to boolean image:No
@@ -596,7 +529,7 @@ ConvertImageToObjects:[module_num:52|svn_version:'Unknown'|variable_revision_num
     Background label:0
     Connectivity:0
 
-RelateObjects:[module_num:53|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+RelateObjects:[module_num:45|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Parent objects:Nuclei
     Child objects:obj_innernuclei_filter1
     Calculate child-parent distances?:None
@@ -606,11 +539,11 @@ RelateObjects:[module_num:53|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:obj_nuclei_filter1related
     Parent name:None
 
-MeasureObjectIntensity:[module_num:54|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:46|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DistanceTransform, DistanceTransform2
     Select objects to measure:obj_innernuclei_filter1
 
-FilterObjects:[module_num:55|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:47|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:obj_innernuclei_filter1
     Name the output objects:InnerCells
     Select the filtering mode:Measurements
@@ -636,7 +569,7 @@ FilterObjects:[module_num:55|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.12
     Allow fuzzy feature matching?:No
 
-FilterObjects:[module_num:56|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+FilterObjects:[module_num:48|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select the objects to filter:obj_innernuclei_filter1
     Name the output objects:InnerCells
     Select the filtering mode:Measurements
@@ -657,11 +590,11 @@ FilterObjects:[module_num:56|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.18
     Allow fuzzy feature matching?:No
 
-MeasureObjectIntensity:[module_num:57|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:49|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Select images to measure:DistanceTransform2
     Select objects to measure:InnerCells
 
-RelateObjects:[module_num:58|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:50|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Nuclei
     Child objects:InnerCells
     Calculate child-parent distances?:None
@@ -671,7 +604,7 @@ RelateObjects:[module_num:58|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:obj_nuclei_filter1related
     Parent name:None
 
-FilterObjects:[module_num:59|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:51|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:Nuclei
     Name the output objects:OutterCells
     Select the filtering mode:Measurements
@@ -692,7 +625,7 @@ FilterObjects:[module_num:59|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.1
     Allow fuzzy feature matching?:No
 
-MeasureObjectNeighbors:[module_num:60|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectNeighbors:[module_num:52|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:OutterCells
     Select neighboring objects to measure:InnerCells
     Method to determine neighbors:Expand until adjacent
@@ -705,7 +638,7 @@ MeasureObjectNeighbors:[module_num:60|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-MeasureObjectNeighbors:[module_num:61|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectNeighbors:[module_num:53|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:InnerCells
     Select neighboring objects to measure:OutterCells
     Method to determine neighbors:Expand until adjacent
@@ -718,7 +651,7 @@ MeasureObjectNeighbors:[module_num:61|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-MeasureObjectNeighbors:[module_num:62|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+MeasureObjectNeighbors:[module_num:54|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select objects to measure:OutterCells
     Select neighboring objects to measure:InnerCells
     Method to determine neighbors:Expand until adjacent
@@ -731,7 +664,7 @@ MeasureObjectNeighbors:[module_num:62|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-FilterObjects:[module_num:63|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+FilterObjects:[module_num:55|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select the objects to filter:OutterCells
     Name the output objects:PolarFiltered0
     Select the filtering mode:Measurements
@@ -752,7 +685,7 @@ FilterObjects:[module_num:63|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-MeasureObjectNeighbors:[module_num:64|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+MeasureObjectNeighbors:[module_num:56|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select objects to measure:OutterCells
     Select neighboring objects to measure:PolarFiltered0
     Method to determine neighbors:Expand until adjacent
@@ -765,7 +698,7 @@ MeasureObjectNeighbors:[module_num:64|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-FilterObjects:[module_num:65|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:57|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:OutterCells
     Name the output objects:PolarFiltered
     Select the filtering mode:Measurements
@@ -786,7 +719,7 @@ FilterObjects:[module_num:65|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-FilterObjects:[module_num:66|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:58|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:OutterCells
     Name the output objects:MuralNoRegion
     Select the filtering mode:Measurements
@@ -807,11 +740,11 @@ FilterObjects:[module_num:66|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.9
     Allow fuzzy feature matching?:No
 
-MeasureObjectIntensity:[module_num:67|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:59|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DistanceTransform2
     Select objects to measure:MuralNoRegion
 
-FilterObjects:[module_num:68|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:60|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:MuralNoRegion
     Name the output objects:MuralNoRegion
     Select the filtering mode:Measurements
@@ -823,7 +756,7 @@ FilterObjects:[module_num:68|svn_version:'Unknown'|variable_revision_number:10|s
     Measurement count:1
     Additional object count:0
     Assign overlapping child to:Both parents
-    Keep removed objects as a separate set?:Yes
+    Keep removed objects as a separate set?:No
     Name the objects removed by the filter:RemovedObjects
     Select the measurement to filter by:Intensity_MinIntensity_DistanceTransform2
     Filter using a minimum measurement value?:Yes
@@ -832,10 +765,30 @@ FilterObjects:[module_num:68|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:
     Allow fuzzy feature matching?:No
 
-MeasureObjectNeighbors:[module_num:69|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select objects to measure:PolarFiltered
-    Select neighboring objects to measure:MuralNoRegion
-    Method to determine neighbors:Expand until adjacent
+RelateObjects:[module_num:61|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:MuralNoRegion
+    Child objects:Watershed
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:MuralNoRegion_cells
+    Parent name:None
+
+RelateObjects:[module_num:62|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:PolarFiltered
+    Child objects:Watershed
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:PolarFiltered_cells
+    Parent name:None
+
+MeasureObjectNeighbors:[module_num:63|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:PolarFiltered_cells
+    Select neighboring objects to measure:MuralNoRegion_cells
+    Method to determine neighbors:Adjacent
     Neighbor distance:10
     Consider objects discarded for touching image border?:Yes
     Retain the image of objects colored by numbers of neighbors?:No
@@ -845,10 +798,10 @@ MeasureObjectNeighbors:[module_num:69|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-MeasureObjectNeighbors:[module_num:70|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select objects to measure:MuralNoRegion
-    Select neighboring objects to measure:PolarFiltered
-    Method to determine neighbors:Expand until adjacent
+MeasureObjectNeighbors:[module_num:64|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:MuralNoRegion_cells
+    Select neighboring objects to measure:PolarFiltered_cells
+    Method to determine neighbors:Adjacent
     Neighbor distance:10
     Consider objects discarded for touching image border?:Yes
     Retain the image of objects colored by numbers of neighbors?:No
@@ -858,8 +811,8 @@ MeasureObjectNeighbors:[module_num:70|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-FilterObjects:[module_num:71|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the objects to filter:MuralNoRegion
+FilterObjects:[module_num:65|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:MuralNoRegion_cells
     Name the output objects:MuralFiltered
     Select the filtering mode:Measurements
     Select the filtering method:Limits
@@ -872,14 +825,34 @@ FilterObjects:[module_num:71|svn_version:'Unknown'|variable_revision_number:10|s
     Assign overlapping child to:Both parents
     Keep removed objects as a separate set?:Yes
     Name the objects removed by the filter:TransitionZone
-    Select the measurement to filter by:Neighbors_NumberOfNeighbors_PolarFiltered_Expanded
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_PolarFiltered_cells_Adjacent
     Filter using a minimum measurement value?:No
     Minimum value:0.0
     Filter using a maximum measurement value?:Yes
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-MeasureObjectNeighbors:[module_num:72|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:66|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:MuralFiltered
+    Child objects:Nuclei
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:MuralFiltered
+    Parent name:None
+
+RelateObjects:[module_num:67|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:TransitionZone
+    Child objects:Nuclei
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:TransitionZone
+    Parent name:None
+
+MeasureObjectNeighbors:[module_num:68|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:MuralFiltered
     Select neighboring objects to measure:TransitionZone
     Method to determine neighbors:Within a specified distance
@@ -892,7 +865,7 @@ MeasureObjectNeighbors:[module_num:72|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-FilterObjects:[module_num:73|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:69|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:MuralFiltered
     Name the output objects:MuralFiltered2
     Select the filtering mode:Measurements
@@ -913,7 +886,7 @@ FilterObjects:[module_num:73|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-MeasureObjectNeighbors:[module_num:74|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectNeighbors:[module_num:70|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:MuralFiltered2
     Select neighboring objects to measure:TransitionZone2
     Method to determine neighbors:Within a specified distance
@@ -926,7 +899,7 @@ MeasureObjectNeighbors:[module_num:74|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-FilterObjects:[module_num:75|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:71|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:MuralFiltered2
     Name the output objects:MuralFiltered3
     Select the filtering mode:Measurements
@@ -947,7 +920,7 @@ FilterObjects:[module_num:75|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-MeasureObjectNeighbors:[module_num:76|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectNeighbors:[module_num:72|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:MuralFiltered3
     Select neighboring objects to measure:TransitionZone3
     Method to determine neighbors:Within a specified distance
@@ -960,7 +933,7 @@ MeasureObjectNeighbors:[module_num:76|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-FilterObjects:[module_num:77|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:73|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:MuralFiltered3
     Name the output objects:MuralFiltered4
     Select the filtering mode:Measurements
@@ -981,7 +954,7 @@ FilterObjects:[module_num:77|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-ResizeObjects:[module_num:78|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:74|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:InnerCells
     Name the output object:ICM_orig
     Method:Match Image
@@ -993,7 +966,7 @@ ResizeObjects:[module_num:78|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ResizeObjects:[module_num:79|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:75|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:Nuclei
     Name the output object:Nuclei_orig
     Method:Match Image
@@ -1005,7 +978,7 @@ ResizeObjects:[module_num:79|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ResizeObjects:[module_num:80|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:76|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:Watershed
     Name the output object:Cells_orig
     Method:Match Image
@@ -1017,7 +990,7 @@ ResizeObjects:[module_num:80|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ResizeObjects:[module_num:81|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:77|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:PolarFiltered
     Name the output object:PolarFiltered_orig
     Method:Match Image
@@ -1029,7 +1002,7 @@ ResizeObjects:[module_num:81|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ResizeObjects:[module_num:82|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:78|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:MuralFiltered
     Name the output object:MuralFiltered_orig
     Method:Match Image
@@ -1041,7 +1014,7 @@ ResizeObjects:[module_num:82|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ResizeObjects:[module_num:83|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:79|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:TransitionZone
     Name the output object:Transition_orig
     Method:Match Image
@@ -1053,7 +1026,7 @@ ResizeObjects:[module_num:83|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ResizeObjects:[module_num:84|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:80|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:TransitionZone2
     Name the output object:Transition2_orig
     Method:Match Image
@@ -1065,7 +1038,7 @@ ResizeObjects:[module_num:84|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ResizeObjects:[module_num:85|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:81|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:TransitionZone3
     Name the output object:Transition3_org
     Method:Match Image
@@ -1077,7 +1050,7 @@ ResizeObjects:[module_num:85|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ResizeObjects:[module_num:86|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:82|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:TransitionZone4
     Name the output object:Transition4_orig
     Method:Match Image
@@ -1089,7 +1062,7 @@ ResizeObjects:[module_num:86|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ResizeObjects:[module_num:87|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:83|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:MuralFiltered4
     Name the output object:Transition5_orig
     Method:Match Image
@@ -1101,7 +1074,7 @@ ResizeObjects:[module_num:87|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ResizeObjects:[module_num:88|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ResizeObjects:[module_num:84|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:PolarCell
     Name the output object:PolarCell_orig
     Method:Match Image
@@ -1113,13 +1086,13 @@ ResizeObjects:[module_num:88|svn_version:'Unknown'|variable_revision_number:3|sh
     Planes (Z):10
     Select the image with the desired dimensions:DNA
 
-ConvertObjectsToImage:[module_num:89|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertObjectsToImage:[module_num:85|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:PolarCell_orig
     Name the output image:PolarCell
     Select the color format:Binary (black & white)
     Select the colormap:Default
 
-ImageMath:[module_num:90|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:86|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:Invert
     Raise the power of the result by:1.0
     Multiply the result by:1.0
@@ -1130,20 +1103,20 @@ ImageMath:[module_num:90|svn_version:'Unknown'|variable_revision_number:5|show_w
     Ignore the image masks?:No
     Name the output image:NotPolarCell_orig
     Image or measurement?:Image
-    Select the first image:PolarCell
-    Multiply the first image by:1.0
+    Select the image:PolarCell
+    Multiply the image by:1.0
     Measurement:
     Image or measurement?:Image
-    Select the second image:None
-    Multiply the second image by:1.0
+    Select the image:None
+    Multiply the image by:1.0
     Measurement:
 
-DistanceTransform:[module_num:91|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+DistanceTransform:[module_num:87|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:NotPolarCell_orig
     Name the output image:DistanceTransform2_orig
     Rescale values from 0 to 1?:Yes
 
-RelateObjects:[module_num:92|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:88|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Nuclei_orig
     Child objects:PolarFiltered_orig
     Calculate child-parent distances?:None
@@ -1153,7 +1126,7 @@ RelateObjects:[module_num:92|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:RelateObjects
     Parent name:None
 
-RelateObjects:[module_num:93|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:89|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Nuclei_orig
     Child objects:MuralFiltered_orig
     Calculate child-parent distances?:None
@@ -1163,7 +1136,7 @@ RelateObjects:[module_num:93|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:RelateObjects
     Parent name:None
 
-RelateObjects:[module_num:94|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:90|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Nuclei_orig
     Child objects:ICM_orig
     Calculate child-parent distances?:None
@@ -1173,7 +1146,7 @@ RelateObjects:[module_num:94|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:RelateObjects
     Parent name:None
 
-RelateObjects:[module_num:95|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:91|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Nuclei_orig
     Child objects:Transition_orig
     Calculate child-parent distances?:None
@@ -1183,7 +1156,7 @@ RelateObjects:[module_num:95|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:RelateObjects
     Parent name:None
 
-RelateObjects:[module_num:96|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:92|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Nuclei_orig
     Child objects:Cells_orig
     Calculate child-parent distances?:None
@@ -1193,7 +1166,7 @@ RelateObjects:[module_num:96|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:RelateObjects
     Parent name:None
 
-OverlayOutlines:[module_num:97|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:93|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:Yes
     Select image on which to display outlines:DNA_HE
     Name the output image:OrigOverlay_DNA_PolarFiltered
@@ -1203,7 +1176,7 @@ OverlayOutlines:[module_num:97|svn_version:'Unknown'|variable_revision_number:4|
     Select outline color:Red
     Select objects to display:PolarFiltered_orig
 
-OverlayOutlines:[module_num:98|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:94|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:Yes
     Select image on which to display outlines:DNA_HE
     Name the output image:OrigOverlay_DNA_MuralFiltered
@@ -1213,7 +1186,7 @@ OverlayOutlines:[module_num:98|svn_version:'Unknown'|variable_revision_number:4|
     Select outline color:Red
     Select objects to display:MuralFiltered_orig
 
-OverlayOutlines:[module_num:99|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:95|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:Yes
     Select image on which to display outlines:DNA_HE
     Name the output image:OrigOverlay_DNA_Transition
@@ -1223,7 +1196,7 @@ OverlayOutlines:[module_num:99|svn_version:'Unknown'|variable_revision_number:4|
     Select outline color:Red
     Select objects to display:Transition_orig
 
-OverlayOutlines:[module_num:100|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:96|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Display outlines on a blank image?:Yes
     Select image on which to display outlines:DNA_HE
     Name the output image:OrigOverlay_DNA_ICM
@@ -1233,12 +1206,12 @@ OverlayOutlines:[module_num:100|svn_version:'Unknown'|variable_revision_number:4
     Select outline color:Red
     Select objects to display:ICM_orig
 
-MeasureObjectSizeShape:[module_num:101|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+MeasureObjectSizeShape:[module_num:97|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select object sets to measure:Cells_orig, Nuclei_orig
     Calculate the Zernike features?:No
     Calculate the advanced features?:Yes
 
-MeasureObjectNeighbors:[module_num:102|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+MeasureObjectNeighbors:[module_num:98|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select objects to measure:Nuclei_orig
     Select neighboring objects to measure:Nuclei_orig
     Method to determine neighbors:Expand until adjacent
@@ -1251,21 +1224,21 @@ MeasureObjectNeighbors:[module_num:102|svn_version:'Unknown'|variable_revision_n
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-MeasureObjectIntensity:[module_num:103|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+MeasureObjectIntensity:[module_num:99|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select images to measure:Cdx2, DNA, DistanceTransform2_orig, EcadCM, Krt8
     Select objects to measure:Cells_orig, Nuclei_orig
 
-CalculateMath:[module_num:104|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+CalculateMath:[module_num:100|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Name the output measurement:nuclear_Cdx2overDNA
     Operation:Divide
-    Select the numerator measurement type:Object
-    Select the numerator objects:Nuclei_orig
-    Select the numerator measurement:Intensity_MeanIntensity_Cdx2
+    Select the first operand measurement type:Object
+    Select the first operand objects:Nuclei_orig
+    Select the first operand measurement:Intensity_MeanIntensity_Cdx2
     Multiply the above operand by:1.0
     Raise the power of above operand by:1.0
-    Select the denominator measurement type:Object
-    Select the denominator objects:Cells_orig
-    Select the denominator measurement:Intensity_MeanIntensity_DNA
+    Select the second operand measurement type:Object
+    Select the second operand objects:Cells_orig
+    Select the second operand measurement:Intensity_MeanIntensity_DNA
     Multiply the above operand by:1.0
     Raise the power of above operand by:1.0
     Take log10 of result?:No
@@ -1279,17 +1252,17 @@ CalculateMath:[module_num:104|svn_version:'Unknown'|variable_revision_number:3|s
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-CalculateMath:[module_num:105|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+CalculateMath:[module_num:101|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Name the output measurement:Cell_Krt8overDNA
     Operation:Divide
-    Select the numerator measurement type:Object
-    Select the numerator objects:Cells_orig
-    Select the numerator measurement:Intensity_MeanIntensity_Krt8
+    Select the first operand measurement type:Object
+    Select the first operand objects:Cells_orig
+    Select the first operand measurement:Intensity_MeanIntensity_Krt8
     Multiply the above operand by:1.0
     Raise the power of above operand by:1.0
-    Select the denominator measurement type:Object
-    Select the denominator objects:Nuclei_orig
-    Select the denominator measurement:Intensity_MeanIntensity_DNA
+    Select the second operand measurement type:Object
+    Select the second operand objects:Nuclei_orig
+    Select the second operand measurement:Intensity_MeanIntensity_DNA
     Multiply the above operand by:1.0
     Raise the power of above operand by:1.0
     Take log10 of result?:No
@@ -1303,17 +1276,17 @@ CalculateMath:[module_num:105|svn_version:'Unknown'|variable_revision_number:3|s
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-CalculateMath:[module_num:106|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+CalculateMath:[module_num:102|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Name the output measurement:EcadCMoverDNA
     Operation:Divide
-    Select the numerator measurement type:Object
-    Select the numerator objects:Cells_orig
-    Select the numerator measurement:Intensity_MeanIntensity_EcadCM
+    Select the first operand measurement type:Object
+    Select the first operand objects:Cells_orig
+    Select the first operand measurement:Intensity_MeanIntensity_EcadCM
     Multiply the above operand by:1.0
     Raise the power of above operand by:1.0
-    Select the denominator measurement type:Object
-    Select the denominator objects:Nuclei_orig
-    Select the denominator measurement:Intensity_MeanIntensity_DNA
+    Select the second operand measurement type:Object
+    Select the second operand objects:Nuclei_orig
+    Select the second operand measurement:Intensity_MeanIntensity_DNA
     Multiply the above operand by:1.0
     Raise the power of above operand by:1.0
     Take log10 of result?:No
@@ -1327,7 +1300,7 @@ CalculateMath:[module_num:106|svn_version:'Unknown'|variable_revision_number:3|s
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-SaveImages:[module_num:107|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:103|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:OrigOverlay_DNA_ICM
     Select method for constructing file names:Single name
@@ -1347,7 +1320,7 @@ SaveImages:[module_num:107|svn_version:'Unknown'|variable_revision_number:16|sho
     How to save the series:T (Time)
     Save with lossless compression?:Yes
 
-SaveImages:[module_num:108|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:104|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:OrigOverlay_DNA_MuralFiltered
     Select method for constructing file names:Single name
@@ -1367,7 +1340,7 @@ SaveImages:[module_num:108|svn_version:'Unknown'|variable_revision_number:16|sho
     How to save the series:T (Time)
     Save with lossless compression?:Yes
 
-SaveImages:[module_num:109|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:105|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:OrigOverlay_DNA_PolarFiltered
     Select method for constructing file names:Single name
@@ -1387,7 +1360,7 @@ SaveImages:[module_num:109|svn_version:'Unknown'|variable_revision_number:16|sho
     How to save the series:T (Time)
     Save with lossless compression?:Yes
 
-SaveImages:[module_num:110|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:106|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:OrigOverlay_DNA_Transition
     Select method for constructing file names:Single name
@@ -1407,7 +1380,7 @@ SaveImages:[module_num:110|svn_version:'Unknown'|variable_revision_number:16|sho
     How to save the series:T (Time)
     Save with lossless compression?:Yes
 
-SaveImages:[module_num:111|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:True]
+SaveImages:[module_num:107|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:True]
     Select the type of image to save:Image
     Select the image to save:DNA
     Select method for constructing file names:Single name
@@ -1427,7 +1400,7 @@ SaveImages:[module_num:111|svn_version:'Unknown'|variable_revision_number:16|sho
     How to save the series:T (Time)
     Save with lossless compression?:Yes
 
-SaveImages:[module_num:112|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+SaveImages:[module_num:108|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
     Select the type of image to save:Image
     Select the image to save:ResizeDNA
     Select method for constructing file names:Single name
@@ -1447,7 +1420,7 @@ SaveImages:[module_num:112|svn_version:'Unknown'|variable_revision_number:16|sho
     How to save the series:T (Time)
     Save with lossless compression?:Yes
 
-SaveImages:[module_num:113|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:109|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:ResizeEcadCM
     Select method for constructing file names:Single name
@@ -1467,7 +1440,7 @@ SaveImages:[module_num:113|svn_version:'Unknown'|variable_revision_number:16|sho
     How to save the series:T (Time)
     Save with lossless compression?:Yes
 
-SaveImages:[module_num:114|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:110|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:ResizeKrt8
     Select method for constructing file names:Single name
@@ -1487,7 +1460,7 @@ SaveImages:[module_num:114|svn_version:'Unknown'|variable_revision_number:16|sho
     How to save the series:T (Time)
     Save with lossless compression?:Yes
 
-SaveImages:[module_num:115|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:111|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:ResizeCdx2
     Select method for constructing file names:Single name
