@@ -439,7 +439,7 @@ FilterObjects:[module_num:35|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-ConvertObjectsToImage:[module_num:36|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+ConvertObjectsToImage:[module_num:36|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:PolarCell
     Name the output image:PolarCell
     Select the color format:Binary (black & white)
@@ -557,16 +557,16 @@ FilterObjects:[module_num:47|svn_version:'Unknown'|variable_revision_number:10|s
     Assign overlapping child to:Both parents
     Keep removed objects as a separate set?:No
     Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:Intensity_MeanIntensity_DistanceTransform2
+    Filter using a minimum measurement value?:No
+    Minimum value:0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:0.2
     Select the measurement to filter by:Intensity_MinIntensity_DistanceTransform
     Filter using a minimum measurement value?:Yes
     Minimum value:0.1
     Filter using a maximum measurement value?:No
-    Maximum value:0.18
-    Select the measurement to filter by:Intensity_MinIntensity_DistanceTransform2
-    Filter using a minimum measurement value?:No
-    Minimum value:0.0
-    Filter using a maximum measurement value?:Yes
-    Maximum value:0.12
+    Maximum value:1.0
     Allow fuzzy feature matching?:No
 
 FilterObjects:[module_num:48|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
@@ -590,7 +590,7 @@ FilterObjects:[module_num:48|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.18
     Allow fuzzy feature matching?:No
 
-MeasureObjectIntensity:[module_num:49|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+MeasureObjectIntensity:[module_num:49|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DistanceTransform2
     Select objects to measure:InnerCells
 
