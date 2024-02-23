@@ -1,0 +1,88 @@
+
+pllanos@submit2.chtc.wisc.edu
+
+$ docker run --user $(id -u):$(id -g) --rm=true -it \
+  -v $(pwd):/scratch -w /scratch \
+  ctromanscoia/unet3d_c_elegans:0.4 /bin/bash
+
+compress the repository:
+
+#!/bin/bash
+
+# Compress the UNet repo
+tar -zcvf unet_3d.tar.gz /home/pllanos/UNet_3D_C_elegans -C UNet_3D_C_elegans/
+
+tar -C /home/tromanscoia/maddox-dbp/experiments/repo/ -zcvf /home/tromanscoia/maddox-dbp/experiments/repo/unet_3d.tar.gz UNet_3D_C_elegans/ --exclude='UNet_3D_C_elegans/.git*'
+
+
+044-start-training.sh :
+
+#!/bin/bash
+
+# Extract the repo (which also contains the data)
+tar -xvzf unet_3d.tar.gz
+
+# Move files to allow for relative python imports
+mv run_training_template.py UNet_3D_C_elegans/run_training_template.py
+mv run_inference_template.py UNet_3D_C_elegans/run_inference_template.py
+
+cd UNet_3D_C_elegans
+
+# Extract the data
+tar -xvzf data/images_stacked_channels/images_stacked_channels.tar.gz -C data/images_stacked_channels/
+tar -xvzf data/masks/masks.tar.gz -C data/masks/
+tar -xvzf data/images_test_stacked_channels/images_test_stacked.tar.gz -C data/images_test_stacked_channels/
+
+# Run the Python training script
+python run_training_template.py data/data_stacked_channels_training.csv --batch 4 --epochs 200
+
+# Run inference on test images
+python run_inference_template.py
+
+# Training logs
+tar -zcvf ../training_logs.tar.gz training_logs/
+
+# Save checkpoints
+tar -zcvf ../best_last_checkpoints.tar.gz best_checkpoint.pytorch last_checkpoint.pytorch
+
+# Save output predictions
+tar -zcvf ../output.tar.gz output/
+
+
+
+
+
+# Docker
+universe = docker
+docker_image = ctromanscoia/unet_base:0.4
+
+# Logs
+log = interactive.log
+output = output.out
+error = error.err
+
+# Script to execute
+executable = 044-start-training.sh
+
+# Files to transfer to job
+transfer_input_files = /home/tromanscoia/maddox-dbp/experiments/repo/unet_3d.tar.gz,\
+                        ./run_training.py, \
+                        ./run_inference.py, \
+                        /home/tromanscoia/maddox-dbp/trained_models/3DUnet_confocal_boundary-best_checkpoint.pytorch
+
+# Transferring files out on exit
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+# Requirments to get access to COBA server
+accounting_group = COBA_BroadCimini
+requirements = (Machine == "coba2000.chtc.wisc.edu") && (OpSysMajorVer == 7 || OpSysMajorVer == 8)
+
+# Resource requests
+request_gpus = 1
+request_cpus = 1
+request_memory = 20GB
+request_disk = 5GB
+
+# Required in the submit file
+queue
