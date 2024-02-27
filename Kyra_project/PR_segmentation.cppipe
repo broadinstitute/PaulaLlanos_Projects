@@ -58,13 +58,13 @@ NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|sho
     Select the image type:Grayscale image
     Set intensity range from:Image metadata
     Maximum intensity:255.0
-    Select the rule criteria:and (metadata does ChannelNumber "2")
+    Select the rule criteria:and (metadata does ChannelNumber "3")
     Name to assign these images:ER
     Name to assign these objects:Nucleus
     Select the image type:Grayscale image
     Set intensity range from:Image metadata
     Maximum intensity:255.0
-    Select the rule criteria:and (metadata does ChannelNumber "3")
+    Select the rule criteria:and (metadata does ChannelNumber "2")
     Name to assign these images:RNA_nucleoli
     Name to assign these objects:Nucleus
     Select the image type:Grayscale image
@@ -179,12 +179,18 @@ IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_n
     # of deviations:2
     Thresholding method:Otsu
 
-MeasureObjectSizeShape:[module_num:8|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyTertiaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
+    Select the larger identified objects:Cells
+    Select the smaller identified objects:Nuclei
+    Name the tertiary objects to be identified:Cytoplasm
+    Shrink smaller object prior to subtraction?:Yes
+
+MeasureObjectSizeShape:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select object sets to measure:Cells, Nuclei
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:Yes
 
-CalculateMath:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:area_ratio
     Operation:Divide
     Select the numerator measurement type:Object
@@ -208,7 +214,7 @@ CalculateMath:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|sho
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-FilterObjects:[module_num:10|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:Cells
     Name the output objects:Cells_PR1
     Select the filtering mode:Measurements
@@ -229,38 +235,14 @@ FilterObjects:[module_num:10|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.98
     Allow fuzzy feature matching?:No
 
-MeasureObjectSizeShape:[module_num:11|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSizeShape:[module_num:12|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select object sets to measure:Cells_PR1
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:Yes
 
-CalculateMath:[module_num:12|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Name the output measurement:area_ratio
-    Operation:Divide
-    Select the numerator measurement type:Object
-    Select the numerator objects:Nuclei
-    Select the numerator measurement:AreaShape_Area
-    Multiply the above operand by:1.0
-    Raise the power of above operand by:1.0
-    Select the denominator measurement type:Object
-    Select the denominator objects:Cells_PR1
-    Select the denominator measurement:AreaShape_Area
-    Multiply the above operand by:1.0
-    Raise the power of above operand by:1.0
-    Take log10 of result?:No
-    Multiply the result by:1.0
-    Raise the power of result by:1.0
-    Add to the result:0.0
-    How should the output value be rounded?:Not rounded
-    Enter how many decimal places the value should be rounded to:0
-    Constrain the result to a lower bound?:No
-    Enter the lower bound:0.0
-    Constrain the result to an upper bound?:No
-    Enter the upper bound:1.0
-
 FilterObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:Cells_PR1
-    Name the output objects:Cells_filtered
+    Name the output objects:CellsPR_filtered
     Select the filtering mode:Measurements
     Select the filtering method:Limits
     Select the objects that contain the filtered objects:None
@@ -279,58 +261,57 @@ FilterObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.99
     Allow fuzzy feature matching?:No
 
-MeasureObjectSizeShape:[module_num:14|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select object sets to measure:Cells_PR
-    Calculate the Zernike features?:Yes
-    Calculate the advanced features?:Yes
-
-CombineObjects:[module_num:15|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CombineObjects:[module_num:14|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select initial object set:Neurons2
     Select object set to combine:Neurons1
     Select how to handle overlapping objects:Merge
     Name the combined object set:Neurons
 
-OverlayObjects:[module_num:16|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Input:Brightfield
-    Name the output image:Brightfield_cells
-    Objects:Cells_filtered
-    Opacity:0.2
-
-OverlayObjects:[module_num:17|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Input:Brightfield
-    Name the output image:Nuerons_overlay
-    Objects:Neurons
-    Opacity:0.2
-
-OverlayObjects:[module_num:18|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Input:Membrane
-    Name the output image:AGP_cells
-    Objects:Cells_filtered
-    Opacity:0.2
-
-IdentifyTertiaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
-    Select the larger identified objects:Cells
-    Select the smaller identified objects:Nuclei
-    Name the tertiary objects to be identified:Cytoplasm
-    Shrink smaller object prior to subtraction?:Yes
-
-MaskImage:[module_num:20|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+EnhanceOrSuppressFeatures:[module_num:15|svn_version:'Unknown'|variable_revision_number:7|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Mito
+    Name the output image:Mito_speckles
+    Select the operation:Enhance
+    Feature size:10
+    Feature type:Speckles
+    Range of hole sizes:1,10
+    Smoothing scale:2.0
+    Shear angle:0.0
+    Decay:0.95
+    Enhancement method:Tubeness
+    Speed and accuracy:Fast
+    Rescale result image:No
+
+EnhanceOrSuppressFeatures:[module_num:16|svn_version:'Unknown'|variable_revision_number:7|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:RNA_nucleoli
+    Name the output image:RNA_nucleoli_speckles
+    Select the operation:Enhance
+    Feature size:10
+    Feature type:Speckles
+    Range of hole sizes:1,10
+    Smoothing scale:2.0
+    Shear angle:0.0
+    Decay:0.95
+    Enhancement method:Tubeness
+    Speed and accuracy:Fast
+    Rescale result image:No
+
+MaskImage:[module_num:17|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Mito_speckles
     Name the output image:Mito_masked
     Use objects or an image as a mask?:Objects
     Select object for mask:Cytoplasm
     Select image for mask:None
     Invert the mask?:No
 
-MaskImage:[module_num:21|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:RNA_nucleoli
+MaskImage:[module_num:18|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:RNA_nucleoli_speckles
     Name the output image:RNA_nucloeli_masked
     Use objects or an image as a mask?:Objects
-    Select object for mask:Cytoplasm
+    Select object for mask:Nuclei
     Select image for mask:None
     Invert the mask?:No
 
-IdentifyPrimaryObjects:[module_num:22|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Mito_masked
     Name the primary objects to be identified:Mitocondria_segmented
     Typical diameter of objects, in pixel units (Min,Max):5,100
@@ -366,7 +347,7 @@ IdentifyPrimaryObjects:[module_num:22|svn_version:'Unknown'|variable_revision_nu
     # of deviations:2
     Thresholding method:Otsu
 
-IdentifyPrimaryObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:20|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:RNA_nucloeli_masked
     Name the primary objects to be identified:Nucleoli_segmented
     Typical diameter of objects, in pixel units (Min,Max):5,100
@@ -402,129 +383,80 @@ IdentifyPrimaryObjects:[module_num:23|svn_version:'Unknown'|variable_revision_nu
     # of deviations:2
     Thresholding method:Otsu
 
-EnhanceOrSuppressFeatures:[module_num:24|svn_version:'Unknown'|variable_revision_number:7|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input image:Cellsignal
-    Name the output image:neurites
-    Select the operation:Enhance
-    Feature size:8
-    Feature type:Neurites
-    Range of hole sizes:1,10
-    Smoothing scale:1
-    Shear angle:0.0
-    Decay:0.95
-    Enhancement method:Line structures
-    Speed and accuracy:Fast
-    Rescale result image:No
+RelateObjects:[module_num:21|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Cells
+    Child objects:CellsPR_filtered
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:Yes
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:CellsPR_Related
+    Parent name:None
 
-ImageMath:[module_num:25|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Operation:Add
-    Raise the power of the result by:1.0
-    Multiply the result by:1.0
-    Add to result:0.0
-    Set values less than 0 equal to 0?:Yes
-    Set values greater than 1 equal to 1?:Yes
-    Replace invalid values with 0?:Yes
-    Ignore the image masks?:No
-    Name the output image:Cells_neurites_enhanced
-    Image or measurement?:Image
-    Select the first image:neurites
-    Multiply the first image by:4
-    Measurement:
-    Image or measurement?:Image
-    Select the second image:Membrane
-    Multiply the second image by:1.0
-    Measurement:
+RelateObjects:[module_num:22|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Cells
+    Child objects:Neurons
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:Yes
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:Neurons_Related
+    Parent name:None
 
-EnhanceOrSuppressFeatures:[module_num:26|svn_version:'Unknown'|variable_revision_number:7|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input image:Cells_neurites_enganced
-    Name the output image:neurites2
-    Select the operation:Enhance
-    Feature size:8
-    Feature type:Neurites
-    Range of hole sizes:1,10
-    Smoothing scale:1
-    Shear angle:0.0
-    Decay:0.95
-    Enhancement method:Line structures
-    Speed and accuracy:Fast
-    Rescale result image:No
+RelateObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Cells
+    Child objects:Mitocondria_segmented
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:Yes
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:Mitocondria_related
+    Parent name:None
 
-IdentifySecondaryObjects:[module_num:27|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input objects:Nuclei
-    Name the objects to be identified:NeuronsCell
-    Select the method to identify the secondary objects:Propagation
-    Select the input image:Cells_neurites_enhanced
-    Number of pixels by which to expand the primary objects:10
-    Regularization factor:0
-    Discard secondary objects touching the border of the image?:No
-    Discard the associated primary objects?:No
-    Name the new primary objects:FilteredNuclei
-    Fill holes in identified objects?:No
-    Threshold setting version:12
-    Threshold strategy:Global
-    Thresholding method:Otsu
-    Threshold smoothing scale:2
-    Threshold correction factor:1
-    Lower and upper bounds on threshold:0.1,1
-    Manual threshold:0.0
-    Select the measurement to threshold with:None
-    Two-class or three-class thresholding?:Three classes
-    Log transform before thresholding?:No
-    Assign pixels in the middle intensity class to the foreground or the background?:Background
-    Size of adaptive window:50
-    Lower outlier fraction:0.05
-    Upper outlier fraction:0.05
-    Averaging method:Mean
-    Variance method:Standard deviation
-    # of deviations:2
-    Thresholding method:Otsu
+OverlayObjects:[module_num:24|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Input:DNA
+    Name the output image:Nucleoli_cells
+    Objects:Nucleoli_segmented
+    Opacity:0.2
 
-IdentifyPrimaryObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Select the input image:Cells_neurites_enhanced
-    Name the primary objects to be identified:Neurons_segmentation
-    Typical diameter of objects, in pixel units (Min,Max):6,2000
-    Discard objects outside the diameter range?:Yes
-    Discard objects touching the border of the image?:Yes
-    Method to distinguish clumped objects:Intensity
-    Method to draw dividing lines between clumped objects:Intensity
-    Size of smoothing filter:12
-    Suppress local maxima that are closer than this minimum allowed distance:15
-    Speed up by using lower-resolution image to find local maxima?:Yes
-    Fill holes in identified objects?:After both thresholding and declumping
-    Automatically calculate size of smoothing filter for declumping?:Yes
-    Automatically calculate minimum allowed distance between local maxima?:Yes
-    Handling of objects if excessive number of objects identified:Continue
-    Maximum number of objects:500
-    Use advanced settings?:Yes
-    Threshold setting version:12
-    Threshold strategy:Adaptive
-    Thresholding method:Minimum Cross-Entropy
-    Threshold smoothing scale:3
-    Threshold correction factor:1
-    Lower and upper bounds on threshold:0.1,1
-    Manual threshold:0.0
-    Select the measurement to threshold with:None
-    Two-class or three-class thresholding?:Three classes
-    Log transform before thresholding?:No
-    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
-    Size of adaptive window:50
-    Lower outlier fraction:0.05
-    Upper outlier fraction:0.05
-    Averaging method:Mean
-    Variance method:Standard deviation
-    # of deviations:2
-    Thresholding method:Otsu
+RelateObjects:[module_num:25|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Nuclei
+    Child objects:Nucleoli_segmented
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:Yes
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:Nucleoli_related
+    Parent name:None
+
+OverlayObjects:[module_num:26|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Input:Brightfield
+    Name the output image:Brightfield_cells
+    Objects:CellsPR_filtered
+    Opacity:0.2
+
+OverlayObjects:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Input:Brightfield
+    Name the output image:Nuerons_overlay
+    Objects:Neurons
+    Opacity:0.2
+
+OverlayObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Input:Membrane
+    Name the output image:AGP_cells
+    Objects:CellsPR_filtered
+    Opacity:0.2
 
 MeasureObjectIntensity:[module_num:29|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DNA, ER, Membrane, Mito, RNA_nucleoli
-    Select objects to measure:Cells_filtered, Mitocondria_segmented, Neurons, Nucleoli_segmented
+    Select objects to measure:CellsPR_filtered, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
 
 MeasureObjectSizeShape:[module_num:30|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select object sets to measure:Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
+    Select object sets to measure:CellsPR_filtered, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:No
 
-ExportToSpreadsheet:[module_num:31|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ExportToSpreadsheet:[module_num:31|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:Yes
     Add image file and folder names to your object data file?:Yes
