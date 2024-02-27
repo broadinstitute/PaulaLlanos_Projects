@@ -2,7 +2,7 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
 DateRevision:425
 GitHash:
-ModuleCount:32
+ModuleCount:31
 HasImagePlaneDetails:False
 
 Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -94,9 +94,9 @@ Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_windo
     grouping metadata count:1
     Metadata category:None
 
-IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:['Segment all the nuclei in the field']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:DNA
-    Name the primary objects to be identified:Nuclei
+    Name the primary objects to be identified:Nuclei_all
     Typical diameter of objects, in pixel units (Min,Max):10,40
     Discard objects outside the diameter range?:Yes
     Discard objects touching the border of the image?:Yes
@@ -130,7 +130,7 @@ IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_num
     # of deviations:2
     Thresholding method:Otsu
 
-ImageMath:[module_num:6|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:6|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['Sum the signal of Mitocondria and Mebrane to have a brigther cytoplasm signal.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:Add
     Raise the power of the result by:1.0
     Multiply the result by:1.0
@@ -149,9 +149,9 @@ ImageMath:[module_num:6|svn_version:'Unknown'|variable_revision_number:5|show_wi
     Multiply the second image by:1.0
     Measurement:
 
-IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
-    Select the input objects:Nuclei
-    Name the objects to be identified:Cells
+IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['Segment cells based on the signal intensity of mitocondria and membrane']|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
+    Select the input objects:Nuclei_all
+    Name the objects to be identified:Cells_all
     Select the method to identify the secondary objects:Propagation
     Select the input image:Cellsignal
     Number of pixels by which to expand the primary objects:10
@@ -179,18 +179,18 @@ IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_n
     # of deviations:2
     Thresholding method:Otsu
 
-IdentifyTertiaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
-    Select the larger identified objects:Cells
-    Select the smaller identified objects:Nuclei
-    Name the tertiary objects to be identified:Cytoplasm
+IdentifyTertiaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['Get cytoplasm compartment']|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
+    Select the larger identified objects:Cells_all
+    Select the smaller identified objects:Nuclei_all
+    Name the tertiary objects to be identified:Cytoplasm_all
     Shrink smaller object prior to subtraction?:Yes
 
-MeasureObjectSizeShape:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select object sets to measure:Cells, Nuclei
+MeasureObjectSizeShape:[module_num:9|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['measuro object size of Cells and Nuclei to get a ratio which we will use to differientiate the PR of the neurons. ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:Cells_all, Nuclei_all
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:Yes
 
-CalculateMath:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CalculateMath:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Calculate de are ratio between Nuclei and Cells. The cytoplasm area of neurons is smaller compare with the progenitor, then we are using this measurment to filter out neurons.']|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Name the output measurement:area_ratio
     Operation:Divide
     Select the numerator measurement type:Object
@@ -214,8 +214,8 @@ CalculateMath:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-FilterObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the objects to filter:Cells
+FilterObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['Fisrt filter of neuron based on area. in general the area of progenitor is bigger than neurons']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:Cells_all
     Name the output objects:Cells_PR1
     Select the filtering mode:Measurements
     Select the filtering method:Limits
@@ -235,14 +235,14 @@ FilterObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.98
     Allow fuzzy feature matching?:No
 
-MeasureObjectSizeShape:[module_num:12|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSizeShape:[module_num:12|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['measure object size of progenitor ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select object sets to measure:Cells_PR1
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:Yes
 
-FilterObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['this a second filter used to filter out the progenitors which are elongated, because those are probably a neuron']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:Cells_PR1
-    Name the output objects:CellsPR_filtered
+    Name the output objects:Cells
     Select the filtering mode:Measurements
     Select the filtering method:Limits
     Select the objects that contain the filtered objects:None
@@ -250,7 +250,7 @@ FilterObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|s
     Rules or classifier file name:rules.txt
     Class number:1
     Measurement count:1
-    Additional object count:0
+    Additional object count:2
     Assign overlapping child to:Both parents
     Keep removed objects as a separate set?:Yes
     Name the objects removed by the filter:Neurons2
@@ -259,9 +259,13 @@ FilterObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|s
     Minimum value:0.
     Filter using a maximum measurement value?:Yes
     Maximum value:0.99
+    Select additional object to relabel:Nuclei_all
+    Name the relabeled objects:Nuclei
+    Select additional object to relabel:Cytoplasm_all
+    Name the relabeled objects:Cytoplasm
     Allow fuzzy feature matching?:No
 
-CombineObjects:[module_num:14|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CombineObjects:[module_num:14|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:['Combine the neurons got in the previous filters']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select initial object set:Neurons2
     Select object set to combine:Neurons1
     Select how to handle overlapping objects:Merge
@@ -383,80 +387,67 @@ IdentifyPrimaryObjects:[module_num:20|svn_version:'Unknown'|variable_revision_nu
     # of deviations:2
     Thresholding method:Otsu
 
-RelateObjects:[module_num:21|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Parent objects:Cells
-    Child objects:CellsPR_filtered
-    Calculate child-parent distances?:None
-    Calculate per-parent means for all child measurements?:Yes
-    Calculate distances to other parents?:No
-    Do you want to save the children with parents as a new object set?:Yes
-    Name the output object:CellsPR_Related
-    Parent name:None
-
-RelateObjects:[module_num:22|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Parent objects:Cells
-    Child objects:Neurons
-    Calculate child-parent distances?:None
-    Calculate per-parent means for all child measurements?:Yes
-    Calculate distances to other parents?:No
-    Do you want to save the children with parents as a new object set?:Yes
-    Name the output object:Neurons_Related
-    Parent name:None
-
-RelateObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Parent objects:Cells
-    Child objects:Mitocondria_segmented
-    Calculate child-parent distances?:None
-    Calculate per-parent means for all child measurements?:Yes
-    Calculate distances to other parents?:No
-    Do you want to save the children with parents as a new object set?:Yes
-    Name the output object:Mitocondria_related
-    Parent name:None
-
-OverlayObjects:[module_num:24|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayObjects:[module_num:21|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Input:DNA
     Name the output image:Nucleoli_cells
     Objects:Nucleoli_segmented
     Opacity:0.2
 
-RelateObjects:[module_num:25|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Parent objects:Nuclei
-    Child objects:Nucleoli_segmented
-    Calculate child-parent distances?:None
-    Calculate per-parent means for all child measurements?:Yes
-    Calculate distances to other parents?:No
-    Do you want to save the children with parents as a new object set?:Yes
-    Name the output object:Nucleoli_related
-    Parent name:None
-
-OverlayObjects:[module_num:26|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayObjects:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Input:Brightfield
     Name the output image:Brightfield_cells
     Objects:CellsPR_filtered
     Opacity:0.2
 
-OverlayObjects:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Input:Brightfield
     Name the output image:Nuerons_overlay
     Objects:Neurons
     Opacity:0.2
 
-OverlayObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayObjects:[module_num:24|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Input:Membrane
     Name the output image:AGP_cells
     Objects:CellsPR_filtered
     Opacity:0.2
 
-MeasureObjectIntensity:[module_num:29|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:25|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DNA, ER, Membrane, Mito, RNA_nucleoli
-    Select objects to measure:CellsPR_filtered, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
+    Select objects to measure:Cells, Cytoplasm, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
 
-MeasureObjectSizeShape:[module_num:30|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select object sets to measure:CellsPR_filtered, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
+MeasureImageIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Brightfield, DNA, ER, Membrane, Mito, RNA_nucleoli
+    Measure the intensity only from areas enclosed by objects?:Yes
+    Select input object sets:Cells, Cytoplasm, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
+    Calculate custom percentiles:No
+    Specify percentiles to measure:10,90
+
+MeasureObjectSizeShape:[module_num:27|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:Cells, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:No
 
-ExportToSpreadsheet:[module_num:31|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+RelateObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Cells
+    Child objects:Mitocondria_segmented
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:Yes
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:Mitocondria_related
+    Parent name:None
+
+RelateObjects:[module_num:29|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Nuclei
+    Child objects:Nucleoli_segmented
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:Yes
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:Nucleoli_related
+    Parent name:None
+
+ExportToSpreadsheet:[module_num:30|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:Yes
     Add image file and folder names to your object data file?:Yes
@@ -500,7 +491,7 @@ ExportToSpreadsheet:[module_num:31|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-ExportToDatabase:[module_num:32|svn_version:'Unknown'|variable_revision_number:28|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ExportToDatabase:[module_num:31|svn_version:'Unknown'|variable_revision_number:28|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Database type:SQLite
     Database name:DefaultDB
     Add a prefix to table names?:Yes
@@ -510,17 +501,17 @@ ExportToDatabase:[module_num:32|svn_version:'Unknown'|variable_revision_number:2
     Database host:
     Username:
     Password:
-    Name the SQLite database file:Neurons.db
+    Name the SQLite database file:Progenitor_database.db
     Calculate the per-image mean values of object measurements?:No
     Calculate the per-image median values of object measurements?:No
     Calculate the per-image standard deviation values of object measurements?:No
     Calculate the per-well mean values of object measurements?:No
     Calculate the per-well median values of object measurements?:No
     Calculate the per-well standard deviation values of object measurements?:No
-    Export measurements for all objects to the database?:All
-    Select the objects:
+    Export measurements for all objects to the database?:Select...
+    Select the objects:Cells,Cytoplasm,Mitocondria_segmented,Neurons,Nuclei,Nucleoli_segmented
     Maximum # of characters in a column name:64
-    Create one table per object, a single object table or a single object view?:Single object table
+    Create one table per object, a single object table or a single object view?:One table per object type
     Enter an image url prepend if you plan to access your files via http:http://imageweb/images/CPALinks
     Write image thumbnails directly to the database?:No
     Select the images for which you want to save thumbnails:

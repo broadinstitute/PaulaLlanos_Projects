@@ -2,7 +2,7 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
 DateRevision:425
 GitHash:
-ModuleCount:23
+ModuleCount:24
 HasImagePlaneDetails:False
 
 Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -58,13 +58,13 @@ NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|sho
     Select the image type:Grayscale image
     Set intensity range from:Image metadata
     Maximum intensity:255.0
-    Select the rule criteria:and (metadata does ChannelNumber "2")
+    Select the rule criteria:and (metadata does ChannelNumber "3")
     Name to assign these images:ER
     Name to assign these objects:Nucleus
     Select the image type:Grayscale image
     Set intensity range from:Image metadata
     Maximum intensity:255.0
-    Select the rule criteria:and (metadata does ChannelNumber "3")
+    Select the rule criteria:and (metadata does ChannelNumber "2")
     Name to assign these images:RNA_nucleoli
     Name to assign these objects:Nucleus
     Select the image type:Grayscale image
@@ -149,7 +149,7 @@ ImageMath:[module_num:6|svn_version:'Unknown'|variable_revision_number:5|show_wi
     Multiply the second image by:1.0
     Measurement:
 
-IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
+IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array(b'', dtype='|S1')|enabled:False|wants_pause:False]
     Select the input objects:Nuclei
     Name the objects to be identified:Cells
     Select the method to identify the secondary objects:Propagation
@@ -214,7 +214,7 @@ ImageMath:[module_num:9|svn_version:'Unknown'|variable_revision_number:5|show_wi
 
 IdentifySecondaryObjects:[module_num:10|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Nuclei
-    Name the objects to be identified:NeuronsCell
+    Name the objects to be identified:Cells
     Select the method to identify the secondary objects:Propagation
     Select the input image:Cells_neurites_enhanced
     Number of pixels by which to expand the primary objects:10
@@ -243,7 +243,7 @@ IdentifySecondaryObjects:[module_num:10|svn_version:'Unknown'|variable_revision_
     Thresholding method:Otsu
 
 IdentifyTertiaryObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
-    Select the larger identified objects:NeuronsCell
+    Select the larger identified objects:Cells
     Select the smaller identified objects:Nuclei
     Name the tertiary objects to be identified:Cytoplasm
     Shrink smaller object prior to subtraction?:Yes
@@ -260,7 +260,7 @@ MaskImage:[module_num:13|svn_version:'Unknown'|variable_revision_number:3|show_w
     Select the input image:RNA_nucleoli
     Name the output image:RNA_nucloeli_masked
     Use objects or an image as a mask?:Objects
-    Select object for mask:Cytoplasm
+    Select object for mask:Nuclei
     Select image for mask:None
     Invert the mask?:No
 
@@ -336,42 +336,49 @@ IdentifyPrimaryObjects:[module_num:15|svn_version:'Unknown'|variable_revision_nu
     # of deviations:2
     Thresholding method:Otsu
 
-RelateObjects:[module_num:16|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Parent objects:Nuclei
-    Child objects:Mitocondria_segmented
-    Calculate child-parent distances?:None
-    Calculate per-parent means for all child measurements?:No
-    Calculate distances to other parents?:No
-    Do you want to save the children with parents as a new object set?:No
-    Name the output object:RelateObjects
-    Parent name:None
+MeasureObjectIntensity:[module_num:16|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Brightfield, DNA, ER, Membrane, Mito, RNA_nucleoli
+    Select objects to measure:Cells, Cytoplasm, Mitocondria_segmented, Nuclei, Nucleoli_segmented
 
-RelateObjects:[module_num:17|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Parent objects:Nuclei
-    Child objects:Nucleoli_segmented
-    Calculate child-parent distances?:None
-    Calculate per-parent means for all child measurements?:No
-    Calculate distances to other parents?:No
-    Do you want to save the children with parents as a new object set?:No
-    Name the output object:RelateObjects
-    Parent name:None
-
-MeasureObjectIntensity:[module_num:18|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select images to measure:DNA, ER, Membrane, Mito, RNA_nucleoli
-    Select objects to measure:Mitocondria_segmented, NeuronsCell, Nucleoli_segmented
-
-MeasureObjectSizeShape:[module_num:19|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select object sets to measure:Mitocondria_segmented, NeuronsCell, Nuclei, Nucleoli_segmented
+MeasureObjectSizeShape:[module_num:17|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:Cells, Cytoplasm, Mitocondria_segmented, Nuclei, Nucleoli_segmented
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:No
 
-OverlayObjects:[module_num:20|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureImageIntensity:[module_num:18|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:Brightfield, DNA, ER, Membrane, Mito, RNA_nucleoli
+    Measure the intensity only from areas enclosed by objects?:Yes
+    Select input object sets:Cells, Cytoplasm, Mitocondria_segmented, Nuclei, Nucleoli_segmented
+    Calculate custom percentiles:No
+    Specify percentiles to measure:10,90
+
+RelateObjects:[module_num:19|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Nuclei
+    Child objects:Nucleoli_segmented
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:Yes
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:RelateObjects
+    Parent name:None
+
+RelateObjects:[module_num:20|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Cells
+    Child objects:Mitocondria_segmented
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:Yes
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:RelateObjects
+    Parent name:None
+
+OverlayObjects:[module_num:21|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Input:Brightfield
     Name the output image:Brightfield_neurons
     Objects:NeuronsCell
     Opacity:0.05
 
-SaveImages:[module_num:21|svn_version:'Unknown'|variable_revision_number:16|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:22|svn_version:'Unknown'|variable_revision_number:16|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:Brightfield_neurons
     Select method for constructing file names:From image filename
@@ -391,7 +398,7 @@ SaveImages:[module_num:21|svn_version:'Unknown'|variable_revision_number:16|show
     How to save the series:T (Time)
     Save with lossless compression?:Yes
 
-ExportToSpreadsheet:[module_num:22|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+ExportToSpreadsheet:[module_num:23|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:Yes
     Add image file and folder names to your object data file?:Yes
@@ -435,7 +442,7 @@ ExportToSpreadsheet:[module_num:22|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-ExportToDatabase:[module_num:23|svn_version:'Unknown'|variable_revision_number:28|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ExportToDatabase:[module_num:24|svn_version:'Unknown'|variable_revision_number:28|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Database type:SQLite
     Database name:DefaultDB
     Add a prefix to table names?:Yes
@@ -445,17 +452,17 @@ ExportToDatabase:[module_num:23|svn_version:'Unknown'|variable_revision_number:2
     Database host:
     Username:
     Password:
-    Name the SQLite database file:Neurons.db
+    Name the SQLite database file:Neurons_database.db
     Calculate the per-image mean values of object measurements?:No
     Calculate the per-image median values of object measurements?:No
     Calculate the per-image standard deviation values of object measurements?:No
     Calculate the per-well mean values of object measurements?:No
     Calculate the per-well median values of object measurements?:No
     Calculate the per-well standard deviation values of object measurements?:No
-    Export measurements for all objects to the database?:All
-    Select the objects:
+    Export measurements for all objects to the database?:Select...
+    Select the objects:Cells,Cytoplasm,Mitocondria_segmented,Nuclei,Nucleoli_segmented
     Maximum # of characters in a column name:64
-    Create one table per object, a single object table or a single object view?:Single object table
+    Create one table per object, a single object table or a single object view?:One table per object type
     Enter an image url prepend if you plan to access your files via http:http://imageweb/images/CPALinks
     Write image thumbnails directly to the database?:No
     Select the images for which you want to save thumbnails:
@@ -471,7 +478,7 @@ ExportToDatabase:[module_num:23|svn_version:'Unknown'|variable_revision_number:2
     Experiment name:MyExpt
     Which objects should be used for locations?:None
     Enter a phenotype class table name if using the Classifier tool in CellProfiler Analyst:
-    Export object relationships?:Yes
+    Export object relationships?:No
     Overwrite without warning?:Never
     Access CellProfiler Analyst images via URL?:No
     Select the classification type:Object
