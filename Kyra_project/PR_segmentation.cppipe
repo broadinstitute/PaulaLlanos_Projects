@@ -190,16 +190,16 @@ MeasureObjectSizeShape:[module_num:9|svn_version:'Unknown'|variable_revision_num
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:Yes
 
-CalculateMath:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Calculate de are ratio between Nuclei and Cells. The cytoplasm area of neurons is smaller compare with the progenitor, then we are using this measurment to filter out neurons.']|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+CalculateMath:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Calculate de are ratio between Nuclei and Cells. The cytoplasm area of neurons is smaller compare with the progenitor, then we are using this measurment to filter out neurons.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Name the output measurement:area_ratio
     Operation:Divide
     Select the numerator measurement type:Object
-    Select the numerator objects:Nuclei
+    Select the numerator objects:Nuclei_all
     Select the numerator measurement:AreaShape_Area
     Multiply the above operand by:1.0
     Raise the power of above operand by:1.0
     Select the denominator measurement type:Object
-    Select the denominator objects:Cells
+    Select the denominator objects:Cells_all
     Select the denominator measurement:AreaShape_Area
     Multiply the above operand by:1.0
     Raise the power of above operand by:1.0
@@ -223,7 +223,7 @@ FilterObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:10|s
     Select the location of the rules or classifier file:Elsewhere...|
     Rules or classifier file name:rules.txt
     Class number:1
-    Measurement count:1
+    Measurement count:2
     Additional object count:0
     Assign overlapping child to:Both parents
     Keep removed objects as a separate set?:Yes
@@ -233,6 +233,11 @@ FilterObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:10|s
     Minimum value:600
     Filter using a maximum measurement value?:No
     Maximum value:0.98
+    Select the measurement to filter by:Math_area_ratio
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:.65
     Allow fuzzy feature matching?:No
 
 MeasureObjectSizeShape:[module_num:12|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['measure object size of progenitor ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -340,7 +345,7 @@ IdentifyPrimaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_nu
     Lower and upper bounds on threshold:0.08,1
     Manual threshold:0.0
     Select the measurement to threshold with:None
-    Two-class or three-class thresholding?:Three classes
+    Two-class or three-class thresholding?:Two classes
     Log transform before thresholding?:No
     Assign pixels in the middle intensity class to the foreground or the background?:Foreground
     Size of adaptive window:50
@@ -376,7 +381,7 @@ IdentifyPrimaryObjects:[module_num:20|svn_version:'Unknown'|variable_revision_nu
     Lower and upper bounds on threshold:0.08,1
     Manual threshold:0.0
     Select the measurement to threshold with:None
-    Two-class or three-class thresholding?:Three classes
+    Two-class or three-class thresholding?:Two classes
     Log transform before thresholding?:No
     Assign pixels in the middle intensity class to the foreground or the background?:Foreground
     Size of adaptive window:100
@@ -494,7 +499,7 @@ ExportToSpreadsheet:[module_num:30|svn_version:'Unknown'|variable_revision_numbe
 ExportToDatabase:[module_num:31|svn_version:'Unknown'|variable_revision_number:28|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Database type:SQLite
     Database name:DefaultDB
-    Add a prefix to table names?:Yes
+    Add a prefix to table names?:No
     Table prefix:MyExpt_
     Output file location:Default Output Folder|
     Create a CellProfiler Analyst properties file?:No
@@ -527,7 +532,7 @@ ExportToDatabase:[module_num:31|svn_version:'Unknown'|variable_revision_number:2
     Experiment name:MyExpt
     Which objects should be used for locations?:None
     Enter a phenotype class table name if using the Classifier tool in CellProfiler Analyst:
-    Export object relationships?:No
+    Export object relationships?:Yes
     Overwrite without warning?:Never
     Access CellProfiler Analyst images via URL?:No
     Select the classification type:Object
