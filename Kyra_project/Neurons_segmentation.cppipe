@@ -97,7 +97,7 @@ Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_windo
 IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:DNA
     Name the primary objects to be identified:Nuclei
-    Typical diameter of objects, in pixel units (Min,Max):10,40
+    Typical diameter of objects, in pixel units (Min,Max):10,70
     Discard objects outside the diameter range?:Yes
     Discard objects touching the border of the image?:Yes
     Method to distinguish clumped objects:Shape
