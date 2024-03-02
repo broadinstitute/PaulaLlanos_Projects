@@ -94,10 +94,10 @@ Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_windo
     grouping metadata count:1
     Metadata category:None
 
-IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:['Segment all the nuclei in the field']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:['Segment all the nuclei in the field']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:DNA
     Name the primary objects to be identified:Nuclei_all
-    Typical diameter of objects, in pixel units (Min,Max):10,40
+    Typical diameter of objects, in pixel units (Min,Max):10,70
     Discard objects outside the diameter range?:Yes
     Discard objects touching the border of the image?:Yes
     Method to distinguish clumped objects:Shape
@@ -149,7 +149,7 @@ ImageMath:[module_num:6|svn_version:'Unknown'|variable_revision_number:5|show_wi
     Multiply the second image by:1.0
     Measurement:
 
-IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['Segment cells based on the signal intensity of mitocondria and membrane']|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
+IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['Segment cells based on the signal intensity of mitocondria and membrane']|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
     Select the input objects:Nuclei_all
     Name the objects to be identified:Cells_all
     Select the method to identify the secondary objects:Propagation
@@ -179,7 +179,7 @@ IdentifySecondaryObjects:[module_num:7|svn_version:'Unknown'|variable_revision_n
     # of deviations:2
     Thresholding method:Otsu
 
-IdentifyTertiaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['Get cytoplasm compartment']|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
+IdentifyTertiaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Get cytoplasm compartment']|batch_state:array(b'', dtype='|S1')|enabled:True|wants_pause:False]
     Select the larger identified objects:Cells_all
     Select the smaller identified objects:Nuclei_all
     Name the tertiary objects to be identified:Cytoplasm_all
@@ -214,7 +214,7 @@ CalculateMath:[module_num:10|svn_version:'Unknown'|variable_revision_number:3|sh
     Constrain the result to an upper bound?:No
     Enter the upper bound:1.0
 
-FilterObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['Fisrt filter of neuron based on area. in general the area of progenitor is bigger than neurons']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['Fisrt filter of neuron based on area. in general the area of progenitor is bigger than neurons']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:Cells_all
     Name the output objects:Cells_PR1
     Select the filtering mode:Measurements
@@ -245,7 +245,7 @@ MeasureObjectSizeShape:[module_num:12|svn_version:'Unknown'|variable_revision_nu
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:Yes
 
-FilterObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['this a second filter used to filter out the progenitors which are elongated, because those are probably a neuron']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['this a second filter used to filter out the progenitors which are elongated, because those are probably a neuron']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:Cells_PR1
     Name the output objects:Cells
     Select the filtering mode:Measurements
@@ -270,13 +270,13 @@ FilterObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:10|s
     Name the relabeled objects:Cytoplasm
     Allow fuzzy feature matching?:No
 
-CombineObjects:[module_num:14|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:['Combine the neurons got in the previous filters']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+CombineObjects:[module_num:14|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['Combine the neurons got in the previous filters']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select initial object set:Neurons2
     Select object set to combine:Neurons1
     Select how to handle overlapping objects:Merge
     Name the combined object set:Neurons
 
-EnhanceOrSuppressFeatures:[module_num:15|svn_version:'Unknown'|variable_revision_number:7|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+EnhanceOrSuppressFeatures:[module_num:15|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Mito
     Name the output image:Mito_speckles
     Select the operation:Enhance
@@ -290,7 +290,7 @@ EnhanceOrSuppressFeatures:[module_num:15|svn_version:'Unknown'|variable_revision
     Speed and accuracy:Fast
     Rescale result image:No
 
-EnhanceOrSuppressFeatures:[module_num:16|svn_version:'Unknown'|variable_revision_number:7|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+EnhanceOrSuppressFeatures:[module_num:16|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:RNA_nucleoli
     Name the output image:RNA_nucleoli_speckles
     Select the operation:Enhance
@@ -304,7 +304,7 @@ EnhanceOrSuppressFeatures:[module_num:16|svn_version:'Unknown'|variable_revision
     Speed and accuracy:Fast
     Rescale result image:No
 
-MaskImage:[module_num:17|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MaskImage:[module_num:17|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Mito_speckles
     Name the output image:Mito_masked
     Use objects or an image as a mask?:Objects
@@ -312,7 +312,7 @@ MaskImage:[module_num:17|svn_version:'Unknown'|variable_revision_number:3|show_w
     Select image for mask:None
     Invert the mask?:No
 
-MaskImage:[module_num:18|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MaskImage:[module_num:18|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:RNA_nucleoli_speckles
     Name the output image:RNA_nucloeli_masked
     Use objects or an image as a mask?:Objects
@@ -320,7 +320,7 @@ MaskImage:[module_num:18|svn_version:'Unknown'|variable_revision_number:3|show_w
     Select image for mask:None
     Invert the mask?:No
 
-IdentifyPrimaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Mito_masked
     Name the primary objects to be identified:Mitocondria_segmented
     Typical diameter of objects, in pixel units (Min,Max):5,100
@@ -356,12 +356,12 @@ IdentifyPrimaryObjects:[module_num:19|svn_version:'Unknown'|variable_revision_nu
     # of deviations:2
     Thresholding method:Otsu
 
-IdentifyPrimaryObjects:[module_num:20|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:20|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:RNA_nucloeli_masked
     Name the primary objects to be identified:Nucleoli_segmented
-    Typical diameter of objects, in pixel units (Min,Max):5,100
-    Discard objects outside the diameter range?:No
-    Discard objects touching the border of the image?:No
+    Typical diameter of objects, in pixel units (Min,Max):3,40
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:Yes
     Method to distinguish clumped objects:Intensity
     Method to draw dividing lines between clumped objects:Intensity
     Size of smoothing filter:12
@@ -374,11 +374,11 @@ IdentifyPrimaryObjects:[module_num:20|svn_version:'Unknown'|variable_revision_nu
     Maximum number of objects:500
     Use advanced settings?:Yes
     Threshold setting version:12
-    Threshold strategy:Global
+    Threshold strategy:Adaptive
     Thresholding method:Otsu
-    Threshold smoothing scale:1
-    Threshold correction factor:1
-    Lower and upper bounds on threshold:0.08,1
+    Threshold smoothing scale:1.3
+    Threshold correction factor:0.6
+    Lower and upper bounds on threshold:0.02,1
     Manual threshold:0.0
     Select the measurement to threshold with:None
     Two-class or three-class thresholding?:Two classes
@@ -392,47 +392,47 @@ IdentifyPrimaryObjects:[module_num:20|svn_version:'Unknown'|variable_revision_nu
     # of deviations:2
     Thresholding method:Otsu
 
-OverlayObjects:[module_num:21|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Input:DNA
+OverlayObjects:[module_num:21|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Input:RNA_nucleoli
     Name the output image:Nucleoli_cells
     Objects:Nucleoli_segmented
     Opacity:0.2
 
-OverlayObjects:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+OverlayObjects:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Input:Brightfield
     Name the output image:Brightfield_cells
     Objects:CellsPR_filtered
     Opacity:0.2
 
-OverlayObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+OverlayObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Input:Brightfield
     Name the output image:Nuerons_overlay
     Objects:Neurons
     Opacity:0.2
 
-OverlayObjects:[module_num:24|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+OverlayObjects:[module_num:24|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Input:Membrane
     Name the output image:AGP_cells
     Objects:CellsPR_filtered
     Opacity:0.2
 
-MeasureObjectIntensity:[module_num:25|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:25|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DNA, ER, Membrane, Mito, RNA_nucleoli
     Select objects to measure:Cells, Cytoplasm, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
 
-MeasureImageIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureImageIntensity:[module_num:26|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:Brightfield, DNA, ER, Membrane, Mito, RNA_nucleoli
     Measure the intensity only from areas enclosed by objects?:Yes
     Select input object sets:Cells, Cytoplasm, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
     Calculate custom percentiles:No
     Specify percentiles to measure:10,90
 
-MeasureObjectSizeShape:[module_num:27|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select object sets to measure:Cells, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
+MeasureObjectSizeShape:[module_num:27|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:Cells, Cytoplasm, Mitocondria_segmented, Neurons, Nuclei, Nucleoli_segmented
     Calculate the Zernike features?:Yes
     Calculate the advanced features?:No
 
-RelateObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Cells
     Child objects:Mitocondria_segmented
     Calculate child-parent distances?:None
@@ -442,7 +442,7 @@ RelateObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:Mitocondria_related
     Parent name:None
 
-RelateObjects:[module_num:29|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:29|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Nuclei
     Child objects:Nucleoli_segmented
     Calculate child-parent distances?:None
@@ -496,7 +496,7 @@ ExportToSpreadsheet:[module_num:30|svn_version:'Unknown'|variable_revision_numbe
     File name:DATA.csv
     Use the object name for the file name?:Yes
 
-ExportToDatabase:[module_num:31|svn_version:'Unknown'|variable_revision_number:28|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ExportToDatabase:[module_num:31|svn_version:'Unknown'|variable_revision_number:28|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Database type:SQLite
     Database name:DefaultDB
     Add a prefix to table names?:No
