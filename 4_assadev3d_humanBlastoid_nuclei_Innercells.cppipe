@@ -1,0 +1,1816 @@
+CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:425
+GitHash:
+ModuleCount:136
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp "[\/]\.")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:1
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:Laminins_ITGs_stainings_(?P<Experiment>[0-9]{3})_(?P<Marker>[A-Za-z0-9]+)_(?P<suffix>.*).tiff
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:None
+    Does cached metadata exist?:No
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:Images matching rules
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
+    Match metadata:[{'DNA': 'Experiment', 'EcadCM': None, 'SOX2': None, 'Factin': None}]
+    Image set matching method:Metadata
+    Set intensity range from:Image metadata
+    Assignments count:4
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:Yes
+    Relative pixel spacing in X:0.5
+    Relative pixel spacing in Y:0.5
+    Relative pixel spacing in Z:0.5
+    Select the rule criteria:and (metadata does Marker "c3")
+    Name to assign these images:DNA
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (metadata does Marker "c1")
+    Name to assign these images:SOX2
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (metadata does Marker "c2")
+    Name to assign these images:Factin
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (metadata does Marker "c0")
+    Name to assign these images:EcadCM
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:1
+    Metadata category:Site
+
+HistogramEqualization:[module_num:5|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:DNA
+    Name the output image:DNA_HE
+    Bins:256
+    Mask:Leave blank
+    Local:Yes
+    Tile Size:60
+    Clip limit:0.01
+    Is your image 3D?:Yes
+    Do framewise calculation?:No
+    Tile Size (Z):60
+
+Resize:[module_num:6|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:DNA_HE
+    Name the output image:ResizeDNA
+    Resizing method:Resize by a fraction or multiple of the original size
+    X Resizing factor:0.5
+    Y Resizing factor:0.5
+    Z Resizing factor:0.5
+    Width (x) of the final image:100
+    Height (y) of the final image:100
+    # of planes (z) in the final image:10
+    Interpolation method:Nearest Neighbor
+    Method to specify the dimensions:Manual
+    Select the image with the desired dimensions:None
+    Additional image count:0
+
+HistogramEqualization:[module_num:7|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:EcadCM
+    Name the output image:EcadCM_HE
+    Bins:256
+    Mask:Leave blank
+    Local:Yes
+    Tile Size:60
+    Clip limit:0.01
+    Is your image 3D?:Yes
+    Do framewise calculation?:No
+    Tile Size (Z):60
+
+Resize:[module_num:8|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:EcadCM_HE
+    Name the output image:ResizeEcadCM
+    Resizing method:Resize by a fraction or multiple of the original size
+    X Resizing factor:0.5
+    Y Resizing factor:0.5
+    Z Resizing factor:0.5
+    Width (x) of the final image:100
+    Height (y) of the final image:100
+    # of planes (z) in the final image:10
+    Interpolation method:Nearest Neighbor
+    Method to specify the dimensions:Manual
+    Select the image with the desired dimensions:None
+    Additional image count:0
+
+HistogramEqualization:[module_num:9|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:SOX2
+    Name the output image:SOX2_HE
+    Bins:256
+    Mask:Leave blank
+    Local:Yes
+    Tile Size:60
+    Clip limit:0.01
+    Is your image 3D?:Yes
+    Do framewise calculation?:No
+    Tile Size (Z):60
+
+Resize:[module_num:10|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:SOX2_HE
+    Name the output image:ResizeSOX2
+    Resizing method:Resize by a fraction or multiple of the original size
+    X Resizing factor:0.5
+    Y Resizing factor:0.5
+    Z Resizing factor:0.5
+    Width (x) of the final image:100
+    Height (y) of the final image:100
+    # of planes (z) in the final image:10
+    Interpolation method:Nearest Neighbor
+    Method to specify the dimensions:Manual
+    Select the image with the desired dimensions:None
+    Additional image count:0
+
+HistogramEqualization:[module_num:11|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Factin
+    Name the output image:Factin_HE
+    Bins:256
+    Mask:Leave blank
+    Local:Yes
+    Tile Size:60
+    Clip limit:0.01
+    Is your image 3D?:Yes
+    Do framewise calculation?:No
+    Tile Size (Z):60
+
+Resize:[module_num:12|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Factin_HE
+    Name the output image:ResizeFactin
+    Resizing method:Resize by a fraction or multiple of the original size
+    X Resizing factor:0.5
+    Y Resizing factor:0.5
+    Z Resizing factor:0.5
+    Width (x) of the final image:100
+    Height (y) of the final image:100
+    # of planes (z) in the final image:10
+    Interpolation method:Nearest Neighbor
+    Method to specify the dimensions:Manual
+    Select the image with the desired dimensions:None
+    Additional image count:0
+
+RunStarDist:[module_num:13|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:ResizeDNA
+    Model Type:Custom 2D/3D
+    Name the output object:RunStarDist_nuclei
+    Tile input image?:No
+    Horizontal tiles:1
+    Vertical tiles:1
+    Save probability image?:No
+    Name the probability image:Probabilities
+    Model folder:Default Input Folder sub-folder|3D_blastoid/rivron_blastoid
+    Model:Versatile (fluorescent nuclei)
+    Model:3D_demo
+    Probability threshold:0.5
+    Overlap threshold:0.4
+    Manually set how much GPU memory each worker can use?:No
+    GPU memory (in GB) for each worker:0.5
+
+EnhanceOrSuppressFeatures:[module_num:14|svn_version:'Unknown'|variable_revision_number:7|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the input image:ResizeFactin
+    Name the output image:membrane
+    Select the operation:Enhance
+    Feature size:10
+    Feature type:Neurites
+    Range of hole sizes:1,10
+    Smoothing scale:2.0
+    Shear angle:0.0
+    Decay:0.95
+    Enhancement method:Tubeness
+    Speed and accuracy:Fast
+    Rescale result image:No
+
+GaussianFilter:[module_num:15|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:ResizeEcadCM
+    Name the output image:Smooth_EcadCM
+    Sigma:4
+
+GaussianFilter:[module_num:16|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:ResizeDNA
+    Name the output image:Smooth_DNA
+    Sigma:4
+
+GaussianFilter:[module_num:17|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:ResizeFactin
+    Name the output image:Smooth_Factin
+    Sigma:4
+
+GaussianFilter:[module_num:18|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:ResizeSOX2
+    Name the output image:Smooth_SOX2
+    Sigma:4
+
+ImageMath:[module_num:19|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:['In case that you use this pipeline for others markers. balance the intensity for each channels to have a more homogenous intensity across the blastoid. Check the blastoid object generated, and see if is necessary to balance this intensities.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Add
+    Raise the power of the result by:1.5
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:ImageAllChannels
+    Image or measurement?:Image
+    Select the first image:Smooth_DNA
+    Multiply the first image by:0.01
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:Smooth_EcadCM
+    Multiply the second image by:1
+    Measurement:
+    Image or measurement?:Image
+    Select the third image:ResizeFactin
+    Multiply the third image by:20
+    Measurement:
+
+Threshold:[module_num:20|svn_version:'Unknown'|variable_revision_number:12|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:ImageAllChannels
+    Name the output image:Threshold_blastoid
+    Threshold strategy:Adaptive
+    Thresholding method:Otsu
+    Threshold smoothing scale:0.0
+    Threshold correction factor:0.6
+    Lower and upper bounds on threshold:0.005,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:Yes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:25
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Median absolute deviation
+    # of deviations:2.0
+    Thresholding method:Robust Background
+
+Watershed:[module_num:21|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the input image:Threshold_blastoid
+    Name the output object:Blastoid_mask
+    Use advanced settings?:Yes
+    Generate from:Distance
+    Markers:None
+    Mask:DNA_HE
+    Connectivity:1
+    Compactness:0.0
+    Footprint:20
+    Downsample:5
+    Separate watershed labels:No
+    Declump method:Intensity
+    Reference Image:Smooth_DNA
+    Segmentation distance transform smoothing factor:1.0
+    Minimum distance between seeds:1
+    Minimum absolute internal distance:0.0
+    Pixels from border to exclude:0
+    Maximum number of seeds:-1
+    Structuring element for seed dilation:ball,20
+
+ConvertObjectsToImage:[module_num:22|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the input objects:Blastoid_mask
+    Name the output image:Blastoid_mask_img
+    Select the color format:Binary (black & white)
+    Select the colormap:Default
+
+ConvertImageToObjects:[module_num:23|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Threshold_blastoid
+    Name the output object:Blastoid_object
+    Convert to boolean image:Yes
+    Preserve original labels:No
+    Background label:0
+    Connectivity:0
+
+DilateObjects:[module_num:24|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:Blastoid_object
+    Name the output object:Blastoid_object_dilated
+    Structuring element:disk,4
+
+Watershed:[module_num:25|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Threshold_blastoid
+    Name the output object:Blastoid_mask2
+    Use advanced settings?:No
+    Generate from:Distance
+    Markers:None
+    Mask:DNA_HE
+    Connectivity:1
+    Compactness:0.0
+    Footprint:20
+    Downsample:5
+    Separate watershed labels:No
+    Declump method:Intensity
+    Reference Image:Smooth_DNA
+    Segmentation distance transform smoothing factor:1.0
+    Minimum distance between seeds:1
+    Minimum absolute internal distance:0.0
+    Pixels from border to exclude:0
+    Maximum number of seeds:-1
+    Structuring element for seed dilation:ball,20
+
+ConvertObjectsToImage:[module_num:26|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Blastoid_object_dilated
+    Name the output image:Blastoid_mask_img2
+    Select the color format:Binary (black & white)
+    Select the colormap:Default
+
+ConvertImageToObjects:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Blastoid_mask_img2
+    Name the output object:Blastoid_object2
+    Convert to boolean image:Yes
+    Preserve original labels:No
+    Background label:0
+    Connectivity:0
+
+FillObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the input object:Blastoid_object_dilated
+    Name the output object:Blastoid_object_filled
+    Minimum hole size:200
+    Planewise fill:Yes
+    Filling method:Holes
+
+FillObjects:[module_num:29|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:Blastoid_object2
+    Name the output object:Blastoid_object_filled
+    Minimum hole size:200
+    Planewise fill:Yes
+    Filling method:Holes
+
+MeasureObjectSizeShape:[module_num:30|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:Blastoid_object_filled
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+FilterObjects:[module_num:31|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:Blastoid_object_filled
+    Name the output objects:Blastoid_object_final
+    Select the filtering mode:Measurements
+    Select the filtering method:Maximal
+    Select the objects that contain the filtered objects:Blastoid
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:AreaShape_Volume
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+RelateObjects:[module_num:32|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Blastoid_object_final
+    Child objects:RunStarDist_nuclei
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:Nuclei
+    Parent name:None
+
+ConvertObjectsToImage:[module_num:33|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Blastoid_object_final
+    Name the output image:Blastoid_image_final
+    Select the color format:Binary (black & white)
+    Select the colormap:Default
+
+DistanceTransform:[module_num:34|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Blastoid_image_final
+    Name the output image:DistanceMap_Blastoid
+    Rescale values from 0 to 1?:Yes
+
+ConvertObjectsToImage:[module_num:35|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Nuclei
+    Name the output image:Nuclei_Markers
+    Select the color format:uint16
+    Select the colormap:Default
+
+Watershed:[module_num:36|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:ResizeEcadCM
+    Name the output object:Cells_objects
+    Use advanced settings?:No
+    Generate from:Markers
+    Markers:Nuclei_Markers
+    Mask:Threshold_blastoid
+    Connectivity:3
+    Compactness:0.1
+    Footprint:8
+    Downsample:1
+    Separate watershed labels:No
+    Declump method:Shape
+    Reference Image:None
+    Segmentation distance transform smoothing factor:1.0
+    Minimum distance between seeds:1
+    Minimum absolute internal distance:0.0
+    Pixels from border to exclude:0
+    Maximum number of seeds:-1
+    Structuring element for seed dilation:Disk,1
+
+RelateObjects:[module_num:37|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Nuclei
+    Child objects:Cells_objects
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:RelateObjects
+    Parent name:None
+
+MeasureObjectIntensity:[module_num:38|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DistanceMap_Blastoid
+    Select objects to measure:Cells_objects, Nuclei
+
+MeasureObjectNeighbors:[module_num:39|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:Nuclei
+    Select neighboring objects to measure:Nuclei
+    Method to determine neighbors:Adjacent
+    Neighbor distance:5
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+FilterObjects:[module_num:40|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:Nuclei
+    Name the output objects:Most_inner_Cell
+    Select the filtering mode:Measurements
+    Select the filtering method:Maximal
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_Adjacent
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+ConvertObjectsToImage:[module_num:41|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Most_inner_Cell
+    Name the output image:Most_inner_Cell_img
+    Select the color format:Binary (black & white)
+    Select the colormap:Default
+
+ImageMath:[module_num:42|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Invert
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:Not_most_innercell
+    Image or measurement?:Image
+    Select the first image:Most_inner_Cell_img
+    Multiply the first image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:None
+    Multiply the second image by:1.0
+    Measurement:
+
+DistanceTransform:[module_num:43|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Not_most_innercell
+    Name the output image:DistanceMap_Most_InnerCell
+    Rescale values from 0 to 1?:Yes
+
+MeasureObjectIntensity:[module_num:44|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DistanceMap_Blastoid, DistanceMap_Most_InnerCell
+    Select objects to measure:Cells_objects, Nuclei
+
+FilterObjects:[module_num:45|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['This module will retain the cells that are in the peripheral of the blastoid, which we called outer cells. If you increase the maximum value to, for example 0.5, it will take cells that are more inside of the blastoid, which could be also part of the inner cells. Then be carefull to set this number as minimum as possible to just take the outer cells or the most external layer of cells.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:Cells_objects
+    Name the output objects:InnerCells
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:2
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:Yes
+    Name the objects removed by the filter:Outer_cells
+    Select the measurement to filter by:Intensity_MeanIntensity_DistanceMap_Blastoid
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.28
+    Filter using a maximum measurement value?:No
+    Maximum value:0.1
+    Select the measurement to filter by:Intensity_MeanIntensity_DistanceMap_Most_InnerCell
+    Filter using a minimum measurement value?:No
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:0.2
+    Allow fuzzy feature matching?:No
+
+RelateObjects:[module_num:46|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:InnerCells
+    Child objects:Nuclei
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:InnerNuclei
+    Parent name:None
+
+MeasureObjectIntensity:[module_num:47|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DistanceMap_Blastoid, DistanceMap_Most_InnerCell
+    Select objects to measure:InnerNuclei
+
+FilterObjects:[module_num:48|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:InnerNuclei
+    Name the output objects:InnerNuclei_final
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:2
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:Intensity_MeanIntensity_DistanceMap_Most_InnerCell
+    Filter using a minimum measurement value?:No
+    Minimum value:0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:0.2
+    Select the measurement to filter by:Intensity_MinIntensity_DistanceMap_Blastoid
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.1
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+MeasureObjectIntensity:[module_num:49|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DistanceMap_Most_InnerCell
+    Select objects to measure:InnerNuclei_final
+
+RelateObjects:[module_num:50|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Nuclei
+    Child objects:InnerNuclei_final
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:obj_nuclei_filter1related
+    Parent name:None
+
+RelateObjects:[module_num:51|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Outer_cells
+    Child objects:Nuclei
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:OuterNuclei
+    Parent name:None
+
+MeasureObjectNeighbors:[module_num:52|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:OuterNuclei
+    Select neighboring objects to measure:InnerNuclei_final
+    Method to determine neighbors:Expand until adjacent
+    Neighbor distance:0.5
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+MeasureObjectNeighbors:[module_num:53|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:InnerNuclei_final
+    Select neighboring objects to measure:OuterNuclei
+    Method to determine neighbors:Expand until adjacent
+    Neighbor distance:0.5
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+FilterObjects:[module_num:54|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['This step select the outer nuclei that are touching the inner nuclei. The criteria is based of the negihbors that was measure in the previous module. Then, here theouter cell will be classify as a polar if at least is touching one nuclei from the inner nuclei group. ']|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the objects to filter:OuterNuclei
+    Name the output objects:PolarNuclei_FirstClosestNeighbor
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:OuterNuclei_filteredFirstPolar
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_InnerNuclei_final_Expanded
+    Filter using a minimum measurement value?:Yes
+    Minimum value:1
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+FilterObjects:[module_num:55|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['This step select the outer nuclei that are touching the inner nuclei. The criteria is based of the negihbors that was measure in the previous module. Then, here theouter cell will be classify as a polar if at least is touching one nuclei from the inner nuclei group. ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:OuterNuclei
+    Name the output objects:PolarNuclei_FirstClosestNeighbor
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:Yes
+    Name the objects removed by the filter:OuterNuclei_filteredFirstPolar
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_InnerNuclei_final_Expanded
+    Filter using a minimum measurement value?:Yes
+    Minimum value:1
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+MeasureObjectNeighbors:[module_num:56|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:OuterNuclei_filteredFirstPolar
+    Select neighboring objects to measure:PolarNuclei_FirstClosestNeighbor
+    Method to determine neighbors:Expand until adjacent
+    Neighbor distance:0.5
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+MeasureObjectNeighbors:[module_num:57|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:PolarNuclei_FirstClosestNeighbor
+    Select neighboring objects to measure:OuterNuclei_filteredFirstPolar
+    Method to determine neighbors:Expand until adjacent
+    Neighbor distance:0.5
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+FilterObjects:[module_num:58|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:OuterNuclei_filteredFirstPolar
+    Name the output objects:PolarNuclei_SecondClosestNeighbor
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:MuralNoRegion
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_PolarNuclei_FirstClosestNeighbor_Expanded
+    Filter using a minimum measurement value?:Yes
+    Minimum value:1
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+CombineObjects:[module_num:59|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['combine  the polar nuclei that are touching the inner nuclei and the nuclei that are touching the polar nuclei. We have two layer of polar nuclei, because sometimes the pollar nuclei that are touching the inner nuclei leave some nuclei that were in the outer layer without classification. Then become necessary add this "second layer" of polar nuclei to include the nuclei that were discarded in the first classification.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select initial object set:PolarNuclei_FirstClosestNeighbor
+    Select object set to combine:PolarNuclei_SecondClosestNeighbor
+    Select how to handle overlapping objects:Merge
+    Name the combined object set:PolarNuclei_final
+
+RelateObjects:[module_num:60|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:OuterNuclei
+    Child objects:PolarNuclei_final
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:OuterNuclei
+    Parent name:None
+
+FilterObjects:[module_num:61|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:OuterNuclei
+    Name the output objects:pre_MuralNuclei
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:2
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_InnerNuclei_final_Expanded
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:0.9
+    Select the measurement to filter by:Children_PolarNuclei_final_Count
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:0.9
+    Allow fuzzy feature matching?:No
+
+MeasureObjectIntensity:[module_num:62|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DistanceMap_Most_InnerCell
+    Select objects to measure:pre_MuralNuclei
+
+FilterObjects:[module_num:63|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['this module is used to avoid to get some mural nuclei in the polar region. This in general is not necessary, only will be applied if any of the outer nuclei in the polar region was not classified as a polar nuclei.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:pre_MuralNuclei
+    Name the output objects:MuralNuclei
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:RemovedObjects
+    Select the measurement to filter by:Intensity_MinIntensity_DistanceMap_Most_InnerCell
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.14
+    Filter using a maximum measurement value?:No
+    Maximum value:
+    Allow fuzzy feature matching?:No
+
+RelateObjects:[module_num:64|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:MuralNuclei
+    Child objects:Cells_objects
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:MuralCells_final
+    Parent name:None
+
+RelateObjects:[module_num:65|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:PolarNuclei_final
+    Child objects:Cells_objects
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:PolarCells_final
+    Parent name:None
+
+MeasureObjectNeighbors:[module_num:66|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:PolarCells_final
+    Select neighboring objects to measure:MuralCells_final
+    Method to determine neighbors:Expand until adjacent
+    Neighbor distance:10
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+MeasureObjectNeighbors:[module_num:67|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:MuralCells_final
+    Select neighboring objects to measure:PolarCells_final
+    Method to determine neighbors:Expand until adjacent
+    Neighbor distance:10
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+FilterObjects:[module_num:68|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:MuralCells_final
+    Name the output objects:TransitionCell
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:Yes
+    Name the objects removed by the filter:MuralCells_noTransitionCell
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_PolarCells_final_Expanded
+    Filter using a minimum measurement value?:Yes
+    Minimum value:1
+    Filter using a maximum measurement value?:No
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+MeasureObjectIntensity:[module_num:69|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DistanceMap_Most_InnerCell
+    Select objects to measure:TransitionCell
+
+FilterObjects:[module_num:70|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['This will discard the transitional cells that are very far of the inner mass.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:TransitionCell
+    Name the output objects:TransitionCell_final
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:No
+    Name the objects removed by the filter:TransitionZone
+    Select the measurement to filter by:Intensity_MaxIntensity_DistanceMap_Most_InnerCell
+    Filter using a minimum measurement value?:Yes
+    Minimum value:0.2
+    Filter using a maximum measurement value?:No
+    Maximum value:0.2
+    Allow fuzzy feature matching?:No
+
+RelateObjects:[module_num:71|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:MuralCells_noTransitionCell
+    Child objects:Nuclei
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:MuralNuclei_final
+    Parent name:None
+
+RelateObjects:[module_num:72|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:TransitionCell_final
+    Child objects:Nuclei
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:Yes
+    Name the output object:TransitionNuclei_final
+    Parent name:None
+
+MeasureObjectNeighbors:[module_num:73|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:MuralNuclei_final
+    Select neighboring objects to measure:TransitionNuclei_final
+    Method to determine neighbors:Within a specified distance
+    Neighbor distance:20
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+FilterObjects:[module_num:74|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:MuralNuclei_final
+    Name the output objects:MuralNuclei_final_filtered1
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:Yes
+    Name the objects removed by the filter:MuralNuclei_layer1_final
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_TransitionNuclei_final_20
+    Filter using a minimum measurement value?:No
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+MeasureObjectNeighbors:[module_num:75|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:MuralNuclei_final_filtered1
+    Select neighboring objects to measure:MuralNuclei_layer1_final
+    Method to determine neighbors:Within a specified distance
+    Neighbor distance:20
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+FilterObjects:[module_num:76|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:MuralNuclei_final_filtered1
+    Name the output objects:MuralNuclei_final_filtered2
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:Yes
+    Name the objects removed by the filter:MuralNuclei_layer2_final
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_MuralNuclei_layer1_final_20
+    Filter using a minimum measurement value?:No
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+MeasureObjectNeighbors:[module_num:77|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:MuralNuclei_final_filtered2
+    Select neighboring objects to measure:MuralNuclei_layer2_final
+    Method to determine neighbors:Within a specified distance
+    Neighbor distance:20
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+FilterObjects:[module_num:78|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:MuralNuclei_final_filtered2
+    Name the output objects:MuralNuclei_final_filtered3
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...|
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Keep removed objects as a separate set?:Yes
+    Name the objects removed by the filter:MuralNuclei_layer3_final
+    Select the measurement to filter by:Neighbors_NumberOfNeighbors_MuralNuclei_layer2_final_20
+    Filter using a minimum measurement value?:No
+    Minimum value:0.0
+    Filter using a maximum measurement value?:Yes
+    Maximum value:1.0
+    Allow fuzzy feature matching?:No
+
+ResizeObjects:[module_num:79|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:InnerNuclei_final
+    Name the output object:InnerNuclei_final_Resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:80|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Nuclei_orig was renamed as a Nuclei_resize. Rembember do the math on Nuclei Resize']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:Nuclei
+    Name the output object:Nuclei_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:81|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Cell_orig was renamed as a Cells_objects_resize. Rembember do the math on the correct resized objects']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:Cells_objects
+    Name the output object:Cells_objects_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:82|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:PolarNuclei_final
+    Name the output object:PolarNuclei_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:83|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:MuralNuclei_final
+    Name the output object:MuralNuclei_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:84|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:TransitionNuclei_final
+    Name the output object:TransitionNuclei_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:85|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:MuralNuclei_layer1_final
+    Name the output object:MuralNuclei_layer1_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:86|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:MuralNuclei_layer2_final
+    Name the output object:MuralNuclei_layer2_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:87|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:MuralNuclei_layer3_final
+    Name the output object:MuralNuclei_layer3_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:88|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:MuralNuclei_final_filtered3
+    Name the output object:Mural_Nuclei_final_filtered3_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:89|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:PolarCells_final
+    Name the output object:PolarCell_final_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:90|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:Blastoid_object_final
+    Name the output object:Blastoid_object_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ResizeObjects:[module_num:91|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input object:PolarCells_final
+    Name the output object:PolarCells_resize
+    Method:Match Image
+    X Factor:4
+    Y Factor:4
+    Z Factor:2
+    Width (X):100
+    Height (Y):100
+    Planes (Z):10
+    Select the image with the desired dimensions:DNA
+
+ConvertObjectsToImage:[module_num:92|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Most_inner_Cell
+    Name the output image:Most_inner_Cell_resize
+    Select the color format:Binary (black & white)
+    Select the colormap:Default
+
+ConvertObjectsToImage:[module_num:93|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:PolarNuclei_resize
+    Name the output image:PolarNuclei_label
+    Select the color format:uint16
+    Select the colormap:Default
+
+ConvertObjectsToImage:[module_num:94|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:MuralNuclei_resize
+    Name the output image:MuralNuclei_label
+    Select the color format:uint16
+    Select the colormap:Default
+
+ConvertObjectsToImage:[module_num:95|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:InnerNuclei_final_Resize
+    Name the output image:InnerNuclei_label
+    Select the color format:uint16
+    Select the colormap:Default
+
+ConvertObjectsToImage:[module_num:96|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Blastoid_object_resize
+    Name the output image:Blastoid_image_resize
+    Select the color format:uint16
+    Select the colormap:Default
+
+ConvertObjectsToImage:[module_num:97|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:TransitionNuclei_resize
+    Name the output image:TransitionNuclei_labeled
+    Select the color format:uint16
+    Select the colormap:Default
+
+ConvertObjectsToImage:[module_num:98|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:PolarCells_resize
+    Name the output image:PolarCells_image_resize
+    Select the color format:uint16
+    Select the colormap:Default
+
+RelateObjects:[module_num:99|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Nuclei_resize
+    Child objects:PolarNuclei_resize
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:RelateObjects
+    Parent name:None
+
+RelateObjects:[module_num:100|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Nuclei_resize
+    Child objects:MuralNuclei_resize
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:RelateObjects
+    Parent name:None
+
+RelateObjects:[module_num:101|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Nuclei_resize
+    Child objects:InnerNuclei_final_Resize
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:RelateObjects
+    Parent name:None
+
+RelateObjects:[module_num:102|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Nuclei_resize
+    Child objects:TransitionNuclei_resize
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:RelateObjects
+    Parent name:None
+
+RelateObjects:[module_num:103|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:Nuclei_resize
+    Child objects:Cells_objects_resize
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:RelateObjects
+    Parent name:None
+
+OverlayOutlines:[module_num:104|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:DNA_HE
+    Name the output image:OrigOverlay_DNA
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:PolarNuclei_resize
+    Select outline color:Green
+    Select objects to display:MuralNuclei_resize
+    Select outline color:Blue
+    Select objects to display:TransitionNuclei_resize
+    Select outline color:Yellow
+    Select objects to display:InnerNuclei_final_Resize
+
+OverlayOutlines:[module_num:105|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:Cdx2_HE
+    Name the output image:OrigOverlay_Cdx2
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:PolarNuclei_resize
+    Select outline color:Green
+    Select objects to display:MuralNuclei_resize
+    Select outline color:Blue
+    Select objects to display:TransitionNuclei_resize
+    Select outline color:Yellow
+    Select objects to display:InnerNuclei_final_Resize
+
+OverlayOutlines:[module_num:106|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:Krt8_HE
+    Name the output image:OrigOverlay_Krt8
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:PolarNuclei_resize
+    Select outline color:Green
+    Select objects to display:MuralNuclei_resize
+    Select outline color:Blue
+    Select objects to display:TransitionNuclei_resize
+    Select outline color:Yellow
+    Select objects to display:InnerNuclei_final_Resize
+
+OverlayOutlines:[module_num:107|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:EcadCM_HE
+    Name the output image:OrigOverlay_Ecad
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:PolarNuclei_resize
+    Select outline color:Green
+    Select objects to display:MuralNuclei_resize
+    Select outline color:Blue
+    Select objects to display:TransitionNuclei_resize
+    Select outline color:Yellow
+    Select objects to display:InnerNuclei_final_Resize
+
+OverlayOutlines:[module_num:108|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:Yes
+    Select image on which to display outlines:DNA_HE
+    Name the output image:OrigOverlay_DNA_MuralFiltered
+    Outline display mode:Grayscale
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:MuralNuclei_resize
+
+OverlayOutlines:[module_num:109|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:Yes
+    Select image on which to display outlines:DNA_HE
+    Name the output image:OrigOverlay_DNA_Transition
+    Outline display mode:Grayscale
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:TransitionNuclei_resize
+
+OverlayOutlines:[module_num:110|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:Yes
+    Select image on which to display outlines:DNA_HE
+    Name the output image:OrigOverlay_DNA_ICM
+    Outline display mode:Grayscale
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:InnerNuclei_final_Resize
+
+OverlayOutlines:[module_num:111|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Display outlines on a blank image?:Yes
+    Select image on which to display outlines:DNA_HE
+    Name the output image:OrigBlastoid
+    Outline display mode:Grayscale
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:Blastoid_object_resize
+
+OverlayOutlines:[module_num:112|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:Yes
+    Select image on which to display outlines:DNA_HE
+    Name the output image:OrigPolarNuclei_outline
+    Outline display mode:Grayscale
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:PolarNuclei_resize
+
+OverlayOutlines:[module_num:113|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:Yes
+    Select image on which to display outlines:DNA_HE
+    Name the output image:OrigPolar_outline
+    Outline display mode:Grayscale
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:PolarCells_resize
+
+MeasureObjectSizeShape:[module_num:114|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select object sets to measure:Cells_objects_resize, Nuclei_resize
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:Yes
+
+MeasureObjectNeighbors:[module_num:115|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select objects to measure:Nuclei_resize
+    Select neighboring objects to measure:Nuclei_resize
+    Method to determine neighbors:Expand until adjacent
+    Neighbor distance:5
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:No
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+MeasureObjectIntensity:[module_num:116|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select images to measure:DNA, EcadCM, Factin, SOX2
+    Select objects to measure:Cells_objects_resize, Nuclei_resize
+
+CalculateMath:[module_num:117|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Name the output measurement:Nuclei_Cdx2overDNA
+    Operation:Divide
+    Select the numerator measurement type:Object
+    Select the numerator objects:Nuclei_resize
+    Select the numerator measurement:Intensity_MeanIntensity_Cdx2
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Select the denominator measurement type:Object
+    Select the denominator objects:Nuclei_resize
+    Select the denominator measurement:Intensity_MeanIntensity_DNA
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Take log10 of result?:No
+    Multiply the result by:1.0
+    Raise the power of result by:1.0
+    Add to the result:0.0
+    How should the output value be rounded?:Not rounded
+    Enter how many decimal places the value should be rounded to:0
+    Constrain the result to a lower bound?:No
+    Enter the lower bound:0.0
+    Constrain the result to an upper bound?:No
+    Enter the upper bound:1.0
+
+CalculateMath:[module_num:118|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Name the output measurement:Nuclei_Krt8overDNA
+    Operation:Divide
+    Select the numerator measurement type:Object
+    Select the numerator objects:Cells_objects_resize
+    Select the numerator measurement:Intensity_MeanIntensity_Krt8
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Select the denominator measurement type:Object
+    Select the denominator objects:Nuclei_resize
+    Select the denominator measurement:Intensity_MeanIntensity_DNA
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Take log10 of result?:No
+    Multiply the result by:1.0
+    Raise the power of result by:1.0
+    Add to the result:0.0
+    How should the output value be rounded?:Not rounded
+    Enter how many decimal places the value should be rounded to:0
+    Constrain the result to a lower bound?:No
+    Enter the lower bound:0.0
+    Constrain the result to an upper bound?:No
+    Enter the upper bound:1.0
+
+CalculateMath:[module_num:119|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Name the output measurement:Nuclei_EcadoverDNA
+    Operation:Divide
+    Select the numerator measurement type:Object
+    Select the numerator objects:Cells_objects_resize
+    Select the numerator measurement:Intensity_MeanIntensity_EcadCM
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Select the denominator measurement type:Object
+    Select the denominator objects:Nuclei_resize
+    Select the denominator measurement:Intensity_MeanIntensity_DNA
+    Multiply the above operand by:1.0
+    Raise the power of above operand by:1.0
+    Take log10 of result?:No
+    Multiply the result by:1.0
+    Raise the power of result by:1.0
+    Add to the result:0.0
+    How should the output value be rounded?:Not rounded
+    Enter how many decimal places the value should be rounded to:0
+    Constrain the result to a lower bound?:No
+    Enter the lower bound:0.0
+    Constrain the result to an upper bound?:No
+    Enter the upper bound:1.0
+
+SaveImages:[module_num:120|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_DNA
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_Overlay_DNA
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:121|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigPolarNuclei_outline
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_origPolarNuclei_outline
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:122|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigPolar_outline
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_OrigPolar_outline
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:123|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_DNA_MuralFiltered
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_Overlay_DNA_MuralFiltered
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:124|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_DNA_Transition
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_Overlay_DNA_Transition_outline
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:125|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:ResizeDNA
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_DNA_resize
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:126|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_DNA_ICM
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_Overlay_DNA_ICM_outline
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:127|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_Cdx2
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_\g<Site>_Overlay_Cdx2
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:128|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_Ecad
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_\g<Site>_Overlay_Ecad
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:129|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_Krt8
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_\g<Site>_Overlay_Krt8
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:130|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:Blastoid_image_resize
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_\g<Site>_Overlay_Blastoid
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:131|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:PolarCells_image_resize
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_\g<Site>_PolarCell_label
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:132|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:PolarNuclei_label
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_\g<Site>_PolarNuclei_label
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:16-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:133|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:TransitionNuclei_labeled
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_\g<Site>_Transition_Nuclei_label
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:16-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:134|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:MuralNuclei_label
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_\g<Site>_Mural_nuclei_label
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:16-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:135|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:InnerNuclei_label
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_\g<Site>_InnerNuclei_label
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:16-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+ExportToSpreadsheet:[module_num:136|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+    Select the column delimiter:Comma (",")
+    Add image metadata columns to your object data file?:Yes
+    Add image file and folder names to your object data file?:No
+    Select the measurements to export:No
+    Calculate the per-image mean values for object measurements?:No
+    Calculate the per-image median values for object measurements?:No
+    Calculate the per-image standard deviation values for object measurements?:No
+    Output file location:Default Output Folder|F:\\ReRun\\blastocyst_Cdx2_Krt8_Ecad_Hoechst_241530_244256_241148\\all_experiments\\Paula\\20231116\\csv
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:No
+    Filename prefix:MyExpt_
+    Overwrite existing files without warning?:Yes
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes
