@@ -1377,12 +1377,12 @@ OverlayOutlines:[module_num:113|svn_version:'Unknown'|variable_revision_number:4
     Select outline color:Red
     Select objects to display:PolarCells_resize
 
-MeasureObjectSizeShape:[module_num:114|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+MeasureObjectSizeShape:[module_num:114|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select object sets to measure:Cells_objects_resize, Nuclei_resize
     Calculate the Zernike features?:No
     Calculate the advanced features?:Yes
 
-MeasureObjectNeighbors:[module_num:115|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+MeasureObjectNeighbors:[module_num:115|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:Nuclei_resize
     Select neighboring objects to measure:Nuclei_resize
     Method to determine neighbors:Expand until adjacent
@@ -1395,7 +1395,7 @@ MeasureObjectNeighbors:[module_num:115|svn_version:'Unknown'|variable_revision_n
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-MeasureObjectIntensity:[module_num:116|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+MeasureObjectIntensity:[module_num:116|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DNA, EcadCM, Factin, SOX2
     Select objects to measure:Cells_objects_resize, Nuclei_resize
 
@@ -1513,6 +1513,66 @@ SaveImages:[module_num:121|svn_version:'Unknown'|variable_revision_number:16|sho
 
 SaveImages:[module_num:122|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the type of image to save:Image
+    Select the image to save:OrigOverlay_DNA_MuralFiltered
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_MuralFiltered_outline
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:123|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_DNA_Transition
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_Transition_outline
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:124|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_DNA_ICM
+    Select method for constructing file names:Single name
+    Select image name for file prefix:None
+    Enter single file name:\g<Experiment>_ICM_outline
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:125|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
+    Select the type of image to save:Image
     Select the image to save:OrigPolar_outline
     Select method for constructing file names:Single name
     Select image name for file prefix:None
@@ -1531,72 +1591,12 @@ SaveImages:[module_num:122|svn_version:'Unknown'|variable_revision_number:16|sho
     How to save the series:T (Time)
     Save with lossless compression?:Yes
 
-SaveImages:[module_num:123|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the type of image to save:Image
-    Select the image to save:OrigOverlay_DNA_MuralFiltered
-    Select method for constructing file names:Single name
-    Select image name for file prefix:None
-    Enter single file name:\g<Experiment>_Overlay_DNA_MuralFiltered
-    Number of digits:4
-    Append a suffix to the image file name?:No
-    Text to append to the image name:
-    Saved file format:tiff
-    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
-    Image bit depth:8-bit integer
-    Overwrite existing files without warning?:Yes
-    When to save:Every cycle
-    Record the file and path information to the saved image?:No
-    Create subfolders in the output folder?:No
-    Base image folder:Elsewhere...|
-    How to save the series:T (Time)
-    Save with lossless compression?:Yes
-
-SaveImages:[module_num:124|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the type of image to save:Image
-    Select the image to save:OrigOverlay_DNA_Transition
-    Select method for constructing file names:Single name
-    Select image name for file prefix:None
-    Enter single file name:\g<Experiment>_Overlay_DNA_Transition_outline
-    Number of digits:4
-    Append a suffix to the image file name?:No
-    Text to append to the image name:
-    Saved file format:tiff
-    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
-    Image bit depth:8-bit integer
-    Overwrite existing files without warning?:Yes
-    When to save:Every cycle
-    Record the file and path information to the saved image?:No
-    Create subfolders in the output folder?:No
-    Base image folder:Elsewhere...|
-    How to save the series:T (Time)
-    Save with lossless compression?:Yes
-
-SaveImages:[module_num:125|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+SaveImages:[module_num:126|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
     Select the type of image to save:Image
     Select the image to save:ResizeDNA
     Select method for constructing file names:Single name
     Select image name for file prefix:None
     Enter single file name:\g<Experiment>_DNA_resize
-    Number of digits:4
-    Append a suffix to the image file name?:No
-    Text to append to the image name:
-    Saved file format:tiff
-    Output file location:Default Output Folder|3D_blastoid/20211216_blastocyst_cellpainting_cdx2_krt8_ecad_hoechst_241148/results/nuclei/test_2
-    Image bit depth:8-bit integer
-    Overwrite existing files without warning?:Yes
-    When to save:Every cycle
-    Record the file and path information to the saved image?:No
-    Create subfolders in the output folder?:No
-    Base image folder:Elsewhere...|
-    How to save the series:T (Time)
-    Save with lossless compression?:Yes
-
-SaveImages:[module_num:126|svn_version:'Unknown'|variable_revision_number:16|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select the type of image to save:Image
-    Select the image to save:OrigOverlay_DNA_ICM
-    Select method for constructing file names:Single name
-    Select image name for file prefix:None
-    Enter single file name:\g<Experiment>_Overlay_DNA_ICM_outline
     Number of digits:4
     Append a suffix to the image file name?:No
     Text to append to the image name:
