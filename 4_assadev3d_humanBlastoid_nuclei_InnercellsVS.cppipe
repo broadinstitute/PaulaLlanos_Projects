@@ -236,7 +236,7 @@ GaussianFilter:[module_num:19|svn_version:'Unknown'|variable_revision_number:1|s
     Name the output image:Smooth_SOX2
     Sigma:4
 
-ImageMath:[module_num:20|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['In case that you use this pipeline for others markers. balance the intensity for each channels to have a more homogenous intensity across the blastoid. Check the blastoid object generated, and see if is necessary to balance this intensities.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:20|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['This module sum all intensities in order to get the whole blastoid shape', 'In case that you use this pipeline for others markers. balance the intensity for each channels to have a more homogenous intensity across the blastoid. Check the blastoid object generated, and see if is necessary to balance this intensities.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:Add
     Raise the power of the result by:1.5
     Multiply the result by:1.0
@@ -259,7 +259,7 @@ ImageMath:[module_num:20|svn_version:'Unknown'|variable_revision_number:5|show_w
     Multiply the third image by:20
     Measurement:
 
-Threshold:[module_num:21|svn_version:'Unknown'|variable_revision_number:12|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+Threshold:[module_num:21|svn_version:'Unknown'|variable_revision_number:12|show_window:False|notes:['to segment the blastoid shape']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:ImageAllChannels
     Name the output image:Threshold_blastoid
     Threshold strategy:Adaptive
@@ -307,7 +307,7 @@ ConvertObjectsToImage:[module_num:23|svn_version:'Unknown'|variable_revision_num
     Select the color format:Binary (black & white)
     Select the colormap:Default
 
-ConvertImageToObjects:[module_num:24|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertImageToObjects:[module_num:24|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['convert the image to object to can dilate the object in the next module.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Threshold_blastoid
     Name the output object:Blastoid_object
     Convert to boolean image:Yes
@@ -315,12 +315,12 @@ ConvertImageToObjects:[module_num:24|svn_version:'Unknown'|variable_revision_num
     Background label:0
     Connectivity:0
 
-DilateObjects:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+DilateObjects:[module_num:25|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['dilate the object to fill some small holes and borders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:Blastoid_object
     Name the output object:Blastoid_object_dilated
     Structuring element:disk,4
 
-Watershed:[module_num:26|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+Watershed:[module_num:26|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['apply to watershed to identify different objects']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Threshold_blastoid
     Name the output object:Blastoid_mask2
     Use advanced settings?:No
@@ -341,13 +341,13 @@ Watershed:[module_num:26|svn_version:'Unknown'|variable_revision_number:3|show_w
     Maximum number of seeds:-1
     Structuring element for seed dilation:ball,20
 
-ConvertObjectsToImage:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertObjectsToImage:[module_num:27|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['convert the object to image to identify all the objects as one']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Blastoid_object_dilated
     Name the output image:Blastoid_mask_img2
     Select the color format:Binary (black & white)
     Select the colormap:Default
 
-ConvertImageToObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertImageToObjects:[module_num:28|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['convert the provious image as an object to identify the identify the small object that are no part of the main one']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Blastoid_mask_img2
     Name the output object:Blastoid_object2
     Convert to boolean image:Yes
@@ -362,19 +362,19 @@ FillObjects:[module_num:29|svn_version:'Unknown'|variable_revision_number:2|show
     Planewise fill:Yes
     Filling method:Holes
 
-FillObjects:[module_num:30|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FillObjects:[module_num:30|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['fill the cavity of the main blastoid object']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input object:Blastoid_object2
     Name the output object:Blastoid_object_filled
     Minimum hole size:200
     Planewise fill:Yes
     Filling method:Holes
 
-MeasureObjectSizeShape:[module_num:31|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectSizeShape:[module_num:31|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['measure all the objects to filter the smalls one and getjust the biggest one']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select object sets to measure:Blastoid_object_filled
     Calculate the Zernike features?:No
     Calculate the advanced features?:No
 
-FilterObjects:[module_num:32|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:32|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['get the object with the maximal area. this will be the final filled blastoid object']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:Blastoid_object_filled
     Name the output objects:Blastoid_object_final
     Select the filtering mode:Measurements
@@ -395,7 +395,7 @@ FilterObjects:[module_num:32|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-RelateObjects:[module_num:33|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:33|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['relate the nuclei segmented with stardist to the Blastoid_object_final']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Blastoid_object_final
     Child objects:RunStarDist_nuclei
     Calculate child-parent distances?:None
@@ -405,24 +405,24 @@ RelateObjects:[module_num:33|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:Nuclei
     Parent name:None
 
-ConvertObjectsToImage:[module_num:34|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertObjectsToImage:[module_num:34|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['to get the distance map it is necessary to convert the  Blastoid object to image']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Blastoid_object_final
     Name the output image:Blastoid_image_final
     Select the color format:Binary (black & white)
     Select the colormap:Default
 
-DistanceTransform:[module_num:35|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+DistanceTransform:[module_num:35|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['get the distance map. This will allow us to detect the object that are in the outer layer of the blastoid.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Blastoid_image_final
     Name the output image:DistanceMap_Blastoid
     Rescale values from 0 to 1?:Yes
 
-ConvertObjectsToImage:[module_num:36|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertObjectsToImage:[module_num:36|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['convert nuclei object to images in a color format. Then each object in the output image will have a different gray color. This was required because to segment the cells it is necessary to give the nuclei as a seed, and the nuclei  markers should be an image (not an object)']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Nuclei
     Name the output image:Nuclei_Markers
     Select the color format:uint16
     Select the colormap:Default
 
-Watershed:[module_num:37|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+Watershed:[module_num:37|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Segmenting the Cells objects', 'here it is used the threshold blastoid as a mask to define where to find the cells, and the nuclei marker as a seed. ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:ResizeEcadCM
     Name the output object:Cells_objects
     Use advanced settings?:No
@@ -443,7 +443,7 @@ Watershed:[module_num:37|svn_version:'Unknown'|variable_revision_number:3|show_w
     Maximum number of seeds:-1
     Structuring element for seed dilation:Disk,1
 
-RelateObjects:[module_num:38|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:38|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['relate the nuclei object to the Cells objects. ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Nuclei
     Child objects:Cells_objects
     Calculate child-parent distances?:None
@@ -453,11 +453,11 @@ RelateObjects:[module_num:38|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:RelateObjects
     Parent name:None
 
-MeasureObjectIntensity:[module_num:39|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:39|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['Based on the Distance map image from the Blastoid object, calculate the distance of cells and nuclei objects. Then we can select the objects that are closer to the border.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DistanceMap_Blastoid
     Select objects to measure:Cells_objects, Nuclei
 
-MeasureObjectNeighbors:[module_num:40|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectNeighbors:[module_num:40|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Measure the neighbors metric of nuclei. This is necessary to check the nuclei that have more neighbor which will be the most inner nuclei. This will be use as a reference of the inner mass. ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:Nuclei
     Select neighboring objects to measure:Nuclei
     Method to determine neighbors:Adjacent
@@ -470,7 +470,7 @@ MeasureObjectNeighbors:[module_num:40|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-FilterObjects:[module_num:41|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:41|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['Based on the metrics of the previous image it is selected the nuclei with more neighbors. This nuclei will be the Most_inner_Cell. (should be the most_inner_nuclei)']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:Nuclei
     Name the output objects:Most_inner_Cell
     Select the filtering mode:Measurements
@@ -491,13 +491,13 @@ FilterObjects:[module_num:41|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-ConvertObjectsToImage:[module_num:42|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ConvertObjectsToImage:[module_num:42|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['convert this nuclei as an image to calculate the distance map. With this distance map we can select cells that are part of the inner mass.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input objects:Most_inner_Cell
     Name the output image:Most_inner_Cell_img
     Select the color format:Binary (black & white)
     Select the colormap:Default
 
-ImageMath:[module_num:43|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+ImageMath:[module_num:43|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['invert the image to get pixels closer to the inner nuclei as a 0 and the pixel farest as a 1.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Operation:Invert
     Raise the power of the result by:1.0
     Multiply the result by:1.0
@@ -516,12 +516,12 @@ ImageMath:[module_num:43|svn_version:'Unknown'|variable_revision_number:5|show_w
     Multiply the second image by:1.0
     Measurement:
 
-DistanceTransform:[module_num:44|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+DistanceTransform:[module_num:44|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:['Claculate the distance map of the inner nuclei']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:Not_most_innercell
     Name the output image:DistanceMap_Most_InnerCell
     Rescale values from 0 to 1?:Yes
 
-MeasureObjectIntensity:[module_num:45|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:45|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['Based on the Distance map image from the Blastoid object and inner nuclei object, calculate the distance of cells and nuclei objects.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DistanceMap_Blastoid, DistanceMap_Most_InnerCell
     Select objects to measure:Cells_objects, Nuclei
 
@@ -551,7 +551,7 @@ FilterObjects:[module_num:46|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:0.2
     Allow fuzzy feature matching?:No
 
-RelateObjects:[module_num:47|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:47|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['Relate the innerCells to the Nuclei objects to get now the inner Nuclei.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:InnerCells
     Child objects:Nuclei
     Calculate child-parent distances?:None
@@ -561,11 +561,11 @@ RelateObjects:[module_num:47|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:InnerNuclei
     Parent name:None
 
-MeasureObjectIntensity:[module_num:48|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:48|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['calculate the distance of the InnerNuclei in the distance maps generated']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DistanceMap_Blastoid, DistanceMap_Most_InnerCell
     Select objects to measure:InnerNuclei
 
-FilterObjects:[module_num:49|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:49|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['here  there ia a other filter to be sure that the inner nuclei will be one that is close to the inner cell and far from the border.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:InnerNuclei
     Name the output objects:InnerNuclei_final
     Select the filtering mode:Measurements
@@ -591,11 +591,11 @@ FilterObjects:[module_num:49|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-MeasureObjectIntensity:[module_num:50|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectIntensity:[module_num:50|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:['calculate the distance of the innerNuclei_final based on the DistanceMap_Most_InnerCell']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select images to measure:DistanceMap_Most_InnerCell
     Select objects to measure:InnerNuclei_final
 
-RelateObjects:[module_num:51|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:51|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['relate this inner nuclei selected with the main group of Nuclei obtained previously.  ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Nuclei
     Child objects:InnerNuclei_final
     Calculate child-parent distances?:None
@@ -605,7 +605,7 @@ RelateObjects:[module_num:51|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:obj_nuclei_filter1related
     Parent name:None
 
-RelateObjects:[module_num:52|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RelateObjects:[module_num:52|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:['here, also is related the nuclei object to the outer_cells  and keep those objects as a OuterNuclei']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Parent objects:Outer_cells
     Child objects:Nuclei
     Calculate child-parent distances?:None
@@ -615,7 +615,7 @@ RelateObjects:[module_num:52|svn_version:'Unknown'|variable_revision_number:5|sh
     Name the output object:OuterNuclei
     Parent name:None
 
-MeasureObjectNeighbors:[module_num:53|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectNeighbors:[module_num:53|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Calculate the neighbors of outerNuclei with the InnerNuclei_final.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:OuterNuclei
     Select neighboring objects to measure:InnerNuclei_final
     Method to determine neighbors:Expand until adjacent
@@ -628,7 +628,7 @@ MeasureObjectNeighbors:[module_num:53|svn_version:'Unknown'|variable_revision_nu
     Name the output image:PercentTouching
     Select colormap:Oranges
 
-MeasureObjectNeighbors:[module_num:54|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectNeighbors:[module_num:54|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['Calculate the neighbors of InnerNuclei_final with outerNuclei.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:InnerNuclei_final
     Select neighboring objects to measure:OuterNuclei
     Method to determine neighbors:Expand until adjacent
@@ -662,7 +662,7 @@ FilterObjects:[module_num:55|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-FilterObjects:[module_num:56|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['This step select the outer nuclei that are touching the inner nuclei. The criteria is based of the negihbors that was measure in the previous module. Then, here theouter cell will be classify as a polar if at least is touching one nuclei from the inner nuclei group. ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+FilterObjects:[module_num:56|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:['This step select the outer nuclei that are touching the inner nuclei. The criteria is based of the negihbors that was measure in the previous module. Then, here the outer cell will be classify as a polar if at least is touching one nuclei from the inner nuclei group. ']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the objects to filter:OuterNuclei
     Name the output objects:PolarNuclei_FirstClosestNeighbor
     Select the filtering mode:Measurements
@@ -683,7 +683,7 @@ FilterObjects:[module_num:56|svn_version:'Unknown'|variable_revision_number:10|s
     Maximum value:1.0
     Allow fuzzy feature matching?:No
 
-MeasureObjectNeighbors:[module_num:57|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+MeasureObjectNeighbors:[module_num:57|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:['']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select objects to measure:OuterNuclei_filteredFirstPolar
     Select neighboring objects to measure:PolarNuclei_FirstClosestNeighbor
     Method to determine neighbors:Expand until adjacent
